@@ -33,7 +33,8 @@ namespace RubiksCubeControlWpf.Shapes
 
         public new double StrokeThickness
         {
-            get { return (double)GetValue(RadiusProperty); }
+            get { return (double)GetValue(StrokeThicknessProperty); }
+            set { SetValue(StrokeThicknessProperty, value); }
         }
 
         #region Routed Property Events
@@ -142,7 +143,7 @@ namespace RubiksCubeControlWpf.Shapes
         {
             return Math.Max(0, (double)baseValue);
         }
-
+        /*
         private static object CoerceStrokeThicknessProperty(DependencyObject dp, object baseValue)
         {
             Circle circle = (Circle)dp;
@@ -153,22 +154,27 @@ namespace RubiksCubeControlWpf.Shapes
             }
             return strokeThickness;
         }
-
+        */
         private static object CoerceWidthProperty(DependencyObject dp, object baseValue)
         {
             Circle circle = (Circle)dp;
-            return CoerceWidthOrHeight(circle);
+            return CoerceWidthOrHeight(circle, (double)baseValue);
         }
 
         private static object CoerceHeightProperty(DependencyObject dp, object baseValue)
         {
             Circle circle = (Circle)dp;
-            return CoerceWidthOrHeight(circle);
+            return CoerceWidthOrHeight(circle, (double)baseValue);
         }
 
-        private static double CoerceWidthOrHeight(Circle circle)
+        private static double CoerceWidthOrHeight(Circle circle, double baseValue)
         {
-            return circle.Radius * 2;
+            double correctValue = circle.Radius * 2.0d;
+            if (baseValue == correctValue)
+            {
+                return baseValue;
+            }
+            return correctValue;
         }
 
         #endregion
@@ -187,7 +193,7 @@ namespace RubiksCubeControlWpf.Shapes
 
             StrokeThicknessProperty.OverrideMetadata(typeof(Circle),
                 new FrameworkPropertyMetadata(7.0d, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
-                    new PropertyChangedCallback(Circle.RaiseStrokeThicknessChanged), new CoerceValueCallback(CoerceStrokeThicknessProperty)));
+                    new PropertyChangedCallback(Circle.RaiseStrokeThicknessChanged)));
         }
 
         public Circle()
@@ -233,9 +239,23 @@ namespace RubiksCubeControlWpf.Shapes
 
         private void Circle_RadiusChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (!double.IsSubnormal(e.NewValue) && (double)GetValue(StrokeThicknessProperty) != e.NewValue)
+            if (!double.IsSubnormal(e.NewValue))
             {
-                SetValue(StrokeThicknessProperty, e.NewValue);
+                double newDimensions = 2 * e.NewValue;
+
+                if ((double)GetValue(WidthProperty) != newDimensions)
+                {
+                    SetValue(WidthProperty, newDimensions);
+                }
+                if ((double)GetValue(HeightProperty) != newDimensions)
+                {
+                    SetValue(HeightProperty, newDimensions);
+                }
+
+                if ((double)GetValue(StrokeThicknessProperty) != e.NewValue)
+                {
+                    SetValue(StrokeThicknessProperty, e.NewValue);
+                }
             }
         }
 

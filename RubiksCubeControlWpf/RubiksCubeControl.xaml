@@ -1,4 +1,4 @@
-<UserControl x:Class="RubiksCubeControlWpf.RubiksCubeControl"
+﻿<UserControl x:Class="RubiksCubeControlWpf.RubiksCubeControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,13 +6,13 @@
              xmlns:local="clr-namespace:RubiksCubeControlWpf"
              xmlns:shapes="clr-namespace:RubiksCubeControlWpf.Shapes"
              mc:Ignorable="d"             
-             Background="{DynamicResource ControlColorBrush}"
-             Width="700" Height="480"
+             Background="Transparent"
+             Width="546" Height="541" 
+             Margin="0"
+             Padding="0"
+             x:Name="rubiksCubeUserControl"
              >
-
     <UserControl.Resources>
-        <PathGeometry x:Key="MiddleRingPath" Figures="m 410.01,421.8 c -12.8,-2.62 -24.44,-6.99 -35.38,-12.42 c -10.54,-5.02 -19.86,-12.5 -29.27,-19.78 c -15.15,-17.12 -24.05,-31.13 -31.8,-47.46 c -4,-12.84 -7.13,-25.14 -8.66,-37.72 c -0.43,-12 0.18,-23.83 3.21,-35.83 c 5.26,-25.29 17.82,-49.87 38.69,-67.5 c 6.89,-7.38 16.65,-14.09 27.5,-20.54 c 11.26,-5.38 23.05,-9.85 35.94,-12.43 c 20.3,-3.38 39.61,-2.82 59.82,3.01 c 12.38,3.61 23.03,8.77 33.08,14.47 c 11.64,7.81 21.19,16.36 29.56,25.33 c 73.95,89.4 5.37,230.04 -122.69,210.87 z" />
-
         <SolidColorBrush x:Key="ControlColorBrush" Color="{x:Static SystemColors.ControlDarkColor}" />
 
         <Style x:Key="canvasGroup" TargetType="Canvas">
@@ -20,7 +20,7 @@
             <Setter Property="Height" Value="Auto" />
         </Style>
 
-        <Style x:Key="ellipseTrack" TargetType="Ellipse">
+        <Style x:Key="animationPathStyle" TargetType="Shape">
             <Setter Property="Stroke" Value="Black" />
             <Setter Property="StrokeThickness" Value="1" />
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -28,231 +28,309 @@
         </Style>
 
         <Style x:Key="peice" TargetType="shapes:Circle">
-            <Setter Property="Radius" Value="2.5" />
-            <Setter Property="Fill" Value="Transparent" />
+            <Setter Property="Radius" Value="12" />
+            <Setter Property="Fill" Value="Transparent" />            
+            <Setter Property="Opacity" Value="1" />
+            <d:Setter Property="StrokeThickness" Value="6" />
+        </Style>
+
+        <Style x:Key="HintHelperStyle" TargetType="Label">
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontFamily" Value="Engravers MT" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="FontStyle" Value="Normal" />
+            <Setter Property="FontSize" Value="32" />
         </Style>
     </UserControl.Resources>
 
-    <Border BorderBrush="Black" BorderThickness="3" CornerRadius="4" Focusable="False">
-        <Grid>
-            <Canvas x:Name="CubeNet" Style="{DynamicResource canvasGroup}" Focusable="True">
+
+
+    <Border x:Name="ControlBorder" BorderBrush="DarkSlateGray" Background="{DynamicResource ControlColorBrush}" 
+            BorderThickness="3" CornerRadius="520,520,320,320"  
+            Margin="0" Padding="0"
+            Opacity="1"
+            Focusable="False" >
+        <Grid Margin="0">
+
+            <Canvas x:Name="CubeNet" Style="{DynamicResource canvasGroup}" Margin="50,50,50,65" >
+
+                <!--
+                  ████████ ██████   █████   ██████ ██   ██ ███████
+                     ██    ██   ██ ██   ██ ██      ██  ██  ██     
+                     ██    ██████  ███████ ██      █████   ███████
+                     ██    ██   ██ ██   ██ ██      ██  ██       ██
+                     ██    ██   ██ ██   ██  ██████ ██   ██ ███████
+                -->
+
+                <Canvas x:Name="HintHelpers">
+                    <Label x:Name="HintHelper_R" Content="R" Style="{DynamicResource HintHelperStyle}"  Canvas.Left="311.551"   Canvas.Top="321" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                    <Label x:Name="HintHelper_M" Content="M" Style="{DynamicResource HintHelperStyle}"  Canvas.Left="366.081"    Canvas.Top="289" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <Label x:Name="HintHelper_RL" Content="L" Style="{DynamicResource HintHelperStyle}"  Canvas.Left="420.997"    Canvas.Top="239" HorizontalAlignment="Center" VerticalAlignment="Top" />
+
+                    <Label x:Name="HintHelper_F" Content="F" Style="{DynamicResource HintHelperStyle}"  Canvas.Left="81.246"   Canvas.Top="302" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <Label x:Name="HintHelper_S" Content="S" Style="{DynamicResource HintHelperStyle}"  Canvas.Left="24.622"    Canvas.Top="274" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <Label x:Name="HintHelper_B" Content="B" Style="{DynamicResource HintHelperStyle}"  Canvas.Left="-15.341"    Canvas.Top="220" HorizontalAlignment="Center" VerticalAlignment="Top" />
+
+                    <Label x:Name="HintHelper_D" Content="D" Style="{DynamicResource HintHelperStyle}"  Canvas.Left="158.952"    Canvas.Top="-21" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <Label x:Name="HintHelper_E" Content="E" Style="{DynamicResource HintHelperStyle}"  Canvas.Left="210.719" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="4" />
+                    <Label x:Name="HintHelper_U" Content="U" Style="{DynamicResource HintHelperStyle}"  Canvas.Left="250.672"    Canvas.Top="45" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                </Canvas>
+
 
                 <Canvas x:Name="Circle_Tracks" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" IsEnabled="False">
 
                     <Canvas Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
-                        <Ellipse x:Name="Top_Inner" Style="{DynamicResource ellipseTrack}"  Height="200" Width="200" Canvas.Left="250" Canvas.Top="80" />
-                        <Ellipse x:Name="Top_Middle" Style="{DynamicResource ellipseTrack}" Height="260" Width="260" Canvas.Left="220" Canvas.Top="50" />
-                        <Ellipse x:Name="Top_Outer" Style="{DynamicResource ellipseTrack}"  Height="320" Width="320" Canvas.Left="190" Canvas.Top="20" />
+                        <Ellipse x:Name="Top_Inner" Style="{DynamicResource animationPathStyle}"  Canvas.Left="120" Canvas.Top="60" Height="200" Width="200"  />
+                        <Ellipse x:Name="Top_Middle" Style="{DynamicResource animationPathStyle}" Canvas.Left="90"  Canvas.Top="30" Height="260" Width="260"  />
+                        <Ellipse x:Name="Top_Outer" Style="{DynamicResource animationPathStyle}"  Canvas.Left="60"  Canvas.Top="0"  Height="320" Width="320"  />
                     </Canvas>
 
                     <Canvas Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
-                        <Ellipse x:Name="Left_Inner"  Style="{DynamicResource ellipseTrack}" Height="200" Width="200" Canvas.Left="190" Canvas.Top="180" />
-                        <Ellipse x:Name="Left_Middle" Style="{DynamicResource ellipseTrack}" Height="260" Width="260" Canvas.Left="160" Canvas.Top="150" />
-                        <Ellipse x:Name="Left_Outer"  Style="{DynamicResource ellipseTrack}" Height="320" Width="320" Canvas.Left="130" Canvas.Top="120" />
+                        <Ellipse x:Name="Left_Inner"  Style="{DynamicResource animationPathStyle}" Canvas.Left="60" Canvas.Top="160" Height="200" Width="200" />
+                        <Ellipse x:Name="Left_Middle" Style="{DynamicResource animationPathStyle}" Canvas.Left="30" Canvas.Top="130" Height="260" Width="260" />
+                        <Ellipse x:Name="Left_Outer"  Style="{DynamicResource animationPathStyle}" Canvas.Left="0"  Canvas.Top="100" Height="320" Width="320" />
+
                     </Canvas>
 
                     <Canvas Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
-                        <Ellipse x:Name="Right_Inner"  Style="{DynamicResource ellipseTrack}" Height="200" Width="200" Canvas.Left="310" Canvas.Top="180" />
-                        <Ellipse x:Name="Right_Middle" Style="{DynamicResource ellipseTrack}" Height="260" Width="260" Canvas.Left="280" Canvas.Top="150" />
-                        <Ellipse x:Name="Right_Outer"  Style="{DynamicResource ellipseTrack}" Height="320" Width="320" Canvas.Left="250" Canvas.Top="120" />
+                        <Ellipse x:Name="Right_Inner"  Style="{DynamicResource animationPathStyle}" Canvas.Left="180" Canvas.Top="160" Height="200" Width="200" />
+                        <Ellipse x:Name="Right_Middle" Style="{DynamicResource animationPathStyle}" Canvas.Left="150" Canvas.Top="130" Height="260" Width="260" />
+                        <Ellipse x:Name="Right_Outer"  Style="{DynamicResource animationPathStyle}" Canvas.Left="120" Canvas.Top="100" Height="320" Width="320" />
+                    </Canvas>
+
+                    <!--Ellipse x:Name="Perimeter" Style="{DynamicResource animationPathStyle}" Canvas.Left="-23" Canvas.Top="-23" Height="596" Width="486" /-->
+
+                </Canvas>
+
+                <!--
+                   ██████ ██ ██████   ██████ ██      ███████ ███████
+                  ██      ██ ██   ██ ██      ██      ██      ██     
+                  ██      ██ ██████  ██      ██      █████   ███████
+                  ██      ██ ██   ██ ██      ██      ██           ██
+                   ██████ ██ ██   ██  ██████ ███████ ███████ ███████
+                 -->
+
+                <Canvas x:Name="Circles" Style="{DynamicResource canvasGroup}" Margin="-5,-5,0,0">
+
+                    <!--     _  _  __                   __ _____
+                            |_)|_|/  |/             |  |_ |_  | 
+                            |_)| |\__|\             |__|__|   |      -->
+
+                    <Canvas x:Name="Back_Left_Face" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
+
+                        <Canvas x:Name="BL_Left_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                            <shapes:Circle x:Name="yNW" Style="{DynamicResource peice}" Stroke="#ffa"               Canvas.Left="56"     Canvas.Top="127"    />
+                            <shapes:Circle x:Name="yWW" Style="{DynamicResource peice}" Stroke="#ffa"               Canvas.Left="55"     Canvas.Top="168"    />
+                            <shapes:Circle x:Name="ySW" Style="{DynamicResource peice}" Stroke="#ffa"               Canvas.Left="64"     Canvas.Top ="209"    />
+                        </Canvas>
+
+                        <Canvas x:Name="BL_Middle_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                            <shapes:Circle x:Name="yNN" Style="{DynamicResource peice}" Stroke="yellow"             Canvas.Left="92"     Canvas.Top="106"    />
+                            <shapes:Circle x:Name="yCC" Style="{DynamicResource peice}" Stroke="yellow"             Canvas.Left="84"     Canvas.Top="143"    />
+                            <shapes:Circle x:Name="ySS" Style="{DynamicResource peice}" Stroke="yellow"             Canvas.Left="86"     Canvas.Top ="180"    />
+                        </Canvas>
+
+                        <Canvas x:Name="BL_Right_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                            <shapes:Circle x:Name="yNE" Style="{DynamicResource peice}" Stroke="#cc0"               Canvas.Left="133"     Canvas.Top="95"    />
+                            <shapes:Circle x:Name="yEE" Style="{DynamicResource peice}" Stroke="#cc0"               Canvas.Left="117"     Canvas.Top="129"    />
+                            <shapes:Circle x:Name="ySE" Style="{DynamicResource peice}" Stroke="#cc0"               Canvas.Left="114"     Canvas.Top ="162"    />
+                        </Canvas>
+
+                    </Canvas>
+
+                    <!--     __ _  _    ___            ___ _  _ 
+                            |_ |_)/ \|\| |              | / \|_)
+                            |  | \\_/| | |              | \_/|       -->
+
+                    <Canvas x:Name="Front_Top_Face" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
+
+                        <Canvas x:Name="FT_Left_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                            <shapes:Circle x:Name="gNW" Style="{DynamicResource peice}" Stroke="lightgreen"         Canvas.Left="177"     Canvas.Top="125"   />
+                            <shapes:Circle x:Name="gWW" Style="{DynamicResource peice}" Stroke="lightgreen"         Canvas.Left="148"     Canvas.Top="154"   />
+                            <shapes:Circle x:Name="gSW" Style="{DynamicResource peice}" Stroke="lightgreen"         Canvas.Left="185"     Canvas.Top="158"   />
+
+                        </Canvas>
+
+                        <Canvas x:Name="FT_Middle_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                            <shapes:Circle x:Name="gNN" Style="{DynamicResource peice}" Stroke="green"              Canvas.Left="213"     Canvas.Top="105"   />
+                            <shapes:Circle x:Name="gCC" Style="{DynamicResource peice}" Stroke="green"              Canvas.Left="213"     Canvas.Top="138"   />
+                            <shapes:Circle x:Name="gSS" Style="{DynamicResource peice}" Stroke="green"              Canvas.Left="213"     Canvas.Top="173"   />
+                        </Canvas>
+
+                        <Canvas x:Name="FT_Right_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                            <shapes:Circle x:Name="gNE" Style="{DynamicResource peice}" Stroke="darkgreen"          Canvas.Left="250"     Canvas.Top="126"   />
+                            <shapes:Circle x:Name="gEE" Style="{DynamicResource peice}" Stroke="darkgreen"          Canvas.Left="278"     Canvas.Top="153"   />
+                            <shapes:Circle x:Name="gSE" Style="{DynamicResource peice}" Stroke="darkgreen"          Canvas.Left="242"     Canvas.Top="158"   />
+                        </Canvas>
+
+                    </Canvas>
+
+                    <!--    _  _  __             _ ___ __   ___
+                           |_)|_|/  |/          |_) | /__|_| | 
+                           |_)| |\__|\          | \_|_\_|| | |      -->
+
+                    <Canvas x:Name="Back_Right_Face" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
+
+                        <Canvas x:Name="BR_Left_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                            <shapes:Circle x:Name="oNW" Style="{DynamicResource peice}" Stroke="NavajoWhite"        Canvas.Left="294"     Canvas.Top="95"   />
+                            <shapes:Circle x:Name="oWW" Style="{DynamicResource peice}" Stroke="NavajoWhite"        Canvas.Left="310"     Canvas.Top="129"   />
+                            <shapes:Circle x:Name="oSW" Style="{DynamicResource peice}" Stroke="NavajoWhite"        Canvas.Left="312"     Canvas.Top="162"   />
+                        </Canvas>
+
+                        <Canvas x:Name="BR_Middle_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                            <shapes:Circle x:Name="oNN" Style="{DynamicResource peice}" Stroke="Orange"             Canvas.Left="333"     Canvas.Top="106"   />
+                            <shapes:Circle x:Name="oCC" Style="{DynamicResource peice}" Stroke="Orange"             Canvas.Left="342"     Canvas.Top="143"   />
+                            <shapes:Circle x:Name="oSS" Style="{DynamicResource peice}" Stroke="Orange"             Canvas.Left="340"     Canvas.Top="179"   />
+                        </Canvas>
+
+                        <Canvas x:Name="BR_Right_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                            <shapes:Circle x:Name="oNE" Style="{DynamicResource peice}" Stroke="DarkOrange"         Canvas.Left="370"     Canvas.Top="127"   />
+                            <shapes:Circle x:Name="oEE" Style="{DynamicResource peice}" Stroke="DarkOrange"         Canvas.Left="372"     Canvas.Top="169"   />
+                            <shapes:Circle x:Name="oSE" Style="{DynamicResource peice}" Stroke="DarkOrange"         Canvas.Left="363"     Canvas.Top="209"   />
+                        </Canvas>
+
+                    </Canvas>
+
+                    <!--     __ _  _    ___             __ _____
+                            |_ |_)/ \|\| |          |  |_ |_  | 
+                            |  | \\_/| | |          |__|__|   |      -->
+
+                    <Canvas x:Name="Front_Left_Face" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
+
+                        <Canvas x:Name="FL_Left_Slice" Style="{DynamicResource canvasGroup}"  Margin="0,0,0,0">
+                            <shapes:Circle x:Name="rNW" Style="{DynamicResource peice}" Stroke="HotPink"            Canvas.Left="124"     Canvas.Top="197"     />
+                            <shapes:Circle x:Name="rWW" Style="{DynamicResource peice}" Stroke="HotPink"            Canvas.Left="115"     Canvas.Top="237"     />
+                            <shapes:Circle x:Name="rSW" Style="{DynamicResource peice}" Stroke="HotPink"            Canvas.Left="115"     Canvas.Top="279"     />
+                        </Canvas>
+
+                        <Canvas x:Name="FL_Middle_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                            <shapes:Circle x:Name="rNN" Style="{DynamicResource peice}" Stroke="Red"                Canvas.Left="146"     Canvas.Top="227"     />
+                            <shapes:Circle x:Name="rCC" Style="{DynamicResource peice}" Stroke="Red"                Canvas.Left="144"     Canvas.Top="263"     />
+                            <shapes:Circle x:Name="rSS" Style="{DynamicResource peice}" Stroke="Red"                Canvas.Left="153"     Canvas.Top="300"     />
+                        </Canvas>
+
+                        <Canvas x:Name="FL_Right_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                            <shapes:Circle x:Name="rNE" Style="{DynamicResource peice}" Stroke="DarkRed"            Canvas.Left="174"     Canvas.Top="244"     />
+                            <shapes:Circle x:Name="rEE" Style="{DynamicResource peice}" Stroke="DarkRed"            Canvas.Left="177"     Canvas.Top="277"     />
+                            <shapes:Circle x:Name="rSE" Style="{DynamicResource peice}" Stroke="DarkRed"            Canvas.Left="193"     Canvas.Top="311.25"     />
+                        </Canvas>
+
+                    </Canvas>
+
+                    <!--    __ _  _    ___       _ ___ __   ___
+                           |_ |_)/ \|\| |       |_) | /__|_| | 
+                           |  | \\_/| | |       | \_|_\_|| | |      -->
+
+                    <Canvas x:Name="Front_Right_Face" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
+
+                        <Canvas x:Name="FR_Left_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                            <shapes:Circle x:Name="wNW" Style="{DynamicResource peice}" Stroke="White"              Canvas.Left="252"     Canvas.Top="244"     />
+                            <shapes:Circle x:Name="wWW" Style="{DynamicResource peice}" Stroke="White"              Canvas.Left="250"     Canvas.Top="277"     />
+                            <shapes:Circle x:Name="wSW" Style="{DynamicResource peice}" Stroke="White"              Canvas.Left="234"     Canvas.Top="311"     />
+                        </Canvas>
+
+                        <Canvas x:Name="FR_Middle_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                            <shapes:Circle x:Name="wNN" Style="{DynamicResource peice}" Stroke="AliceBlue"          Canvas.Left="279"     Canvas.Top="227"     />
+                            <shapes:Circle x:Name="wCC" Style="{DynamicResource peice}" Stroke="AliceBlue"          Canvas.Left="282"     Canvas.Top="263"     />
+                            <shapes:Circle x:Name="wSS" Style="{DynamicResource peice}" Stroke="AliceBlue"          Canvas.Left="274"     Canvas.Top="300"     />
+                        </Canvas>
+
+                        <Canvas x:Name="FR_Right_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                            <shapes:Circle x:Name="wNE" Style="{DynamicResource peice}" Stroke="Gainsboro"          Canvas.Left="302"     Canvas.Top="197"     />
+                            <shapes:Circle x:Name="wEE" Style="{DynamicResource peice}" Stroke="Gainsboro"          Canvas.Left="312"     Canvas.Top="237"     />
+                            <shapes:Circle x:Name="wSE" Style="{DynamicResource peice}" Stroke="Gainsboro"          Canvas.Left="310"     Canvas.Top="279"     />
+                        </Canvas>
+
+                    </Canvas>
+
+                    <!-- _  _  __          _  _ ______ _    
+                        |_)|_|/  |/       |_)/ \ |  | / \|V|
+                        |_)| |\__|\       |_)\_/ |  | \_/| |  -->
+
+                    <Canvas x:Name="Back_Bottom_Face" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
+
+                        <Canvas x:Name="BB_Left_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                            <shapes:Circle x:Name="bNW" Style="{DynamicResource peice}" Stroke="CornflowerBlue"     Canvas.Left="185"     Canvas.Top="348"      />
+                            <shapes:Circle x:Name="bWW" Style="{DynamicResource peice}" Stroke="CornflowerBlue"     Canvas.Left="148"     Canvas.Top="352"      />
+                            <shapes:Circle x:Name="bSW" Style="{DynamicResource peice}" Stroke="CornflowerBlue"     Canvas.Left="177"     Canvas.Top="380"      />
+                        </Canvas>
+
+                        <Canvas x:Name="BB_Middle_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                            <shapes:Circle x:Name="bNN" Style="{DynamicResource peice}" Stroke="blue"               Canvas.Left="213"     Canvas.Top="332"      />
+                            <shapes:Circle x:Name="bCC" Style="{DynamicResource peice}" Stroke="blue"               Canvas.Left="213"     Canvas.Top="367"      />
+                            <shapes:Circle x:Name="bSS" Style="{DynamicResource peice}" Stroke="blue"               Canvas.Left="213"     Canvas.Top="400"      />
+                        </Canvas>
+
+                        <Canvas x:Name="BB_Right_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                            <shapes:Circle x:Name="bNE" Style="{DynamicResource peice}" Stroke="Navy"               Canvas.Left="242"     Canvas.Top="347"      />
+                            <shapes:Circle x:Name="bEE" Style="{DynamicResource peice}" Stroke="Navy"               Canvas.Left="278"     Canvas.Top="352"      />
+                            <shapes:Circle x:Name="bSE" Style="{DynamicResource peice}" Stroke="Navy"               Canvas.Left="249"     Canvas.Top="380"      />
+                        </Canvas>
                     </Canvas>
 
                 </Canvas>
 
-                <!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  -->
+                <!--
+                  ██████  ██ ███    ██  ██████  ███████
+                  ██   ██ ██ ████   ██ ██       ██     
+                  ██████  ██ ██ ██  ██ ██   ███ ███████
+                  ██   ██ ██ ██  ██ ██ ██    ██      ██
+                  ██   ██ ██ ██   ████  ██████  ███████
+                -->
 
+                <!--
+                     _ __  _ __  _ ___ ___ 
+                    | |  \| |  \| | __| _ \
+                    | | | ' | | ' | _|| v /
+                    |_|_|\__|_|\__|___|_|_\
+                -->
 
+                <!--             ___ _  _ 
+                                  | / \|_)
+                                  | \_/|            -->
 
-                <Canvas x:Name="Back_Left_Face" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
-
-                    <Canvas x:Name="BL_Left_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                        <shapes:Circle x:Name="yNW" Style="{DynamicResource peice}" Stroke="LightYellow"      Canvas.Left="265"     Canvas.Top="113"    />
-                        <shapes:Circle x:Name="yWW" Style="{DynamicResource peice}" Stroke="LightYellow"      Canvas.Left="225"     Canvas.Top="123"    />
-                        <shapes:Circle x:Name="ySW" Style="{DynamicResource peice}" Stroke="LightYellow"      Canvas.Left="185"     Canvas.Top="148"    />
-                    </Canvas>
-
-                    <Canvas x:Name="BL_Middle_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                        <shapes:Circle x:Name="yNN" Style="{DynamicResource peice}" Stroke="yellow"           Canvas.Left="250"     Canvas.Top="148"    />
-                        <shapes:Circle x:Name="yMM" Style="{DynamicResource peice}" Stroke="yellow"           Canvas.Left="215"     Canvas.Top="163"    />
-                        <shapes:Circle x:Name="ySS" Style="{DynamicResource peice}" Stroke="yellow"           Canvas.Left="185"     Canvas.Top="188"    />
-                    </Canvas>
-
-                    <Canvas x:Name="BL_Right_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                        <shapes:Circle x:Name="yNE" Style="{DynamicResource peice}" Stroke="Gold"             Canvas.Left="245"     Canvas.Top ="183"    />
-                        <shapes:Circle x:Name="yEE" Style="{DynamicResource peice}" Stroke="Gold"             Canvas.Left="215"     Canvas.Top ="198"    />
-                        <shapes:Circle x:Name="ySE" Style="{DynamicResource peice}" Stroke="Gold"             Canvas.Left="195"     Canvas.Top ="228"    />
-                    </Canvas>
-
-                </Canvas>
-
-
-
-                <Canvas x:Name="Front_Top_Face" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
-
-                    <Canvas x:Name="FT_Left_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                        <shapes:Circle x:Name="gNW" Style="{DynamicResource peice}" Stroke="lightgreen"       Canvas.Left="305"     Canvas.Top="145"   />
-                        <shapes:Circle x:Name="gWW" Style="{DynamicResource peice}" Stroke="lightgreen"       Canvas.Left="275"     Canvas.Top="170"   />
-                        <shapes:Circle x:Name="gSW" Style="{DynamicResource peice}" Stroke="lightgreen"       Canvas.Left="312"     Canvas.Top="175"   />
-
-                    </Canvas>
-
-                    <Canvas x:Name="FT_Middle_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                        <shapes:Circle x:Name="gNN" Style="{DynamicResource peice}" Stroke="green"            Canvas.Left="340"     Canvas.Top="120"   />
-                        <shapes:Circle x:Name="gMM" Style="{DynamicResource peice}" Stroke="green"            Canvas.Left="340"     Canvas.Top="155"   />
-                        <shapes:Circle x:Name="gSS" Style="{DynamicResource peice}" Stroke="green"            Canvas.Left="340"     Canvas.Top="190"   />
-                    </Canvas>
-
-                    <Canvas x:Name="FT_Right_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                        <shapes:Circle x:Name="gNE" Style="{DynamicResource peice}" Stroke="darkgreen"        Canvas.Left="380"     Canvas.Top="145"   />
-                        <shapes:Circle x:Name="gEE" Style="{DynamicResource peice}" Stroke="darkgreen"        Canvas.Left="405"     Canvas.Top="170"   />
-                        <shapes:Circle x:Name="gSE" Style="{DynamicResource peice}" Stroke="darkgreen"        Canvas.Left="370"     Canvas.Top="175"   />
-                    </Canvas>
-
-                </Canvas>
-
-                <Canvas x:Name="Back_Right_Face" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
-
-                    <Canvas x:Name="BR_Left_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                        <shapes:Circle x:Name="oNW" Style="{DynamicResource peice}" Stroke="DarkOrange"       Canvas.Left="440"     Canvas.Top="180"   />
-                        <shapes:Circle x:Name="oWW" Style="{DynamicResource peice}" Stroke="DarkOrange"       Canvas.Left="472"     Canvas.Top="195"   />
-                        <shapes:Circle x:Name="oSW" Style="{DynamicResource peice}" Stroke="DarkOrange"       Canvas.Left="490"     Canvas.Top="225"   />
-                    </Canvas>
-
-                    <Canvas x:Name="BR_Middle_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                        <shapes:Circle x:Name="oNN" Style="{DynamicResource peice}" Stroke="Orange"           Canvas.Left="435"     Canvas.Top="145"   />
-                        <shapes:Circle x:Name="oMM" Style="{DynamicResource peice}" Stroke="Orange"           Canvas.Left="470"     Canvas.Top="160"   />
-                        <shapes:Circle x:Name="oSS" Style="{DynamicResource peice}" Stroke="Orange"           Canvas.Left="500"     Canvas.Top="187"   />
-                    </Canvas>
-
-                    <Canvas x:Name="BR_Right_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                        <shapes:Circle x:Name="oNE" Style="{DynamicResource peice}" Stroke="NavajoWhite"      Canvas.Left="420"     Canvas.Top="115"   />
-                        <shapes:Circle x:Name="oEE" Style="{DynamicResource peice}" Stroke="NavajoWhite"      Canvas.Left="462"     Canvas.Top="120"   />
-                        <shapes:Circle x:Name="oSE" Style="{DynamicResource peice}" Stroke="NavajoWhite"      Canvas.Left="500"     Canvas.Top="150"   />
-                    </Canvas>
-
-                </Canvas>
-
-
-                <!-- Replace the invalid ContainerVisual elements with Canvas, which is a valid UIElement for XAML UIElementCollection -->
-
-
-                <Canvas x:Name="Front_Left_Face" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
-
-                    <Canvas x:Name="FL_Left_Slice" Style="{DynamicResource canvasGroup}"  Margin="0,0,0,0">
-                        <shapes:Circle x:Name="rNW" Style="{DynamicResource peice}" Stroke="Pink"             Canvas.Left="255"     Canvas.Top="215"     />
-                        <shapes:Circle x:Name="rWW" Style="{DynamicResource peice}" Stroke="Pink"             Canvas.Left="245"     Canvas.Top="255"     />
-                        <shapes:Circle x:Name="rSW" Style="{DynamicResource peice}" Stroke="Pink"             Canvas.Left="243"     Canvas.Top="297"     />
-                    </Canvas>
-
-                    <Canvas x:Name="FL_Middle_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                        <shapes:Circle x:Name="rNN" Style="{DynamicResource peice}" Stroke="Tomato"           Canvas.Left="273"     Canvas.Top="243"     />
-                        <shapes:Circle x:Name="rMM" Style="{DynamicResource peice}" Stroke="Tomato"           Canvas.Left="270"     Canvas.Top="290"     />
-                        <shapes:Circle x:Name="rSS" Style="{DynamicResource peice}" Stroke="Tomato"           Canvas.Left="280"     Canvas.Top="325"     />
-                    </Canvas>
-
-                    <Canvas x:Name="FL_Right_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                        <shapes:Circle x:Name="rNE" Style="{DynamicResource peice}" Stroke="Red"              Canvas.Left="301"     Canvas.Top="262"     />
-                        <shapes:Circle x:Name="rEE" Style="{DynamicResource peice}" Stroke="Red"              Canvas.Left="305"     Canvas.Top="295"     />
-                        <shapes:Circle x:Name="rSE" Style="{DynamicResource peice}" Stroke="Red"              Canvas.Left="323"     Canvas.Top="331.25"     />
-                    </Canvas>
-
-                </Canvas>
-
-                <Canvas x:Name="Front_Right_Face" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
-
-                    <Canvas x:Name="FR_Left_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                        <shapes:Circle x:Name="wNW" Style="{DynamicResource peice}" Stroke="Gainsboro"        Canvas.Left="379"     Canvas.Top="262"     />
-                        <shapes:Circle x:Name="wWW" Style="{DynamicResource peice}" Stroke="Gainsboro"        Canvas.Left="376"     Canvas.Top="294"     />
-                        <shapes:Circle x:Name="wSW" Style="{DynamicResource peice}" Stroke="Gainsboro"        Canvas.Left="360"     Canvas.Top="328"     />
-                    </Canvas>
-
-                    <Canvas x:Name="FR_Middle_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                        <shapes:Circle x:Name="wNN" Style="{DynamicResource peice}" Stroke="White"            Canvas.Left="407"     Canvas.Top="244"     />
-                        <shapes:Circle x:Name="wMM" Style="{DynamicResource peice}" Stroke="White"            Canvas.Left="409"     Canvas.Top="280"     />
-                        <shapes:Circle x:Name="wSS" Style="{DynamicResource peice}" Stroke="White"            Canvas.Left="400"     Canvas.Top="318"     />
-                    </Canvas>
-
-                    <Canvas x:Name="FR_Right_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                        <shapes:Circle x:Name="wNE" Style="{DynamicResource peice}" Stroke="AliceBlue"        Canvas.Left="430"     Canvas.Top="215"     />
-                        <shapes:Circle x:Name="wEE" Style="{DynamicResource peice}" Stroke="AliceBlue"        Canvas.Left="440"     Canvas.Top="255"     />
-                        <shapes:Circle x:Name="wSE" Style="{DynamicResource peice}" Stroke="AliceBlue"        Canvas.Left="440"     Canvas.Top="295"     />
-                    </Canvas>
-
-                </Canvas>
-
-
-                <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-
-                <Canvas x:Name="Back_Bottom_Face" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
-
-                    <Canvas x:Name="BB_Left_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                        <shapes:Circle x:Name="bNW" Style="{DynamicResource peice}" Stroke="Navy"          Canvas.Left="275"     Canvas.Top="370"      />
-                        <shapes:Circle x:Name="bWW" Style="{DynamicResource peice}" Stroke="Navy"          Canvas.Left="315"     Canvas.Top="368"      />
-                        <shapes:Circle x:Name="bSW" Style="{DynamicResource peice}" Stroke="Navy"          Canvas.Left="305"     Canvas.Top="400"      />
-                    </Canvas>
-
-                    <Canvas x:Name="BB_Middle_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                        <shapes:Circle x:Name="bNN" Style="{DynamicResource peice}" Stroke="blue"          Canvas.Left="341"     Canvas.Top="350"      />
-                        <shapes:Circle x:Name="bMM" Style="{DynamicResource peice}" Stroke="blue"          Canvas.Left="340"     Canvas.Top="385"      />
-                        <shapes:Circle x:Name="bSS" Style="{DynamicResource peice}" Stroke="blue"          Canvas.Left="340"     Canvas.Top="417"      />
-                    </Canvas>
-
-                    <Canvas x:Name="BB_Right_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                        <shapes:Circle x:Name="bNE" Style="{DynamicResource peice}" Stroke="LightBlue"     Canvas.Left="372"     Canvas.Top="368"      />
-                        <shapes:Circle x:Name="bEE" Style="{DynamicResource peice}" Stroke="LightBlue"     Canvas.Left="375"     Canvas.Top="400"      />
-                        <shapes:Circle x:Name="bSE" Style="{DynamicResource peice}" Stroke="LightBlue"     Canvas.Left="408"     Canvas.Top="373"      />
-                    </Canvas>
-                </Canvas>
-
-
-
-
-
-
-
-
-                <Canvas Visibility="Collapsed" x:Name="Track_Top_Inner" Canvas.Left="351" Canvas.Top="176" RenderTransformOrigin="0.5,0.5">
+                <Canvas Visibility="Collapsed" x:Name="Track_Top_Inner" Canvas.Left="222" Canvas.Top="159" RenderTransformOrigin="0.5,0.5" d:IsLocked="True">
                     <Canvas.RenderTransform>
                         <TransformGroup>
-                            <RotateTransform Angle="239"/>
+                            <RotateTransform Angle="239" CenterX="0" CenterY="0" />
                         </TransformGroup>
                     </Canvas.RenderTransform>
 
-
                     <Canvas x:Name="Track_TopInner_BottomLeft">
+
                         <Path  x:Name="Path_TopInner_A1" Fill="Transparent" Stroke="GreenYellow">
                             <Path.Data>
-                                <PathGeometry Figures="M4.878838,97.59332 C-53,100 -80.5,55.5 -80.5,55.5"/>
+                                <PathGeometry Figures="M5,97 C-53,100 -80.5,55.5 -80.5,55.5"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_TopInner_A2" Fill="Transparent" Stroke="Purple">
                             <Path.Data>
-                                <PathGeometry Figures="M-31.666664,92.45834 C-84.97917,75.16667 -96.43726,22.499985 -96.5,22.5"/>
+                                <PathGeometry Figures="M-32,92 C-85,75.167 -96.5,22.5 -97,21"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_TopInner_A3" Fill="Transparent" Stroke="Red">
                             <Path.Data>
-                                <PathGeometry Figures="M-60.01259,77.375 C-106.499725,41.75 -99.03098,-10.500008 -99.09372,-10.5"/>
+                                <PathGeometry Figures="M-60,77 C-106.5,41.75 -99,-10.5 -99.5,-10.5"/>
                             </Path.Data>
                         </Path>
                     </Canvas>
 
 
                     <Canvas x:Name="Track_TopInner_TopLeft">
+
                         <Path x:Name="Path_TopInner_B1" Fill="Transparent" Stroke="Red">
                             <Path.Data>
-                                <PathGeometry Figures="M-80.580536,56.95833 C-133.15788,-24.375 -59.459923,-80.50001 -59.522663,-80.5"/>
+                                <PathGeometry Figures="M-80.5,55.5 C-133.16,-24.375 -59.5,-80.5 -60,-81"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_TopInner_B2" Fill="Transparent" Stroke="Maroon">
                             <Path.Data>
-                                <PathGeometry Figures="M-97,21 C-113,-70 -36,-94.5 -32,-97.5"/>
+                                <PathGeometry Figures="M-97,21 C-113,-70 -36,-94.5 -32,-97"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_TopInner_B3" Fill="Transparent" Stroke="Green">
                             <Path.Data>
-                                <PathGeometry Figures="M-99.5,-10.136765 C-84,-107.85339 3.812737,-101.412636 3.75,-101.41262"/>
+                                <PathGeometry Figures="M-99.5,-10.5 C-84,-108 3.8,-101.4 5,-101.5"/>
                             </Path.Data>
                         </Path>
                     </Canvas>
@@ -261,168 +339,174 @@
 
                         <Path x:Name="Path_TopInner_C1" Fill="Transparent" Stroke="Cyan">
                             <Path.Data>
-                                <PathGeometry Figures="M-61.5,-81.07675 C-15.500336,-114.576614 35.896515,-94.5764 35.83377,-94.57639"/>
+                                <PathGeometry Figures="M-60,-81 C-15.5,-114.6 36,-96 39,-94"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_TopInner_C2" Fill="Transparent" Stroke="DarkGoldenrod">
                             <Path.Data>
-                                <PathGeometry Figures="M-32.5,-96.5182 C30.667114,-114.85134 65.729294,-76.684456 65.666565,-76.68445"/>
+                                <PathGeometry Figures="M-32,-97 C30.67,-115 66,-77 67,-75.5"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_TopInner_C3" Fill="Transparent" Stroke="Cyan">
                             <Path.Data>
-                                <PathGeometry Figures="M4.5,-101.5 C71.66699,-94.333 88.85474,-44.33301 88.79199,-44.333"/>
+                                <PathGeometry Figures="M5,-101.5 C72,-94 89,-44 90,-46"/>
                             </Path.Data>
                         </Path>
 
                     </Canvas>
 
                     <Canvas x:Name="Track_TopInner_BottomRight">
+
                         <Path x:Name="Path_TopInner_D1" Fill="Transparent" Stroke="OrangeRed">
                             <Path.Data>
-                                <PathGeometry Figures="M4.5,97.000336 C116.504,84.66701 131.504,-50.333 39,-93.5"/>
+                                <PathGeometry Figures="M39,-94 C152.375,-30.5 87.375,99.5 5,97"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_TopInner_D2" Fill="Transparent" Stroke="DarkViolet">
                             <Path.Data>
-                                <PathGeometry Figures="M66.42801,-75.5 C146.428,0.167 71.42801,125.16701 -32.5,92.4375"/>
+                                <PathGeometry Figures="M67,-75.5 C146.5,0 71.5,125 -32,92"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_TopInner_D3" Fill="Transparent" Stroke="Blue">
                             <Path.Data>
-                                <PathGeometry Figures="M85.398285,-51.5 C128.23161,19.542 52.583008,146.18216 -59.5,78.68182"/>
+                                <PathGeometry Figures="M90,-46 C128,19 53,146 -60,77"/>
                             </Path.Data>
                         </Path>
                     </Canvas>
 
                 </Canvas>
 
+                <!--              _ ___ __   ___
+                                 |_) | /__|_| | 
+                                 | \_|_\_|| | |           -->
 
+                <Canvas Visibility="Collapsed" x:Name="Track_Right_Inner" Canvas.Left="280" Canvas.Top="262" RenderTransformOrigin="0.5,0.5" d:IsLocked="True">
 
+                    <Canvas  x:Name="Track_RightInner_BottomLeft">
 
-
-                <Canvas x:Name="Track_Right_Inner" Canvas.Left="410" Canvas.Top="282" RenderTransformOrigin="0.5,0.5">
-
-                    <Canvas x:Name="Track_RightInner_BottomLeft">
-                        <Path x:Name="Path_RightInner_A1" Fill="Transparent" Stroke="GreenYellow">
+                        <Path x:Name="Path_RightInner_A1" Fill="Transparent" Stroke="Cyan">
                             <Path.Data>
-                                <PathGeometry Figures="M4.878838,97.59332 C-53,100 -80.5,55.5 -80.5,55.5"/>
+                                <PathGeometry Figures="M5,97 C-53,100 -80.5,55.5 -80.5,55.5"/>
                             </Path.Data>
                         </Path>
-                        <Path x:Name="Path_RightInner_A2" Fill="Transparent" Stroke="Purple">
+                        <Path x:Name="Path_RightInner_A2" Fill="Transparent" Stroke="White">
                             <Path.Data>
-                                <PathGeometry Figures="M-31.666664,92.45834 C-84.97917,75.16667 -96.43726,22.499985 -96.5,22.5"/>
+                                <PathGeometry Figures="M-32,92 C-85,75.167 -96.5,22.5 -97,21"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_RightInner_A3" Fill="Transparent" Stroke="Red">
                             <Path.Data>
-                                <PathGeometry Figures="M-60.01259,77.375 C-106.499725,41.75 -99.03098,-10.500008 -99.09372,-10.5"/>
+                                <PathGeometry Figures="M-60,77 C-106.5,41.75 -99,-10.5 -99.5,-10.5"/>
                             </Path.Data>
                         </Path>
                     </Canvas>
 
 
                     <Canvas x:Name="Track_RightInner_TopLeft">
+
                         <Path x:Name="Path_RightInner_B1" Fill="Transparent" Stroke="Red">
                             <Path.Data>
-                                <PathGeometry Figures="M-80.580536,56.95833 C-133.15788,-24.375 -59.459923,-80.50001 -59.522663,-80.5"/>
+                                <PathGeometry Figures="M-80.5,55.5 C-133.16,-24.375 -59.5,-80.5 -60,-81"/>
                             </Path.Data>
                         </Path>
-                        <Path x:Name="Path_RightInner_B2" Fill="Transparent" Stroke="Maroon">
+                        <Path  x:Name="Path_RightInner_B2" Fill="Transparent" Stroke="GreenYellow">
                             <Path.Data>
-                                <PathGeometry Figures="M-97,21 C-113,-70 -36,-94.5 -32,-97.5"/>
+                                <PathGeometry Figures="M-97,21 C-113,-70 -36,-94.5 -32,-97"/>
                             </Path.Data>
                         </Path>
-                        <Path x:Name="Path_RightInner_B3" Fill="Transparent" Stroke="Green">
+                        <Path x:Name="Path_RightInner_B3" Fill="Transparent" Stroke="Red">
                             <Path.Data>
-                                <PathGeometry Figures="M-99.5,-10.136765 C-84,-107.85339 3.812737,-101.412636 3.75,-101.41262"/>
+                                <PathGeometry Figures="M-99.5,-10.5 C-84,-108 3.8,-101.4 5,-101.5"/>
                             </Path.Data>
                         </Path>
                     </Canvas>
 
-                    <Canvas x:Name="Track_RightInner_TopRight"  Canvas.Left="0" Canvas.Top="0">
+                    <Canvas x:Name="Track_RightInner_TopRight">
 
-                        <Path x:Name="Path_RightInner_C1" Fill="Transparent" Stroke="Green">
+                        <Path x:Name="Path_RightInner_C1" Fill="Transparent" Stroke="Cyan">
                             <Path.Data>
-                                <PathGeometry Figures="M-61.5,-81.07675 C-15.500336,-114.576614 35.896515,-94.5764 35.83377,-94.57639"/>
+                                <PathGeometry Figures="M-60,-81 C-15.5,-114.6 36,-96 39,-94"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_RightInner_C2" Fill="Transparent" Stroke="DarkGoldenrod">
                             <Path.Data>
-                                <PathGeometry Figures="M-32.5,-96.5182 C30.667114,-114.85134 65.729294,-76.684456 65.666565,-76.68445"/>
+                                <PathGeometry Figures="M-32,-97 C30.67,-115 66,-77 67,-75.5"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_RightInner_C3" Fill="Transparent" Stroke="Cyan">
                             <Path.Data>
-                                <PathGeometry Figures="M4.5,-101.5 C71.66699,-94.333 88.85474,-44.33301 88.79199,-44.333"/>
+                                <PathGeometry Figures="M5,-101.5 C72,-94 89,-44 90,-46"/>
                             </Path.Data>
                         </Path>
 
                     </Canvas>
 
                     <Canvas x:Name="Track_RightInner_BottomRight">
+
                         <Path x:Name="Path_RightInner_D1" Fill="Transparent" Stroke="OrangeRed">
                             <Path.Data>
-                                <PathGeometry Figures="M4.5,97.000336 C116.504,84.66701 131.504,-50.333 39,-93.5"/>
+                                <PathGeometry Figures="M39,-94 C152.375,-30.5 87.375,99.5 5,97"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_RightInner_D2" Fill="Transparent" Stroke="DarkViolet">
                             <Path.Data>
-                                <PathGeometry Figures="M66.42801,-75.5 C146.428,0.167 71.42801,125.16701 -32.5,92.4375"/>
+                                <PathGeometry Figures="M67,-75.5 C146.5,0 71.5,125 -32,92"/>
                             </Path.Data>
                         </Path>
-                        <Path x:Name="Path_RightInner_D3" Fill="Transparent" Stroke="Blue">
+                        <Path x:Name="Path_RightInner_D3" Fill="Transparent" Stroke="GreenYellow">
                             <Path.Data>
-                                <PathGeometry Figures="M85.398285,-51.5 C128.23161,19.542 52.583008,146.18216 -59.5,78.68182"/>
+                                <PathGeometry Figures="M90,-46 C128,19 53,146 -60,77"/>
                             </Path.Data>
                         </Path>
                     </Canvas>
 
                 </Canvas>
 
+                <!--                 __ _____
+                                 |  |_ |_  | 
+                                 |__|__|   |            -->
 
-
-
-                <Canvas Visibility="Collapsed" x:Name="Track_Left_Inner" Canvas.Left="290" Canvas.Top="282" RenderTransformOrigin="0.5,0.5">
+                <Canvas Visibility="Collapsed" x:Name="Track_Left_Inner" Canvas.Left="159" Canvas.Top="259" RenderTransformOrigin="0.5,0.5" d:IsLocked="True">
                     <Canvas.RenderTransform>
                         <TransformGroup>
-                            <RotateTransform Angle="120"/>
+                            <RotateTransform Angle="120"  CenterX="0" CenterY="0"/>
                         </TransformGroup>
                     </Canvas.RenderTransform>
 
                     <Canvas x:Name="Track_LeftInner_BottomLeft">
+
                         <Path  x:Name="Path_LeftInner_A1" Fill="Transparent" Stroke="GreenYellow">
                             <Path.Data>
-                                <PathGeometry Figures="M4.878838,97.59332 C-53,100 -80.5,55.5 -80.5,55.5"/>
+                                <PathGeometry Figures="M5,97 C-53,100 -80.5,55.5 -80.5,55.5"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_LeftInner_A2" Fill="Transparent" Stroke="Purple">
                             <Path.Data>
-                                <PathGeometry Figures="M-31.666664,92.45834 C-84.97917,75.16667 -96.43726,22.499985 -96.5,22.5"/>
+                                <PathGeometry Figures="M-32,92 C-85,75.167 -96.5,22.5 -97,21"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_LeftInner_A3" Fill="Transparent" Stroke="Red">
                             <Path.Data>
-                                <PathGeometry Figures="M-60.01259,77.375 C-106.499725,41.75 -99.03098,-10.500008 -99.09372,-10.5"/>
+                                <PathGeometry Figures="M-60,77 C-106.5,41.75 -99,-10.5 -99.5,-10.5"/>
                             </Path.Data>
                         </Path>
                     </Canvas>
 
-
                     <Canvas x:Name="Track_LeftInner_TopLeft">
+
                         <Path x:Name="Path_LeftInner_B1" Fill="Transparent" Stroke="Red">
                             <Path.Data>
-                                <PathGeometry Figures="M-80.580536,56.95833 C-133.15788,-24.375 -59.459923,-80.50001 -59.522663,-80.5"/>
+                                <PathGeometry Figures="M-80.5,55.5 C-133.16,-24.375 -59.5,-80.5 -60,-81"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_LeftInner_B2" Fill="Transparent" Stroke="Maroon">
                             <Path.Data>
-                                <PathGeometry Figures="M-97,21 C-113,-70 -36,-94.5 -32,-97.5"/>
+                                <PathGeometry Figures="M-97,21 C-113,-70 -36,-94.5 -32,-97"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_LeftInner_B3" Fill="Transparent" Stroke="Green">
                             <Path.Data>
-                                <PathGeometry Figures="M-99.5,-10.136765 C-84,-107.85339 3.812737,-101.412636 3.75,-101.41262"/>
+                                <PathGeometry Figures="M-99.5,-10.5 C-84,-108 3.8,-101.4 5,-101.5"/>
                             </Path.Data>
                         </Path>
                     </Canvas>
@@ -431,135 +515,623 @@
 
                         <Path x:Name="Path_LeftInner_C1" Fill="Transparent" Stroke="Green">
                             <Path.Data>
-                                <PathGeometry Figures="M-61.5,-81.07675 C-15.500336,-114.576614 35.896515,-94.5764 35.83377,-94.57639"/>
+                                <PathGeometry Figures="M-60,-81 C-15.5,-114.6 36,-96 39,-94"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_LeftInner_C2" Fill="Transparent" Stroke="DarkGoldenrod">
                             <Path.Data>
-                                <PathGeometry Figures="M-32.5,-96.5182 C30.667114,-114.85134 65.729294,-76.684456 65.666565,-76.68445"/>
+                                <PathGeometry Figures="M-32,-97 C30.67,-115 66,-77 67,-75.5"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_LeftInner_C3" Fill="Transparent" Stroke="Cyan">
                             <Path.Data>
-                                <PathGeometry Figures="M4.5,-101.5 C71.66699,-94.333 88.85474,-44.33301 88.79199,-44.333"/>
+                                <PathGeometry Figures="M5,-101.5 C72,-94 89,-44 90,-46"/>
                             </Path.Data>
                         </Path>
 
                     </Canvas>
 
                     <Canvas x:Name="Track_LeftInner_BottomRight">
+
                         <Path x:Name="Path_LeftInner_D1" Fill="Transparent" Stroke="OrangeRed">
                             <Path.Data>
-                                <PathGeometry Figures="M4.5,97.000336 C116.504,84.66701 131.504,-50.333 39,-93.5"/>
+                                <PathGeometry Figures="M39,-94 C152.375,-30.5 87.375,99.5 5,97"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_LeftInner_D2" Fill="Transparent" Stroke="DarkViolet">
                             <Path.Data>
-                                <PathGeometry Figures="M66.42801,-75.5 C146.428,0.167 71.42801,125.16701 -32.5,92.4375"/>
+                                <PathGeometry Figures="M67,-75.5 C146.5,0 71.5,125 -32,92"/>
                             </Path.Data>
                         </Path>
                         <Path x:Name="Path_LeftInner_D3" Fill="Transparent" Stroke="Blue">
                             <Path.Data>
-                                <PathGeometry Figures="M85.398285,-51.5 C128.23161,19.542 52.583008,146.18216 -59.5,78.68182"/>
+                                <PathGeometry Figures="M90,-46 C128,19 53,146 -60,77"/>
                             </Path.Data>
                         </Path>
                     </Canvas>
 
                 </Canvas>
 
+                <!--
+                     __ __ _ __  __  _   ___ 
+                    |  V  | | _\| _\| | | __|
+                    | \_/ | | v | v | |_| _| 
+                    |_| |_|_|__/|__/|___|___|
+                -->
 
+                <!--             ___ _  _ 
+                                  | / \|_)
+                                  | \_/|            -->
 
+                <Canvas Visibility="Collapsed" x:Name="Track_Top_Middle" Canvas.Left="222" Canvas.Top="159" RenderTransformOrigin="0.5,0.5" d:IsLocked="True">
+                    <Canvas.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="239" CenterX="0" CenterY="0" />
+                        </TransformGroup>
+                    </Canvas.RenderTransform>
 
-
-
-
-
-
-
-                <Canvas Visibility="Collapsed" x:Name="Track_Inner" Canvas.Left="102" Canvas.Top="102" RenderTransformOrigin="0.5,0.5">
-
-                    <Canvas x:Name="Track_BottomLeft">
-                        <Path  Fill="Transparent" Stroke="GreenYellow">
+                    <Canvas x:Name="Track_TopMiddle_BottomLeft">
+                        <Path x:Name="Path_TopMiddle_A1" Fill="Transparent" Stroke="Cyan">
                             <Path.Data>
-                                <PathGeometry Figures="M4.878838,97.59332 C-53,100 -80.5,55.5 -80.5,55.5"/>
+                                <PathGeometry Figures="M-24,125.2 C-98,110.5 -120.38,45.96 -120.38,45.96" />
                             </Path.Data>
                         </Path>
-                        <Path Fill="Transparent" Stroke="Purple">
+                        <Path Visibility="Collapsed" x:Name="Path_TopMiddle_A2" Fill="Transparent" Stroke="White">
                             <Path.Data>
-                                <PathGeometry Figures="M-31.666664,92.45834 C-84.97917,75.16667 -96.43726,22.499985 -96.5,22.5"/>
+                                <PathGeometry Figures="M-60,112.7 C-115.67,83.67 -128,28.5 -129,7.75" />
                             </Path.Data>
                         </Path>
-                        <Path Fill="Transparent" Stroke="Red">
+                        <Path Visibility="Collapsed" x:Name="Path_TopMiddle_A3" Fill="Transparent" Stroke="Red">
                             <Path.Data>
-                                <PathGeometry Figures="M-60.01259,77.375 C-106.499725,41.75 -99.03098,-10.500008 -99.09372,-10.5"/>
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-
-
-                    <Canvas x:Name="Track_TopLeft">
-                        <Path Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-80.580536,56.95833 C-133.15788,-24.375 -59.459923,-80.50001 -59.522663,-80.5"/>
-                            </Path.Data>
-                        </Path>
-                        <Path Fill="Transparent" Stroke="Maroon">
-                            <Path.Data>
-                                <PathGeometry Figures="M-97,21 C-113,-70 -36,-94.5 -32,-97.5"/>
-                            </Path.Data>
-                        </Path>
-                        <Path Fill="Transparent" Stroke="Green">
-                            <Path.Data>
-                                <PathGeometry Figures="M-99.5,-10.136765 C-84,-107.85339 3.812737,-101.412636 3.75,-101.41262"/>
+                                <PathGeometry Figures="M-88.35,92.6 C-125.75,58.5 -135.42,7.22 -127,-28" />
                             </Path.Data>
                         </Path>
                     </Canvas>
-
-                    <Canvas x:Name="Track_TopRight"  Canvas.Left="0" Canvas.Top="0">
-
-                        <Path Fill="Transparent" Stroke="Green">
+                    <Canvas x:Name="Track_TopMiddle_TopLeft">
+                        <Path x:Name="Path_TopMiddle_B1" Fill="Transparent" Stroke="Red">
                             <Path.Data>
-                                <PathGeometry Figures="M-61.5,-81.07675 C-15.500336,-114.576614 35.896515,-94.5764 35.83377,-94.57639"/>
+                                <PathGeometry Figures="M-120.33,45.71 C-140.25,-3 -128,-60.5 -88,-96.5" />
                             </Path.Data>
                         </Path>
-                        <Path Fill="Transparent" Stroke="DarkGoldenrod">
+                        <Path Visibility="Collapsed" x:Name="Path_TopMiddle_B2" Fill="Transparent" Stroke="GreenYellow">
                             <Path.Data>
-                                <PathGeometry Figures="M-32.5,-96.5182 C30.667114,-114.85134 65.729294,-76.684456 65.666565,-76.68445"/>
+                                <PathGeometry Figures="M-129,7.75 C-133,-41.33 -106.5,-93 -60,-117" />
                             </Path.Data>
                         </Path>
-                        <Path Fill="Transparent" Stroke="Cyan">
+                        <Path Visibility="Collapsed" x:Name="Path_TopMiddle_B3" Fill="Transparent" Stroke="Red">
                             <Path.Data>
-                                <PathGeometry Figures="M4.5,-101.5 C71.66699,-94.333 88.85474,-44.33301 88.79199,-44.333"/>
+                                <PathGeometry Figures="M-127,-28 C-118.46,-70.21 -85.54,-116.48 -24,-129.31" />
                             </Path.Data>
                         </Path>
-
                     </Canvas>
-
-                    <Canvas x:Name="Track_BottomRight">
-                        <Path Fill="Transparent" Stroke="OrangeRed">
+                    <Canvas x:Name="Track_TopMiddle_TopRight">
+                        <Path x:Name="Path_TopMiddle_C1" Fill="Transparent" Stroke="Cyan">
                             <Path.Data>
-                                <PathGeometry Figures="M4.5,97.000336 C116.504,84.66701 131.504,-50.333 39,-93.5"/>
+                                <PathGeometry Figures="M-88,-96.5 C-58,-125.12 -14.75,-139.75 37,-126.5" />
                             </Path.Data>
                         </Path>
-                        <Path Fill="Transparent" Stroke="DarkViolet">
+                        <Path Visibility="Collapsed" x:Name="Path_TopMiddle_C2" Fill="Transparent" Stroke="DarkGoldenrod">
                             <Path.Data>
-                                <PathGeometry Figures="M66.42801,-75.5 C146.428,0.167 71.42801,125.16701 -32.5,92.4375"/>
+                                <PathGeometry Figures="M-60,-117 C-25.5,-135.75 28.62,-138 69,-111.5" />
                             </Path.Data>
                         </Path>
-                        <Path  Fill="Transparent" Stroke="Blue">
+                        <Path Visibility="Collapsed" x:Name="Path_TopMiddle_C3" Fill="Transparent" Stroke="Cyan">
                             <Path.Data>
-                                <PathGeometry Figures="M85.398285,-51.5 C128.23161,19.542 52.583008,146.18216 -59.5,78.68182"/>
+                                <PathGeometry Figures="M-24,-129.31 C23.5,-139.33 72,-118 98.5,-85.9" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                    <Canvas x:Name="Track_TopMiddle_BottomRight">
+                        <Path x:Name="Path_TopMiddle_D1" Fill="Transparent" Stroke="OrangeRed">
+                            <Path.Data>
+                                <PathGeometry Figures="M37,-126.5 C195.5,-71 134,150.33 -24,125.2" />
+                            </Path.Data>
+                        </Path>
+                        <Path Visibility="Collapsed" x:Name="Path_TopMiddle_D2" Fill="Transparent" Stroke="DarkViolet">
+                            <Path.Data>
+                                <PathGeometry Figures="M69,-111.5 C207,-13 87,182 -60,112.7" />
+                            </Path.Data>
+                        </Path>
+                        <Path Visibility="Collapsed" x:Name="Path_TopMiddle_D3" Fill="Transparent" Stroke="GreenYellow">
+                            <Path.Data>
+                                <PathGeometry Figures="M98.5,-85.9 C197,32 47,202 -88.35,92.6" />
                             </Path.Data>
                         </Path>
                     </Canvas>
 
                 </Canvas>
 
+                <!--              _ ___ __   ___
+                                 |_) | /__|_| | 
+                                 | \_|_\_|| | |           -->
 
+                <Canvas  Visibility="Collapsed" x:Name="Track_Right_Middle" Canvas.Left="280" Canvas.Top="262" RenderTransformOrigin="0.5,0.5" d:IsLocked="True">
 
+                    <Canvas x:Name="Track_RightMiddle_BottomLeft">
+                        <Path x:Name="Path_RightMiddle_A1" Fill="Transparent" Stroke="Cyan">
+                            <Path.Data>
+                                <PathGeometry Figures="M-24,125.2 C-98,110.5 -120.38,45.96 -120.38,45.96" />
+                            </Path.Data>
+                        </Path>
+                        <Path Visibility="Collapsed" x:Name="Path_RightMiddle_A2" Fill="Transparent" Stroke="White">
+                            <Path.Data>
+                                <PathGeometry Figures="M-60,112.7 C-115.67,83.67 -128,28.5 -129,7.75" />
+                            </Path.Data>
+                        </Path>
+                        <Path Visibility="Collapsed" x:Name="Path_RightMiddle_A3" Fill="Transparent" Stroke="Cyan">
+                            <Path.Data>
+                                <PathGeometry Figures="M-88.35,92.6 C-125.75,58.5 -135.42,7.22 -127,-28" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                    <Canvas x:Name="Track_RightMiddle_TopLeft">
+                        <Path x:Name="Path_RightMiddle_B1" Fill="Transparent" Stroke="Red">
+                            <Path.Data>
+                                <PathGeometry Figures="M-120.33,45.71 C-140.25,-3 -128,-60.5 -88,-96.5" />
+                            </Path.Data>
+                        </Path>
+                        <Path Visibility="Collapsed" x:Name="Path_RightMiddle_B2" Fill="Transparent" Stroke="GreenYellow">
+                            <Path.Data>
+                                <PathGeometry Figures="M-129,7.75 C-133,-41.33 -106.5,-93 -60,-117" />
+                            </Path.Data>
+                        </Path>
+                        <Path Visibility="Collapsed" x:Name="Path_RightMiddle_B3" Fill="Transparent" Stroke="Red">
+                            <Path.Data>
+                                <PathGeometry Figures="M-127,-28 C-118.46,-70.21 -85.54,-116.48 -24,-129.31" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                    <Canvas x:Name="Track_RightMiddle_TopRight">
+                        <Path x:Name="Path_RightMiddle_C1" Fill="Transparent" Stroke="Cyan">
+                            <Path.Data>
+                                <PathGeometry Figures="M-88,-96.5 C-58,-125.12 -14.75,-139.75 37,-126.5" />
+                            </Path.Data>
+                        </Path>
+                        <Path Visibility="Collapsed" x:Name="Path_RightMiddle_C2" Fill="Transparent" Stroke="DarkGoldenrod">
+                            <Path.Data>
+                                <PathGeometry Figures="M-60,-117 C-25.5,-135.75 28.62,-138 69,-111.5" />
+                            </Path.Data>
+                        </Path>
+                        <Path Visibility="Collapsed" x:Name="Path_RightMiddle_C3" Fill="Transparent" Stroke="Cyan">
+                            <Path.Data>
+                                <PathGeometry Figures="M-24,-129.31 C23.5,-139.33 72,-118 98.5,-85.9" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                    <Canvas x:Name="Track_RightMiddle_BottomRight">
+                        <Path x:Name="Path_RightMiddle_D1" Fill="Transparent" Stroke="OrangeRed">
+                            <Path.Data>
+                                <PathGeometry Figures="M37,-126.5 C195.5,-71 134,150.33 -24,125.2" />
+                            </Path.Data>
+                        </Path>
+                        <Path Visibility="Collapsed" x:Name="Path_RightMiddle_D2" Fill="Transparent" Stroke="DarkViolet">
+                            <Path.Data>
+                                <PathGeometry Figures="M69,-111.5 C207,-13 87,182 -60,112.7" />
+                            </Path.Data>
+                        </Path>
+                        <Path Visibility="Collapsed" x:Name="Path_RightMiddle_D3" Fill="Transparent" Stroke="GreenYellow">
+                            <Path.Data>
+                                <PathGeometry Figures="M98.5,-85.9 C197,32 47,202 -88.35,92.6" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
 
+                </Canvas>
+
+                <!--                 __ _____
+                                 |  |_ |_  | 
+                                 |__|__|   |            -->
+
+                <Canvas Visibility="Collapsed" x:Name="Track_Left_Middle" Canvas.Left="158" Canvas.Top="259" RenderTransformOrigin="0.5,0.5" d:IsLocked="True">
+                    <Canvas.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="120"  CenterX="0" CenterY="0"/>
+                        </TransformGroup>
+                    </Canvas.RenderTransform>
+
+                    <Canvas x:Name="Track_LeftMiddle_BottomLeft">
+                        <Path x:Name="Path_LeftMiddle_A1" Fill="Transparent" Stroke="Cyan">
+                            <Path.Data>
+                                <PathGeometry Figures="M-24,125.2 C-98,110.5 -120.38,45.96 -120.38,45.96" />
+                            </Path.Data>
+                        </Path>
+                        <Path Visibility="Collapsed" x:Name="Path_LeftMiddle_A2" Fill="Transparent" Stroke="White">
+                            <Path.Data>
+                                <PathGeometry Figures="M-60,112.7 C-115.67,83.67 -128,28.5 -129,7.75" />
+                            </Path.Data>
+                        </Path>
+                        <Path Visibility="Collapsed" x:Name="Path_LeftMiddle_A3" Fill="Transparent" Stroke="Red">
+                            <Path.Data>
+                                <PathGeometry Figures="M-88.35,92.6 C-125.75,58.5 -135.42,7.22 -127,-28" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                    <Canvas x:Name="Track_LeftMiddle_LeftLeft">
+                        <Path x:Name="Path_LeftMiddle_B1" Fill="Transparent" Stroke="Red">
+                            <Path.Data>
+                                <PathGeometry Figures="M-120.33,45.71 C-140.25,-3 -128,-60.5 -88,-96.5" />
+                            </Path.Data>
+                        </Path>
+                        <Path Visibility="Collapsed" x:Name="Path_LeftMiddle_B2" Fill="Transparent" Stroke="GreenYellow">
+                            <Path.Data>
+                                <PathGeometry Figures="M-129,7.75 C-133,-41.33 -106.5,-93 -60,-117" />
+                            </Path.Data>
+                        </Path>
+                        <Path Visibility="Collapsed" x:Name="Path_LeftMiddle_B3" Fill="Transparent" Stroke="Red">
+                            <Path.Data>
+                                <PathGeometry Figures="M-127,-28 C-118.46,-70.21 -85.54,-116.48 -24,-129.31" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                    <Canvas x:Name="Track_LeftMiddle_LeftRight">
+                        <Path x:Name="Path_LeftMiddle_C1" Fill="Transparent" Stroke="Cyan">
+                            <Path.Data>
+                                <PathGeometry Figures="M-88,-96.5 C-58,-125.12 -14.75,-139.75 37,-126.5" />
+                            </Path.Data>
+                        </Path>
+                        <Path Visibility="Collapsed" x:Name="Path_LeftMiddle_C2" Fill="Transparent" Stroke="DarkGoldenrod">
+                            <Path.Data>
+                                <PathGeometry Figures="M-60,-117 C-25.5,-135.75 28.62,-138 69,-111.5" />
+                            </Path.Data>
+                        </Path>
+                        <Path Visibility="Collapsed" x:Name="Path_LeftMiddle_C3" Fill="Transparent" Stroke="Cyan">
+                            <Path.Data>
+                                <PathGeometry Figures="M-24,-129.31 C23.5,-139.33 72,-118 98.5,-85.9" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                    <Canvas x:Name="Track_LeftMiddle_BottomRight">
+                        <Path x:Name="Path_LeftMiddle_D1" Fill="Transparent" Stroke="OrangeRed">
+                            <Path.Data>
+                                <PathGeometry Figures="M37,-126.5 C195.5,-71 134,150.33 -24,125.2" />
+                            </Path.Data>
+                        </Path>
+                        <Path Visibility="Collapsed" x:Name="Path_LeftMiddle_D2" Fill="Transparent" Stroke="DarkViolet">
+                            <Path.Data>
+                                <PathGeometry Figures="M69,-111.5 C207,-13 87,182 -60,112.7" />
+                            </Path.Data>
+                        </Path>
+                        <Path Visibility="Collapsed" x:Name="Path_LeftMiddle_D3" Fill="Transparent" Stroke="GreenYellow">
+                            <Path.Data>
+                                <PathGeometry Figures="M98.5,-85.9 C197,32 47,202 -88.35,92.6" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+
+                </Canvas>
+
+                <!--
+                      __  _  _ _____ ___ ___ 
+                     /__\| || |_   _| __| _ \
+                    | \/ | \/ | | | | _|| v /
+                     \__/ \__/  |_| |___|_|_\
+                -->
+
+                <!--             ___ _  _ 
+                                  | / \|_)
+                                  | \_/|            -->
+
+                <Canvas Visibility="Collapsed" x:Name="Track_Top_Outer" Canvas.Left="222" Canvas.Top="159" RenderTransformOrigin="0.5,0.5" d:IsLocked="True">
+                    <Canvas.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="240" CenterX="0" CenterY="0" />
+                        </TransformGroup>
+                    </Canvas.RenderTransform>
+
+                    <Canvas x:Name="Track_TopOuter_BottomLeft">
+                        <Path x:Name="Path_TopOuter_A1" Fill="Transparent" Stroke="White">
+                            <Path.Data>
+                                <PathGeometry Figures="M-60,145.875 C-109.87,126.958 -150.927,74.667 -157.329,24.25" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_TopOuter_A2" Fill="Transparent" Stroke="Red">
+                            <Path.Data>
+                                <PathGeometry Figures="M-96.234,125.25 C-143.667,88.25 -163.75,36 -158.7,-18.12" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_TopOuter_A3" Fill="Transparent" Stroke="Cyan">
+                            <Path.Data>
+                                <PathGeometry Figures="M-125,97.25 C-184.334,22 -149.344,-58 -149.34,-58" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+
+                    <Canvas x:Name="Track_TopOuter_TopLeft">
+                        <Path x:Name="Path_TopOuter_B1" Fill="Transparent" Stroke="Red">
+                            <Path.Data>
+                                <PathGeometry Figures="M-157.329,24.25 C-164.667,-23 -151.437,-67.974 -124.875,-101.275" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_TopOuter_B2" Fill="Transparent" Stroke="GreenYellow">
+                            <Path.Data>
+                                <PathGeometry Figures="M-158.7,-18.12 C-154.333,-63 -133,-100.5 -96,-129.25" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_TopOuter_B3" Fill="Transparent" Stroke="Red">
+                            <Path.Data>
+                                <PathGeometry Figures="M-149.34,-58 C-133,-99.249 -105,-130.375 -59.85,-149.9" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+
+                    <Canvas x:Name="Track_TopOuter_TopRight">
+                        <Path x:Name="Path_TopOuter_C1" Fill="Transparent" Stroke="Cyan">
+                            <Path.Data>
+                                <PathGeometry Figures="M-124.875,-101.275 C-95.167,-139.665 -40.49,-168.099 21.167,-160.2" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_TopOuter_C2" Fill="Transparent" Stroke="DarkGoldenrod">
+                            <Path.Data>
+                                <PathGeometry Figures="M-96,-129.25 C-56.125,-159.876 5.046,-173.021 60.4,-149.645" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_TopOuter_C3" Fill="Transparent" Stroke="Cyan">
+                            <Path.Data>
+                                <PathGeometry Figures="M-59.85,-149.9 C-11.125,-170.875 54.5,-163 97.3,-128.35" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+
+                    <Canvas x:Name="Track_TopOuter_BottomRight">
+                        <Path x:Name="Path_TopOuter_D1" Fill="Transparent" Stroke="OrangeRed">
+                            <Path.Data>
+                                <PathGeometry Figures="M21.167,-160.2 C277,-108 147,232 -60,145.875" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_TopOuter_D2" Fill="Transparent" Stroke="LightGray">
+                            <Path.Data>
+                                <PathGeometry Figures="M60.4,-149.645 C282,-48 99.75,262 -96.234,125.25" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_TopOuter_D3" Fill="Transparent" Stroke="GreenYellow">
+                            <Path.Data>
+                                <PathGeometry Figures="M97.3,-128.35 C274.667,7 50,284.333 -125,97.25" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+
+                </Canvas>
+
+                <!--              _ ___ __   ___
+                                 |_) | /__|_| | 
+                                 | \_|_\_|| | |           -->
+
+                <Canvas Visibility="Collapsed" x:Name="Track_Right_Outer" Canvas.Left="280" Canvas.Top="262" RenderTransformOrigin="0.5,0.5" d:IsLocked="True">
+
+                    <Canvas x:Name="Track_RightOuter_BottomLeft">
+                        <Path x:Name="Path_RightOuter_A1" Fill="Transparent" Stroke="White">
+                            <Path.Data>
+                                <PathGeometry Figures="M-60,145.875 C-109.87,126.958 -150.927,74.667 -157.329,24.25" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_RightOuter_A2" Fill="Transparent" Stroke="Red">
+                            <Path.Data>
+                                <PathGeometry Figures="M-96.234,125.25 C-143.667,88.25 -163.75,36 -158.7,-18.12" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_RightOuter_A3" Fill="Transparent" Stroke="Cyan">
+                            <Path.Data>
+                                <PathGeometry Figures="M-125,97.25 C-184.334,22 -149.344,-58 -149.34,-58" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+
+                    <Canvas x:Name="Track_RightOuter_TopLeft">
+                        <Path x:Name="Path_RightOuter_B1" Fill="Transparent" Stroke="Red">
+                            <Path.Data>
+                                <PathGeometry Figures="M-157.329,24.25 C-164.667,-23 -151.437,-67.974 -124.875,-101.275" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_RightOuter_B2" Fill="Transparent" Stroke="GreenYellow">
+                            <Path.Data>
+                                <PathGeometry Figures="M-158.7,-18.12 C-154.333,-63 -133,-100.5 -96,-129.25" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_RightOuter_B3" Fill="Transparent" Stroke="Red">
+                            <Path.Data>
+                                <PathGeometry Figures="M-149.34,-58 C-133,-99.249 -105,-130.375 -59.85,-149.9" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+
+                    <Canvas x:Name="Track_RightOuter_TopRight">
+                        <Path x:Name="Path_RightOuter_C1" Fill="Transparent" Stroke="Cyan">
+                            <Path.Data>
+                                <PathGeometry Figures="M-124.875,-101.275 C-95.167,-139.665 -40.49,-168.099 21.167,-160.2" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_RightOuter_C2" Fill="Transparent" Stroke="DarkGoldenrod">
+                            <Path.Data>
+                                <PathGeometry Figures="M-96,-129.25 C-56.125,-159.876 5.046,-173.021 60.4,-149.645" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_RightOuter_C3" Fill="Transparent" Stroke="Cyan">
+                            <Path.Data>
+                                <PathGeometry Figures="M-59.85,-149.9 C-11.125,-170.875 54.5,-163 97.3,-128.35" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+
+                    <Canvas x:Name="Track_RightOuter_BottomRight">
+                        <Path x:Name="Path_RightOuter_D1" Fill="Transparent" Stroke="OrangeRed">
+                            <Path.Data>
+                                <PathGeometry Figures="M21.167,-160.2 C277,-108 147,232 -60,145.875" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_RightOuter_D2" Fill="Transparent" Stroke="LightGray">
+                            <Path.Data>
+                                <PathGeometry Figures="M60.4,-149.645 C282,-48 99.75,262 -96.234,125.25" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_RightOuter_D3" Fill="Transparent" Stroke="GreenYellow">
+                            <Path.Data>
+                                <PathGeometry Figures="M97.3,-128.35 C274.667,7 50,284.333 -125,97.25" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+
+                </Canvas>
+
+                <!--                 __ _____
+                                 |  |_ |_  | 
+                                 |__|__|   |            -->
+
+                <Canvas Visibility="Collapsed" x:Name="Track_Left_Outer" Canvas.Left="158" Canvas.Top="259" RenderTransformOrigin="0.5,0.5" d:IsLocked="True">
+                    <Canvas.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="121"  CenterX="0" CenterY="0"/>
+                        </TransformGroup>
+                    </Canvas.RenderTransform>
+
+                    <Canvas x:Name="Track_LeftOuter_BottomLeft">
+                        <Path x:Name="Path_LeftOuter_A1" Fill="Transparent" Stroke="White">
+                            <Path.Data>
+                                <PathGeometry Figures="M-60,145.875 C-109.87,126.958 -150.927,74.667 -157.329,24.25" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_LeftOuter_A2" Fill="Transparent" Stroke="Red">
+                            <Path.Data>
+                                <PathGeometry Figures="M-96.234,125.25 C-143.667,88.25 -163.75,36 -158.7,-18.12" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_LeftOuter_A3" Fill="Transparent" Stroke="Cyan">
+                            <Path.Data>
+                                <PathGeometry Figures="M-125,97.25 C-184.334,22 -149.344,-58 -149.34,-58" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+
+                    <Canvas x:Name="Track_LeftOuter_TopLeft">
+                        <Path x:Name="Path_LeftOuter_B1" Fill="Transparent" Stroke="Red">
+                            <Path.Data>
+                                <PathGeometry Figures="M-157.329,24.25 C-164.667,-23 -151.437,-67.974 -124.875,-101.275" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_LeftOuter_B2" Fill="Transparent" Stroke="GreenYellow">
+                            <Path.Data>
+                                <PathGeometry Figures="M-158.7,-18.12 C-154.333,-63 -133,-100.5 -96,-129.25" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_LeftOuter_B3" Fill="Transparent" Stroke="Red">
+                            <Path.Data>
+                                <PathGeometry Figures="M-149.34,-58 C-133,-99.249 -105,-130.375 -59.85,-149.9" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+
+                    <Canvas x:Name="Track_LeftOuter_TopRight">
+                        <Path x:Name="Path_LeftOuter_C1" Fill="Transparent" Stroke="Cyan">
+                            <Path.Data>
+                                <PathGeometry Figures="M-124.875,-101.275 C-95.167,-139.665 -40.49,-168.099 21.167,-160.2" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_LeftOuter_C2" Fill="Transparent" Stroke="DarkGoldenrod">
+                            <Path.Data>
+                                <PathGeometry Figures="M-96,-129.25 C-56.125,-159.876 5.046,-173.021 60.4,-149.645" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_LeftOuter_C3" Fill="Transparent" Stroke="Cyan">
+                            <Path.Data>
+                                <PathGeometry Figures="M-59.85,-149.9 C-11.125,-170.875 54.5,-163 97.3,-128.35" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+
+                    <Canvas x:Name="Track_LeftOuter_BottomRight">
+                        <Path x:Name="Path_LeftOuter_D1" Fill="Transparent" Stroke="OrangeRed">
+                            <Path.Data>
+                                <PathGeometry Figures="M21.167,-160.2 C277,-108 147,232 -60,145.875" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_LeftOuter_D2" Fill="Transparent" Stroke="LightGray">
+                            <Path.Data>
+                                <PathGeometry Figures="M60.4,-149.645 C282,-48 99.75,262 -96.234,125.25" />
+                            </Path.Data>
+                        </Path>
+                        <Path x:Name="Path_LeftOuter_D3" Fill="Transparent" Stroke="GreenYellow">
+                            <Path.Data>
+                                <PathGeometry Figures="M97.3,-128.35 C274.667,7 50,284.333 -125,97.25" />
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+
+                </Canvas>
+
+                <!--
+                     ___ __   ______ 
+                    | __/  \ / _| __|
+                    | _| /\ | \_| _| 
+                    |_||_||_|\__|___|
+                -->
+
+                <Canvas x:Name="Track_Face_Yellow" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                </Canvas>
+
+                <Canvas x:Name="Track_Face_Green" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                </Canvas>
+
+                <Canvas x:Name="Track_Face_Orange" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                </Canvas>
+
+                <Canvas x:Name="Track_Face_Red" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                </Canvas>
+
+                <Canvas Visibility="Collapsed" x:Name="Track_Face_White" Style="{DynamicResource canvasGroup}" Margin="239,203.2,0,0">
+
+                    <Path x:Name="Path_Face_White_1"  Style="{DynamicResource animationPathStyle}" Stretch="Fill" Canvas.Left="-0.918"  Canvas.Top="45.57" >
+                        <Path.Data>
+                            <PathGeometry Figures="M257.83533,250.50498 C245.51009,271.04048 232.94628,286.06644 240.38433,317.62097"/>
+                        </Path.Data>
+                    </Path>
+                    <Path x:Name="Path_Face_White_2" Style="{DynamicResource animationPathStyle}" Stretch="Fill" Canvas.Left="-0.052" Canvas.Top="80.133" >
+                        <Path.Data>
+                            <PathGeometry Figures="M239.44875,318.43883 C256.06891,326.65936 311.10587,321.50171 316.5005,285.9375"/>
+                        </Path.Data>
+                    </Path>
+
+                    <Path x:Name="Path_Face_White_3" Style="{DynamicResource animationPathStyle}" Stretch="Fill" Canvas.Left="69.844" Canvas.Top="0.003" >
+                        <Path.Data>
+                            <PathGeometry Figures="M316.44238,286.42532 C351.61737,241.61513 320.99959,221.56718 307.92069,203.2263"/>
+                        </Path.Data>
+                    </Path>
+                    <Path x:Name="Path_Face_White_4" Style="{DynamicResource animationPathStyle}" Stretch="Fill" Canvas.Left="19.634" Canvas.Top="0.049">
+                        <Path.Data>
+                            <PathGeometry Figures="M309.14973,203.26406 C281.75546,211.47312 261.70341,223.84822 258.67012,251.02003"/>
+                        </Path.Data>
+                    </Path>
+                    <Path x:Name="Path_Face_White_5" Style="{DynamicResource animationPathStyle}" Stretch="Fill" Canvas.Left="14.374" Canvas.Top="30.675">
+                        <Path.Data>
+                            <PathGeometry Figures="M295.57842,230.35244 C269.11125,233.28504 256.58529,256.39046 266.96595,281.00965"/>
+                        </Path.Data>
+                    </Path>
+                    <Path x:Name="Path_Face_White_6" Style="{DynamicResource animationPathStyle}" Stretch="Fill" Canvas.Left="17.517" Canvas.Top="80.133">
+                        <Path.Data>
+                            <PathGeometry Figures="M256.5,282.22761 C256.48335,295.54405 266.48362,305.3946 280,306.5"/>
+                        </Path.Data>
+                    </Path>
+                    <Path x:Name="Path_Face_White_7" Style="{DynamicResource animationPathStyle}" Stretch="Fill" Canvas.Left="40.861" Canvas.Top="40.018">
+                        <Path.Data>
+                            <PathGeometry Figures="M316.44238,286.42532 C358.93292,280.72669 359.85295,255.63887 354.61263,222.11979"/>
+                        </Path.Data>
+                    </Path>
+                    <Path  x:Name="Path_Face_White_8" Style="{DynamicResource animationPathStyle}" Stretch="Fill" Canvas.Left="47.167" Canvas.Top="28.081">
+                        <Path.Data>
+                            <PathGeometry Figures="M292.62469,292.20816 C285.78342,280.44435 276.0982,277.34939 259.59821,282.47749"/>
+                        </Path.Data>
+                    </Path>
+
+                    <Path x:Name="Path_Face_White_9" Style="{DynamicResource animationPathStyle}" Stretch="Fill" Canvas.Left="49.02" Canvas.Top="65.966" >
+                        <Path.Data>
+                            <PathGeometry Figures="M300.84606,285.77062 C300.70446,285.77062 301.03498,285.80869 301.02291,285.80869"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+
+                <Canvas x:Name="Track_Face_Blue" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
+                </Canvas>
 
             </Canvas>
+
 
 
         </Grid>

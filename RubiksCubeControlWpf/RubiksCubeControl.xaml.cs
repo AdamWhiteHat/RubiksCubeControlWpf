@@ -1,5 +1,9 @@
+using System;
+using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -10,9 +14,10 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Xaml.Behaviors.Media;
 using RubiksCubeControlWpf;
 using RubiksCubeControlWpf.Shapes;
-using static RubiksCubeControlWpf.PathHelper;
+using static RubiksCubeControlWpf.AnimationHelper;
 
 namespace RubiksCubeControlWpf
 {
@@ -21,88 +26,158 @@ namespace RubiksCubeControlWpf
     /// </summary>
     public partial class RubiksCubeControl : UserControl
     {
-        public List<Circle> Face_Front_LeftFace => new List<Circle>() { rNW, rWW, rSW, rNN, rMM, rSS, rNE, rEE, rSE };
-        public List<Circle> Face_Front_TopFace => new List<Circle>() { gNW, gWW, gSW, gNN, gMM, gSS, gNE, gEE, gSE };
-        public List<Circle> Face_Front_RightFace => new List<Circle>() { wNW, wWW, wSW, wNN, wMM, wSS, wNE, wEE, wSE };
+        public List<Path> Paths_Ring_TopInner => new List<Path>()
+        {
+            Path_TopInner_A1,   Path_TopInner_A2,   Path_TopInner_A3,
+            Path_TopInner_B1,   Path_TopInner_B2,   Path_TopInner_B3,
+            Path_TopInner_C1,   Path_TopInner_C2,   Path_TopInner_C3,
+            Path_TopInner_D1,   Path_TopInner_D2,   Path_TopInner_D3
+        };
+
+        public List<Path> Paths_Ring_LeftInner => new List<Path>()
+        {
+            Path_LeftInner_A1,  Path_LeftInner_A2,  Path_LeftInner_A3,
+            Path_LeftInner_B1,  Path_LeftInner_B2,  Path_LeftInner_B3,
+            Path_LeftInner_C1,  Path_LeftInner_C2,  Path_LeftInner_C3,
+            Path_LeftInner_D1,  Path_LeftInner_D2,  Path_LeftInner_D3
+        };
+
+        public List<Path> Paths_Ring_RightInner => new List<Path>()
+        {
+            Path_RightInner_A1,     Path_RightInner_A2,     Path_RightInner_A3,
+            Path_RightInner_B1,     Path_RightInner_B2,     Path_RightInner_B3,
+            Path_RightInner_C1,     Path_RightInner_C2,     Path_RightInner_C3,
+            Path_RightInner_D1,     Path_RightInner_D2,     Path_RightInner_D3
+        };
 
 
-        public List<Circle> Face_Back_RightFace => new List<Circle>() { oNW, oWW, oSW, oNN, oMM, oSS, oNE, oEE, oSE };
-        public List<Circle> Face_Back_LeftFace => new List<Circle>() { yNW, yWW, ySW, yNN, yMM, ySS, yNE, yEE, ySE };
-        public List<Circle> Face_Back_BottomFace => new List<Circle>() { bNW, bWW, bSW, bNN, bMM, bSS, bNE, bEE, bSE };
+        public List<Path> Paths_Ring_TopMiddle => new List<Path>()
+        {
+            Path_TopMiddle_A1,     Path_TopMiddle_A2,     Path_TopMiddle_A3,
+            Path_TopMiddle_B1,     Path_TopMiddle_B2,     Path_TopMiddle_B3,
+            Path_TopMiddle_C1,     Path_TopMiddle_C2,     Path_TopMiddle_C3,
+            Path_TopMiddle_D1,     Path_TopMiddle_D2,     Path_TopMiddle_D3
+        };
 
+        public List<Path> Paths_Ring_LeftMiddle => new List<Path>()
+        {
+            Path_LeftMiddle_A1,     Path_LeftMiddle_A2,     Path_LeftMiddle_A3,
+            Path_LeftMiddle_B1,     Path_LeftMiddle_B2,     Path_LeftMiddle_B3,
+            Path_LeftMiddle_C1,     Path_LeftMiddle_C2,     Path_LeftMiddle_C3,
+            Path_LeftMiddle_D1,     Path_LeftMiddle_D2,     Path_LeftMiddle_D3
+        };
 
-        /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
-
-        public List<Circle> Ring_Right_InnerRing => new List<Circle>() { bSE, bNE, bNN, rSE, rEE, rNE, gSS, gSE, gEE, oNW, oWW, oSW };
-        public List<Circle> Ring_Right_MiddleRing => new List<Circle>() { bEE, bMM, bWW, oNN, oMM, oSS, gSW, gMM, gNE, rSS, rMM, rNN };
-        public List<Circle> Ring_Right_OuterRing => new List<Circle>() { bSS, bSW, bNW, oNE, oEE, oSE, gWW, gNW, gNN, rSW, rWW, rNW };
-
-
-        public List<Circle> Ring_Left_InnerRing => new List<Circle>() { bNW, bWW, bNN, wSW, wWW, wNW, gSS, gSW, gWW, yNE, yEE, ySE };
-        public List<Circle> Ring_Left_MiddleRing => new List<Circle>() { bSW, bMM, bNE, wSS, wMM, wNN, gSE, gMM, gNW, yNN, yMM, ySS };
-        public List<Circle> Ring_Left_OuterRing => new List<Circle>() { bSS, bEE, bSE, wSE, wEE, wNE, gEE, gNE, gNN, yNW, yWW, ySW };
-
-
-        public List<Circle> Ring_Top_InnerRing => new List<Circle>() { wNW, wNN, wNE, oNW, oNN, oNE, yNW, yNN, yNE, rNW, rNN, rNE };
-        public List<Circle> Ring_Top_MiddleRing => new List<Circle>() { wWW, wMM, wEE, oWW, oMM, oEE, yWW, yMM, yEE, rWW, rMM, rEE };
-        public List<Circle> Ring_Top_OuterRing => new List<Circle>() { wSW, wSS, wSE, oSW, oSS, oSE, ySW, ySS, ySE, rSW, rSS, rSE };
-
-
-        //public static class Faces
-        //{
-        //    public static List<Circle> Face_Front_LeftFace => new List<Circle>() { rNW, rWW, rSW, rNN, rMM, rSS, rNE, rEE, rSE };
-        //}
+        public List<Path> Paths_Ring_RightMiddle => new List<Path>()
+        {
+            Path_RightMiddle_A1,     Path_RightMiddle_A2,     Path_RightMiddle_A3,
+            Path_RightMiddle_B1,     Path_RightMiddle_B2,     Path_RightMiddle_B3,
+            Path_RightMiddle_C1,     Path_RightMiddle_C2,     Path_RightMiddle_C3,
+            Path_RightMiddle_D1,     Path_RightMiddle_D2,     Path_RightMiddle_D3
+        };
 
 
 
+        public List<Path> Paths_Ring_TopOuter => new List<Path>()
+        {
+            Path_TopOuter_A1,     Path_TopOuter_A2,     Path_TopOuter_A3,
+            Path_TopOuter_B1,     Path_TopOuter_B2,     Path_TopOuter_B3,
+            Path_TopOuter_C1,     Path_TopOuter_C2,     Path_TopOuter_C3,
+            Path_TopOuter_D1,     Path_TopOuter_D2,     Path_TopOuter_D3
+        };
 
+        public List<Path> Paths_Ring_LeftOuter => new List<Path>()
+        {
 
+            Path_LeftOuter_A1,     Path_LeftOuter_A2,     Path_LeftOuter_A3,
+            Path_LeftOuter_B1,     Path_LeftOuter_B2,     Path_LeftOuter_B3,
+            Path_LeftOuter_C1,     Path_LeftOuter_C2,     Path_LeftOuter_C3,
+            Path_LeftOuter_D1,     Path_LeftOuter_D2,     Path_LeftOuter_D3
+        };
 
+        public List<Path> Paths_Ring_RightOuter => new List<Path>()
+        {
+            Path_RightOuter_A1,     Path_RightOuter_A2,     Path_RightOuter_A3,
+            Path_RightOuter_B1,     Path_RightOuter_B2,     Path_RightOuter_B3,
+            Path_RightOuter_C1,     Path_RightOuter_C2,     Path_RightOuter_C3,
+            Path_RightOuter_D1,     Path_RightOuter_D2,     Path_RightOuter_D3
+        };
 
-
-
-
-
-
+        private Storyboard _storyboard { get; set; }
+        private static GameBoard<Circle> _gameboard { get; set; }
+        private ConcurrentQueue<Tuple<RubiksCubeMoves, bool>> _moveQueue { get; set; }
 
         public RubiksCubeControl()
         {
             InitializeComponent();
+
+            _moveQueue = new ConcurrentQueue<Tuple<RubiksCubeMoves, bool>>();
+
+            _storyboard = new Storyboard();
+            _storyboard.FillBehavior = FillBehavior.Stop;
+
+            Face<Circle> yellow = new Face<Circle>(yNW, yNN, yNE, yWW, yCC, yEE, ySW, ySS, ySE);
+            Face<Circle> green = new Face<Circle>(gNW, gNN, gNE, gWW, gCC, gEE, gSW, gSS, gSE);
+            Face<Circle> orange = new Face<Circle>(oNW, oNN, oNE, oWW, oCC, oEE, oSW, oSS, oSE);
+            Face<Circle> red = new Face<Circle>(rNW, rNN, rNE, rWW, rCC, rEE, rSW, rSS, rSE);
+            Face<Circle> white = new Face<Circle>(wNW, wNN, wNE, wWW, wCC, wEE, wSW, wSS, wSE);
+            Face<Circle> blue = new Face<Circle>(bNW, bNN, bNE, bWW, bCC, bEE, bSW, bSS, bSE);
+            _gameboard = new GameBoard<Circle>(yellow, green, orange, red, white, blue);
+        }
+
+        public static void UpdatePositions_Rings(RubiksCubeMoves move, bool counterRotate)
+        {
+            Action<Ring<Circle>> rotateFunc = GameBoardExtensionMethods.Rotate<Circle>;
+            if (counterRotate)
+            {
+                rotateFunc = GameBoardExtensionMethods.CounterRotate<Circle>;
+            }
+
+            switch (move)
+            {
+                case RubiksCubeMoves.Middle: rotateFunc.Invoke(_gameboard.Right.Middle); break;
+                case RubiksCubeMoves.Slice: rotateFunc.Invoke(_gameboard.Left.Middle); break;
+                case RubiksCubeMoves.Equator: rotateFunc.Invoke(_gameboard.Top.Middle); break;
+
+                case RubiksCubeMoves.Left:
+                    rotateFunc.Invoke(_gameboard.Right.Outer);
+                    break;
+                case RubiksCubeMoves.Right:
+                    rotateFunc.Invoke(_gameboard.Right.Inner);
+                    break;
+                case RubiksCubeMoves.Up:
+                    rotateFunc.Invoke(_gameboard.Top.Inner);
+                    break;
+                case RubiksCubeMoves.Down:
+                    rotateFunc.Invoke(_gameboard.Top.Outer);
+                    break;
+                case RubiksCubeMoves.Front:
+                    rotateFunc.Invoke(_gameboard.Left.Inner);
+                    break;
+                case RubiksCubeMoves.Back:
+                    rotateFunc.Invoke(_gameboard.Left.Outer);
+                    break;
+
+                case RubiksCubeMoves.X:
+                    rotateFunc.Invoke(_gameboard.Right.Inner);
+                    rotateFunc.Invoke(_gameboard.Right.Middle);
+                    rotateFunc.Invoke(_gameboard.Right.Outer);
+                    break;
+                case RubiksCubeMoves.Y:
+                    rotateFunc.Invoke(_gameboard.Top.Inner);
+                    rotateFunc.Invoke(_gameboard.Top.Middle);
+                    rotateFunc.Invoke(_gameboard.Top.Outer);
+                    break;
+                case RubiksCubeMoves.Z:
+                    rotateFunc.Invoke(_gameboard.Left.Inner);
+                    rotateFunc.Invoke(_gameboard.Left.Middle);
+                    rotateFunc.Invoke(_gameboard.Left.Outer);
+                    break;
+            }
         }
 
         public void RegisterForInputEvents(UIElement proxyParentControl)
         {
             proxyParentControl.KeyUp += UserControl_KeyUp;
-        }
-
-        public List<Circle> GetFace(RubiksCubeMoves face)
-        {
-
-            switch (face)
-            {
-                case RubiksCubeMoves.Left:
-                    //Front_Left_Face.Children
-
-                    break;
-                case RubiksCubeMoves.Right:
-                    break;
-                case RubiksCubeMoves.Up:
-                    break;
-                case RubiksCubeMoves.Down:
-                    break;
-                case RubiksCubeMoves.Front:
-                    break;
-                case RubiksCubeMoves.Back:
-                    break;
-                default:
-                    break;
-            }
-
-
-
-            throw new NotImplementedException();
-
         }
 
         private void UserControl_KeyUp(object sender, KeyEventArgs e)
@@ -112,171 +187,428 @@ namespace RubiksCubeControlWpf
 
         private void ProcessKeyEvent(KeyEventArgs e)
         {
+            RubiksCubeMoves move;
+
             switch (e.Key)
             {
-                case Key.U:
-                    AnimateMove(RubiksCubeMoves.Up);
-                    break;
-                case Key.D:
-                    AnimateMove(RubiksCubeMoves.Down);
-                    break;
-                case Key.R:
-                    AnimateMove(RubiksCubeMoves.Right);
-                    break;
-                case Key.L:
-                    AnimateMove(RubiksCubeMoves.Left);
-                    break;
-                case Key.F:
-                    AnimateMove(RubiksCubeMoves.Front);
-                    break;
-                case Key.B:
-                    AnimateMove(RubiksCubeMoves.Back);
-                    break;
-                case Key.M:
-                    AnimateMove(RubiksCubeMoves.Middle);
-                    break;
-                case Key.X:
-                    AnimateMove(RubiksCubeMoves.X);
-                    break;
-                case Key.Y:
-                    AnimateMove(RubiksCubeMoves.Y);
-                    break;
-                case Key.Z:
-                    AnimateMove(RubiksCubeMoves.Z);
-                    break;
+                case Key.U: move = RubiksCubeMoves.Up; break;
+                case Key.D: move = RubiksCubeMoves.Down; break;
+                case Key.L: move = RubiksCubeMoves.Left; break;
+                case Key.R: move = RubiksCubeMoves.Right; break;
+                case Key.F: move = RubiksCubeMoves.Front; break;
+                case Key.B: move = RubiksCubeMoves.Back; break;
+                case Key.M: move = RubiksCubeMoves.Middle; break;
+                case Key.S: move = RubiksCubeMoves.Slice; break;
+                case Key.E: move = RubiksCubeMoves.Equator; break;
+                case Key.X: move = RubiksCubeMoves.X; break;
+                case Key.Y: move = RubiksCubeMoves.Y; break;
+                case Key.Z: move = RubiksCubeMoves.Z; break;
+                default: return;
+            }
+
+            bool counterRotate = (e.KeyboardDevice.Modifiers == ModifierKeys.Shift || e.KeyboardDevice.Modifiers == ModifierKeys.Control);
+
+            _moveQueue.Enqueue(new Tuple<RubiksCubeMoves, bool>(move, counterRotate));
+
+            if (!ExclusiveAccess.TryObtainLock())
+            {
+                return;
+            }
+
+            ProcessNextCommand();
+        }
+
+        private void ProcessNextCommand()
+        {
+            if (_moveQueue.TryDequeue(out Tuple<RubiksCubeMoves, bool> parameters))
+            {
+                AnimateMove(parameters.Item1, parameters.Item2);
+            }
+            else
+            {
+                ExclusiveAccess.ReleaseLock();
             }
         }
 
-        private void AnimateMove(RubiksCubeMoves move)
+        private void AnimateMove(RubiksCubeMoves move, bool counterRotate)
         {
-            PathGeometry ringPath = null;
-            PathGeometry facePath = null;
-            List<Circle> ringPeices = new List<Circle>();
-            List<Circle> facePeices = new List<Circle>();
+            List<MoveAnimationGroup> moveAnimations = new List<MoveAnimationGroup>();
+
+            /* 
+            List<Tuple<List<Circle>, List<Path>>> peicesAndPathsTuple = GetFacesPeicesAndPaths(move);
+            foreach (new Tuple<List<Circle>, List<Path>> tup in peicesAndPathsTuple)
+            {
+                MoveAnimationGroup animationGroup = new MoveAnimationGroup(move, counterRotate);
+                animationGroup.Peices = tup.Item1;
+                animationGroup.Paths = tup.Item2;
+                // Actions?
+            }            */
 
             switch (move)
             {
-                case RubiksCubeMoves.Left:
-                    ringPeices = Ring_Right_OuterRing;
-                    facePeices.AddRange(Face_Front_RightFace);
+                /*** X, Y, Z ***/
 
-                    ringPath = PathHelper.Right.Inner(ringPeices[0].Location);
+                case RubiksCubeMoves.X:
+
+                    MoveAnimationGroup aniOuterX = new MoveAnimationGroup(RubiksCubeMoves.Left, counterRotate);
+                    aniOuterX.RingPeices = _gameboard.Right.Outer.GetItems();
+                    aniOuterX.RingPaths = Paths_Ring_RightOuter;
+                    aniOuterX.RingParentCanvas = Track_Right_Outer;
+                    aniOuterX.AddRingFinalizerAction();
+
+                    aniOuterX.FacePeices = new List<Face<Circle>>() { _gameboard.Yellow };
+
+                    MoveAnimationGroup aniMiddleX = new MoveAnimationGroup(RubiksCubeMoves.Middle, counterRotate);
+                    aniMiddleX.RingPeices = _gameboard.Right.Middle.GetItems();
+                    aniMiddleX.RingPaths = Paths_Ring_RightMiddle;
+                    aniMiddleX.RingParentCanvas = Track_Right_Middle;
+                    aniMiddleX.AddRingFinalizerAction();
+
+                    MoveAnimationGroup aniInnerX = new MoveAnimationGroup(RubiksCubeMoves.Right, counterRotate);
+                    aniInnerX.RingPeices = _gameboard.Right.Inner.GetItems();
+                    aniInnerX.RingPaths = Paths_Ring_RightInner;
+                    aniInnerX.RingParentCanvas = Track_Right_Inner;
+                    aniInnerX.AddRingFinalizerAction();
+
+                    aniInnerX.FacePeices = new List<Face<Circle>>() { _gameboard.White };
+
+                    moveAnimations.Add(aniOuterX);
+                    moveAnimations.Add(aniMiddleX);
+                    moveAnimations.Add(aniInnerX);
 
                     break;
 
-                case RubiksCubeMoves.Right:
-                    ringPeices = Ring_Right_InnerRing;
+                case RubiksCubeMoves.Y:
 
-                    //facePeices.AddRange(Face_Back_LeftFace);
+                    MoveAnimationGroup aniOuterY = new MoveAnimationGroup(RubiksCubeMoves.Down, counterRotate);
+                    aniOuterY.RingPeices = _gameboard.Top.Outer.GetItems();
+                    aniOuterY.RingPaths = Paths_Ring_TopOuter;
+                    aniOuterY.RingParentCanvas = Track_Top_Outer;
+                    aniOuterY.AddRingFinalizerAction();
 
-                    //ringPath = PathHelper.Right.Outer(ringPeices[0].Location);
+                    aniOuterY.FacePeices = new List<Face<Circle>>() { _gameboard.Blue };
 
-                    List<Tuple<Circle, PointAnimationUsingPath>> animationPair =  IndividualPaths.Inner.Orbit(ringPeices);
-                    animationPair.Animate();
+                    MoveAnimationGroup aniMiddleY = new MoveAnimationGroup(RubiksCubeMoves.Equator, counterRotate);
+                    aniMiddleY.RingPeices = _gameboard.Top.Middle.GetItems();
+                    aniMiddleY.RingPaths = Paths_Ring_TopMiddle;
+                    aniMiddleY.RingParentCanvas = Track_Top_Middle;
+                    aniMiddleY.AddRingFinalizerAction();
 
-                    return;
+                    MoveAnimationGroup aniInnerY = new MoveAnimationGroup(RubiksCubeMoves.Up, counterRotate);
+                    aniInnerY.RingPeices = _gameboard.Top.Inner.GetItems();
+                    aniInnerY.RingPaths = Paths_Ring_TopInner;
+                    aniInnerY.RingParentCanvas = Track_Top_Inner;
+                    aniInnerY.AddRingFinalizerAction();
+
+                    aniInnerY.FacePeices = new List<Face<Circle>>() { _gameboard.Green };
+
+                    moveAnimations.Add(aniOuterY);
+                    moveAnimations.Add(aniMiddleY);
+                    moveAnimations.Add(aniInnerY);
+
+                    break;
+
+                case RubiksCubeMoves.Z:
+
+                    MoveAnimationGroup aniOuterZ = new MoveAnimationGroup(RubiksCubeMoves.Back, counterRotate);
+                    aniOuterZ.RingPeices = _gameboard.Left.Outer.GetItems();
+                    aniOuterZ.RingPaths = Paths_Ring_LeftOuter;
+                    aniOuterZ.RingParentCanvas = Track_Left_Outer;
+                    aniOuterZ.AddRingFinalizerAction();
+
+                    aniOuterZ.FacePeices = new List<Face<Circle>>() { _gameboard.Orange };
+
+                    MoveAnimationGroup aniMiddleZ = new MoveAnimationGroup(RubiksCubeMoves.Slice, counterRotate);
+                    aniMiddleZ.RingPeices = _gameboard.Left.Middle.GetItems();
+                    aniMiddleZ.RingPaths = Paths_Ring_LeftMiddle;
+                    aniMiddleZ.RingParentCanvas = Track_Left_Middle;
+                    aniMiddleZ.AddRingFinalizerAction();
+
+                    MoveAnimationGroup aniInnerZ = new MoveAnimationGroup(RubiksCubeMoves.Front, counterRotate);
+                    aniInnerZ.RingPeices = _gameboard.Left.Inner.GetItems();
+                    aniInnerZ.RingPaths = Paths_Ring_LeftInner;
+                    aniInnerZ.RingParentCanvas = Track_Left_Inner;
+                    aniInnerZ.AddRingFinalizerAction();
+
+                    aniInnerZ.FacePeices = new List<Face<Circle>>() { _gameboard.Red };
+
+                    moveAnimations.Add(aniOuterZ);
+                    moveAnimations.Add(aniMiddleZ);
+                    moveAnimations.Add(aniInnerZ);
+
+                    break;
+
+                /*** Inner ***/
 
                 case RubiksCubeMoves.Up:
-                    ringPeices = Ring_Top_InnerRing;
-                    facePeices.AddRange(Face_Front_TopFace);
+                    MoveAnimationGroup uAni = new MoveAnimationGroup(move, counterRotate);
 
-                    ringPath = PathHelper.Top.Inner(ringPeices[0].Location);
+                    uAni.RingPeices = _gameboard.Top.Inner.GetItems();
+                    uAni.RingPaths = Paths_Ring_TopInner;
+                    uAni.RingParentCanvas = Track_Top_Inner;
+                    uAni.AddRingFinalizerAction();
 
-                    break;
+                    uAni.FacePeices = new List<Face<Circle>>() { _gameboard.Green };
 
-                case RubiksCubeMoves.Down:
-                    ringPeices = Ring_Top_OuterRing;
-                    facePeices.AddRange(Face_Back_BottomFace);
-
-                    ringPath = PathHelper.Top.Outer(ringPeices[0].Location);
-
+                    moveAnimations.Add(uAni);
                     break;
 
                 case RubiksCubeMoves.Front:
-                    ringPeices = Ring_Left_InnerRing;
-                    facePeices.AddRange(Face_Front_LeftFace);
+                    MoveAnimationGroup fAni = new MoveAnimationGroup(move, counterRotate);
 
-                    ringPath = PathHelper.Left.Inner(ringPeices[0].Location);
+                    fAni.RingPeices = _gameboard.Left.Inner.GetItems();
+                    fAni.RingPaths = Paths_Ring_LeftInner;
+                    fAni.RingParentCanvas = Track_Left_Inner;
+                    fAni.AddRingFinalizerAction();
+
+                    fAni.FacePeices = new List<Face<Circle>>() { _gameboard.Red };
+
+                    moveAnimations.Add(fAni);
+                    break;
+
+                case RubiksCubeMoves.Right:
+                    MoveAnimationGroup rAni = new MoveAnimationGroup(move, counterRotate);
+
+                    rAni.RingPeices = _gameboard.Right.Inner.GetItems();
+                    rAni.RingPaths = Paths_Ring_RightInner;
+                    rAni.RingParentCanvas = Track_Right_Inner;
+                    rAni.AddRingFinalizerAction();
+
+                    rAni.FacePeices = new List<Face<Circle>>() { _gameboard.White };
+
+                    moveAnimations.Add(rAni);
 
                     break;
 
-                case RubiksCubeMoves.Back:
-                    ringPeices = Ring_Left_OuterRing;
-                    facePeices.AddRange(Face_Back_RightFace);
+                /*** Middle ***/
 
-                    ringPath = PathHelper.Left.Outer(ringPeices[0].Location);
+                case RubiksCubeMoves.Equator:
+                    MoveAnimationGroup eAni = new MoveAnimationGroup(move, counterRotate);
 
-                    break;
+                    eAni.RingPeices = _gameboard.Top.Middle.GetItems();
+                    eAni.RingPaths = Paths_Ring_TopMiddle;
+                    eAni.RingParentCanvas = Track_Top_Middle;
+                    eAni.AddRingFinalizerAction();
 
-                case RubiksCubeMoves.Middle:
-                    ringPeices = Ring_Right_MiddleRing;
-
-                    ringPath = PathHelper.Right.Middle(ringPeices[0].Location);
+                    moveAnimations.Add(eAni);
                     break;
 
                 case RubiksCubeMoves.Slice:
-                    ringPeices = Ring_Left_MiddleRing;
+                    MoveAnimationGroup sAni = new MoveAnimationGroup(move, counterRotate);
 
-                    ringPath = PathHelper.Left.Middle(ringPeices[0].Location);
+                    sAni.RingPeices = _gameboard.Left.Middle.GetItems();
+                    sAni.RingPaths = Paths_Ring_LeftMiddle;
+                    sAni.RingParentCanvas = Track_Left_Middle;
+                    sAni.AddRingFinalizerAction();
 
+                    moveAnimations.Add(sAni);
                     break;
 
-                case RubiksCubeMoves.Equator:
-                    ringPeices = Ring_Top_MiddleRing;
+                case RubiksCubeMoves.Middle:
+                    MoveAnimationGroup mAni = new MoveAnimationGroup(move, counterRotate);
 
-                    ringPath = PathHelper.Top.Middle(ringPeices[0].Location);
+                    mAni.RingPeices = _gameboard.Right.Middle.GetItems();
+                    mAni.RingPaths = Paths_Ring_RightMiddle;
+                    mAni.RingParentCanvas = Track_Right_Middle;
+                    mAni.AddRingFinalizerAction();
 
+                    moveAnimations.Add(mAni);
                     break;
+
+                /*** Outer ***/
+
+                case RubiksCubeMoves.Down:
+                    MoveAnimationGroup dAni = new MoveAnimationGroup(move, counterRotate);
+
+                    dAni.RingPeices = _gameboard.Top.Outer.GetItems();
+                    dAni.RingPaths = Paths_Ring_TopOuter;
+                    dAni.RingParentCanvas = Track_Top_Outer;
+                    dAni.AddRingFinalizerAction();
+
+                    dAni.FacePeices = new List<Face<Circle>>() { _gameboard.Blue };
+
+                    moveAnimations.Add(dAni);
+                    break;
+
+                case RubiksCubeMoves.Back:
+                    MoveAnimationGroup bAni = new MoveAnimationGroup(move, counterRotate);
+
+                    bAni.RingPeices = _gameboard.Left.Outer.GetItems();
+                    bAni.RingPaths = Paths_Ring_LeftOuter;
+                    bAni.RingParentCanvas = Track_Left_Outer;
+                    bAni.AddRingFinalizerAction();
+
+                    bAni.FacePeices = new List<Face<Circle>>() { _gameboard.Orange };
+
+                    moveAnimations.Add(bAni);
+                    break;
+
+                case RubiksCubeMoves.Left:
+                    MoveAnimationGroup lAni = new MoveAnimationGroup(move, counterRotate);
+
+                    lAni.RingPeices = _gameboard.Right.Outer.GetItems();
+                    lAni.RingPaths = Paths_Ring_RightOuter;
+                    lAni.RingParentCanvas = Track_Right_Outer;
+                    lAni.AddRingFinalizerAction();
+
+                    lAni.FacePeices = new List<Face<Circle>>() { _gameboard.Yellow };
+
+                    moveAnimations.Add(lAni);
+                    break;
+
+                default:
+                    return;
+
             }
 
+            List<Action> peicePositionsUpdates = new List<Action>();
+            List<Tuple<Circle, PointAnimationUsingPath>[]> ringAnimationGroups = new List<Tuple<Circle, PointAnimationUsingPath>[]>();
+            List<List<Tuple<Circle, PointAnimation>[]>> faceAnimations = new List<List<Tuple<Circle, PointAnimation>[]>>();
 
-            //if (!pathGeometry.IsFrozen) { pathGeometry.Freeze(); }
+            foreach (MoveAnimationGroup movesToAnimate in moveAnimations)
+            {
+                if (counterRotate)
+                {
+                    List<Path> directionReversedPaths = movesToAnimate.RingPaths.Select(p => p.ReverseDirection()).ToList();
+                    RotationHelper.Rotate(directionReversedPaths);
+                    movesToAnimate.RingPaths = directionReversedPaths.ToList();
+                }
 
-            //Circle c = ringPeices[0];
+                if (movesToAnimate.RingParentCanvas != null)
+                {
+                    double top = (double)movesToAnimate.RingParentCanvas.GetValue(Canvas.TopProperty);
+                    double left = (double)movesToAnimate.RingParentCanvas.GetValue(Canvas.LeftProperty);
 
-
-            List<Tuple<Circle, PointAnimationUsingPath>> circleAnimationTupleList = ringPeices.Select(c=> new Tuple<Circle, PointAnimationUsingPath>(c, PointAnimationHelper.Attempt2.WithoutAStoryboard(ringPath))).ToList();
-            circleAnimationTupleList.Animate();
-
-            //ParallelTimeline
-
-
-
-
-            // storyBoard.Begin();
-
-
-
-
-
-            /*
-
-                                <Storyboard x:Key="RotateRightMiddle">
-
-                                    <DoubleAnimationUsingPath BeginTime="00:00:02" Duration="00:00:02" 
-                                                              Source="X"
-                                                              Storyboard.TargetName="bMM" 
-                                                              Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" 
-                                                              PathGeometry="{DynamicResource MiddleRingPath}"
-                                                              >
-
-                                    </DoubleAnimationUsingPath>
-                                    <DoubleAnimationUsingPath BeginTime="00:00:02" Duration="00:00:02" 
-                                                              Source="Y"
-                                                              Storyboard.TargetName="bMM" 
-                                                              Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)"
-                                                              PathGeometry="{DynamicResource MiddleRingPath}"
-                                                              >
-
-                                    </DoubleAnimationUsingPath>
-
-                                </Storyboard>
-
-            */
+                    movesToAnimate.Transforms = new TransformGroup();
+                    movesToAnimate.Transforms.Children.Add(new TranslateTransform(left, top));
 
 
+                    TransformGroup transformGroup = movesToAnimate.RingParentCanvas.RenderTransform as TransformGroup;
+                    if (transformGroup != null)
+                    {
+                        foreach (Transform child in transformGroup.Children)
+                        {
+                            RotateTransform rotate = child as RotateTransform;
+                            if (rotate != null)
+                            {
+                                rotate.CenterX = left;
+                                rotate.CenterY = top;
+                                movesToAnimate.Transforms.Children.Add(rotate);
+                            }
+                            else
+                            {
+                                movesToAnimate.Transforms.Children.Add(child);
+                            }
+                        }
+                    }
+                }
 
+                if (movesToAnimate.FacePeices != null && movesToAnimate.FacePeices.Any())
+                {
+                    faceAnimations.Add(AnimationHelper.BuildFaceAnimation(movesToAnimate));
+                }
+
+                peicePositionsUpdates.AddRange(movesToAnimate.FinalizerActions);
+                ringAnimationGroups.Add(AnimationHelper.BuildRingAnimation(movesToAnimate));
+            }
+
+            _storyboard.Children.Clear();
+
+            foreach (var ringAnimation in ringAnimationGroups)
+            {
+                ringAnimation.AddToStoryboard(_storyboard);
+            }
+
+            foreach (var faceAnimationGroups in faceAnimations)
+            {
+                foreach (var faceAnimation in faceAnimationGroups)
+                {
+                    //faceAnimation.Item1.BeginAnimation(System.Windows.Media.RotateTransform.AngleProperty, faceAnimation.Item2);
+                    faceAnimation.AddToStoryboard(_storyboard);
+                }
+            }
+
+            _storyboard.Completed += StoryboardCompletedHandler;
+            _storyboard.Begin();
+
+            peicePositionsUpdates.ForEach(action => action.Invoke());
+        }
+
+        private void StoryboardCompletedHandler(object? source, EventArgs args)
+        {
+            _storyboard.Completed -= StoryboardCompletedHandler;
+            ProcessNextCommand();
+        }
+
+        private static class ExclusiveAccess
+        {
+            private static UInt64 _lockObject = 0;
+
+            public static bool TryObtainLock()
+            {
+                return (0 == Interlocked.CompareExchange(ref _lockObject, 1, 0));
+            }
+
+            public static void ReleaseLock()
+            {
+                Interlocked.Exchange(ref _lockObject, 0);
+            }
         }
     }
 
+    public class MoveAnimationGroup
+    {
+        public bool CounterRotate { get; set; }
+        public RubiksCubeMoves Move { get; set; }
+        public List<Circle> RingPeices { get; set; }
+        public List<Path> RingPaths { get; set; }
+        public Canvas RingParentCanvas { get; set; }
+
+        public List<Face<Circle>> FacePeices { get; set; }
+
+        public TransformGroup Transforms { get; set; }
+
+        public List<Action> FinalizerActions { get; set; }
+
+        public MoveAnimationGroup(RubiksCubeMoves move, bool counterRotate)
+        {
+            RingParentCanvas = null;
+            Transforms = null;
+            FacePeices = null;
+            FinalizerActions = new List<Action>();
+
+            Move = move;
+            CounterRotate = counterRotate;
+        }
+
+        public void AddRingFinalizerAction()
+        {
+            AddRingFinalizerAction(Move, CounterRotate);
+        }
+
+        public void AddRingFinalizerAction(RubiksCubeMoves move, bool counterRotate)
+        {
+            FinalizerActions.Add(new Action(() => RubiksCubeControl.UpdatePositions_Rings(move, counterRotate)));
+        }
+
+        public void AddFaceFinalizerAction(Face<Circle> face)
+        {
+            Face<Circle> copy = face;
+
+            if (CounterRotate)
+            {
+                FinalizerActions.Add(new Action(() =>
+                {
+                    copy.CounterRotate();
+                }));
+            }
+            else
+            {
+                FinalizerActions.Add(new Action(() =>
+                {
+                    copy.Rotate();
+                }));
+            }
+        }
+    }
 }

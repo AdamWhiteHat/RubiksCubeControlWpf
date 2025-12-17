@@ -6,10 +6,12 @@
         xmlns:local="clr-namespace:TestRubiksCubeControl"
         xmlns:ctrl="clr-namespace:RubiksCubeControlWpf;assembly=RubiksCubeControlWpf"
         mc:Ignorable="d"
-        Title="MainWindow" 
-        Width="720" Height="500"
+        Title="Rubik's Rings"         
+        Width="546" Height="541" SizeToContent="WidthAndHeight"
+        Background="Transparent"
         >
     <Grid>
-        <ctrl:RubiksCubeControl x:Name="rubiksCubeControl" />
+            <ctrl:RubiksCubeControl x:Name="rubiksCubeControl"  /> 
+
     </Grid>
 </Window>
