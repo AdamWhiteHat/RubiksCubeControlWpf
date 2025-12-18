@@ -26,6 +26,71 @@ namespace RubiksCubeControlWpf
     /// </summary>
     public partial class RubiksCubeControl : UserControl
     {
+
+        public event RoutedEventHandler QuitClientRequested;
+
+        protected virtual void RaiseQuitClientRequested()
+        {
+            RoutedEventHandler routed = QuitClientRequested;
+            if (routed != null)
+            {
+                RoutedEventArgs e = new RoutedEventArgs();
+                routed.Invoke(this, e);
+            }
+        }
+
+        public double ScaleZoom
+        {
+            get { return (double)GetValue(ScaleZoomProperty); }
+            set { SetValue(ScaleZoomProperty, value); }
+        }
+        public static readonly DependencyProperty ScaleZoomProperty = DependencyProperty.Register(nameof(ScaleZoom), typeof(double), typeof(RubiksCubeControl), new PropertyMetadata(1.0d, new PropertyChangedCallback(RubiksCubeControl.RaiseScaleZoomChanged)));
+        public static readonly RoutedEvent ScaleZoomChangedEvent = EventManager.RegisterRoutedEvent(nameof(ScaleZoomChanged), RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<double>), typeof(RubiksCubeControl));
+
+        public event RoutedPropertyChangedEventHandler<double> ScaleZoomChanged
+        {
+            add { base.AddHandler(ScaleZoomChangedEvent, value); }
+            remove { base.RemoveHandler(ScaleZoomChangedEvent, value); }
+        }
+
+        protected virtual void RaiseScaleZoomChanged(double oldValue, double newValue)
+        {
+            RoutedPropertyChangedEventArgs<double> e = new RoutedPropertyChangedEventArgs<double>(oldValue, newValue);
+            e.RoutedEvent = ScaleZoomChangedEvent;
+            base.RaiseEvent(e);
+        }
+        private static void RaiseScaleZoomChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            RubiksCubeControl element = (RubiksCubeControl)d;
+            element.RaiseScaleZoomChanged((double)e.OldValue, (double)e.NewValue);
+        }
+
+        public Point Center
+        {
+            get { return (Point)GetValue(CenterProperty); }
+            set { SetValue(CenterProperty, value); }
+        }
+        public static readonly DependencyProperty CenterProperty = DependencyProperty.Register(nameof(Center), typeof(Point), typeof(RubiksCubeControl), new PropertyMetadata(default(Point), new PropertyChangedCallback(RubiksCubeControl.RaiseCenterChanged)));
+
+        public static readonly RoutedEvent CenterChangedEvent = EventManager.RegisterRoutedEvent(nameof(CenterChanged), RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<Point>), typeof(RubiksCubeControl));
+        public event RoutedPropertyChangedEventHandler<Point> CenterChanged
+        {
+            add { base.AddHandler(CenterChangedEvent, value); }
+            remove { base.RemoveHandler(CenterChangedEvent, value); }
+        }
+
+        protected virtual void RaiseCenterChanged(Point oldValue, Point newValue)
+        {
+            RoutedPropertyChangedEventArgs<Point> e = new RoutedPropertyChangedEventArgs<Point>(oldValue, newValue);
+            e.RoutedEvent = CenterChangedEvent;
+            base.RaiseEvent(e);
+        }
+        private static void RaiseCenterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            RubiksCubeControl element = (RubiksCubeControl)d;
+            element.RaiseCenterChanged((Point)e.OldValue, (Point)e.NewValue);
+        }
+
         public List<Path> Paths_Ring_TopInner => new List<Path>()
         {
             Path_TopInner_A1,   Path_TopInner_A2,   Path_TopInner_A3,
@@ -122,6 +187,47 @@ namespace RubiksCubeControlWpf
             Face<Circle> white = new Face<Circle>(wNW, wNN, wNE, wWW, wCC, wEE, wSW, wSS, wSE);
             Face<Circle> blue = new Face<Circle>(bNW, bNN, bNE, bWW, bCC, bEE, bSW, bSS, bSE);
             _gameboard = new GameBoard<Circle>(yellow, green, orange, red, white, blue);
+
+            this.Loaded += (s, e) => SetValue(CenterProperty, new Point(this.ActualWidth / 23, this.ActualHeight / 2));
+            //this.SizeChanged += RubiksCubeControl_SizeChanged;
+
+
+        }
+
+        private void closeButton_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseQuitClientRequested();
+        }
+
+        private void ScaleTransform_Changed(object sender, EventArgs e)
+        {
+            var width = this.ActualWidth * ScaleZoom;
+            double height = this.ActualHeight *  ScaleZoom;
+
+            //RaiseScaleZoomChanged(ScaleZoom, ScaleZoom);
+
+            int k = 0;
+        }
+
+        private void rubiksCubeUserControl_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                double value = e.Delta / 120;
+                double scaledValue = Math.Abs(value * 0.05d);
+                int sign = Math.Sign(value);
+
+                double scaleZoom = (double)GetValue(RubiksCubeControl.ScaleZoomProperty);
+
+                if (sign == -1)
+                {
+                    SetValue(RubiksCubeControl.ScaleZoomProperty, scaleZoom - scaledValue);
+                }
+                else if (sign == 1)
+                {
+                    SetValue(RubiksCubeControl.ScaleZoomProperty, scaleZoom + scaledValue);
+                }
+            }
         }
 
         public static void UpdatePositions_Rings(RubiksCubeMoves move, bool counterRotate)
@@ -554,6 +660,13 @@ namespace RubiksCubeControlWpf
                 Interlocked.Exchange(ref _lockObject, 0);
             }
         }
+
+        private void CubeNet_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.OnMouseLeftButtonDown(e);
+        }
+
+
     }
 
     public class MoveAnimationGroup

@@ -14,6 +14,11 @@ namespace RubiksCubeControlWpf
 {
     public static class AnimationHelper
     {
+
+        public static double AnimationDuration = 0.75;
+        public static double AnimationAccelerationRatio = 0.333;
+        public static double AnimationDecelerationRatio = 0.667;
+
         public static Tuple<Circle, PointAnimationUsingPath>[] BuildRingAnimation(MoveAnimationGroup moveAnimationGroup)
         {
             int index = 0;
@@ -103,58 +108,8 @@ namespace RubiksCubeControlWpf
 
                 moveAnimationGroup.AddFaceFinalizerAction(face);
 
-                /*
-                List<Circle> facePeices = face.GetItems();
-                Point centerLocation = face.C.Item.Location;
-                foreach (var circle in facePeices)
-                {
-                    RotateTransform transform = new RotateTransform(0);
-
-                    //transform.CenterX = ;
-                    //transform.CenterY = ;
-
-                    double x = ((centerLocation.X - circle.Location.X) + circle.Radius) / (circle.Radius * 2);
-                    double y = ((centerLocation.Y - circle.Location.Y) + circle.Radius) / (circle.Radius * 2);
-
-                    circle.RenderTransformOrigin = new Point(x, y);
-
-                    //circle.RenderTransform = null;
-                    //circle.SetValue(UIElement.RenderTransformOriginProperty, DependencyProperty.UnsetValue);
-                    circle.RenderTransform = transform;
-
-                    double to = 90;
-                    if (moveAnimationGroup.CounterRotate)
-                    {
-                        to = -90;
-                    }
-                    DoubleAnimation animation = new DoubleAnimation
-                    {
-                        From = 0,
-                        To = to,
-                        Duration = new Duration(System.TimeSpan.FromSeconds(AnimationHelper.AnimationDuration)),
-                        RepeatBehavior = new RepeatBehavior(1),
-                        AutoReverse = false,
-                        AccelerationRatio = AnimationHelper.AnimationAccelerationRatio,
-                        DecelerationRatio = AnimationHelper.AnimationDecelerationRatio,
-                        FillBehavior = FillBehavior.Stop
-                    };
-
-                    Point finalLocation = circle.Location;
-                    finalLocation = new RotateTransform(90, centerLocation.X, centerLocation.Y).Transform(finalLocation);
-
-                    animation.Completed += (object? sender, EventArgs e) =>
-                    {
-                        circle.SetValue(Circle.LocationProperty, finalLocation);
-                    };
-
-                    animationGroup.Add(new Tuple<Circle, DoubleAnimation>(circle, animation));
-                }
-                */
-
                 results.Add(animationGroup.ToArray());
             }
-
-            //movesToAnimate.AddClearFaceTransformAction();
 
             return results;
         }
@@ -170,10 +125,6 @@ namespace RubiksCubeControlWpf
 
             return new Point(x, y);
         }
-
-        public static double AnimationDuration = 0.90;
-        public static double AnimationAccelerationRatio = 0.333;
-        public static double AnimationDecelerationRatio = 0.667;
 
         public static PointAnimationUsingPath BuildPathAnimation(PathGeometry path)
         {

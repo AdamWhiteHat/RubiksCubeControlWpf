@@ -5,15 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RubiksCubeControlWpf"
              xmlns:shapes="clr-namespace:RubiksCubeControlWpf.Shapes"
-             mc:Ignorable="d"             
-             Background="Transparent"
-             Width="546" Height="541" 
+             mc:Ignorable="d"  
+             Background="Transparent"         
+             DataContext="{Binding Mode=OneWay, RelativeSource={RelativeSource Self}}"
+             Width="Auto"
+             Height="Auto" 
+             PreviewMouseWheel="rubiksCubeUserControl_PreviewMouseWheel"
              Margin="0"
              Padding="0"
              x:Name="rubiksCubeUserControl"
              >
     <UserControl.Resources>
-        <SolidColorBrush x:Key="ControlColorBrush" Color="{x:Static SystemColors.ControlDarkColor}" />
+        <SolidColorBrush x:Key="ControlDarkColorBrush" Color="{x:Static SystemColors.ControlDarkColor}" />
+        <SolidColorBrush x:Key="ControlColorBrush" Color="{x:Static SystemColors.ControlColor}" />
+
 
         <Style x:Key="canvasGroup" TargetType="Canvas">
             <Setter Property="Width" Value="Auto" />
@@ -28,10 +33,10 @@
         </Style>
 
         <Style x:Key="peice" TargetType="shapes:Circle">
-            <Setter Property="Radius" Value="12" />
-            <Setter Property="Fill" Value="Transparent" />            
-            <Setter Property="Opacity" Value="1" />
-            <d:Setter Property="StrokeThickness" Value="6" />
+            <Setter Property="Radius" Value="9" />
+            <Setter Property="Fill" Value="Transparent" />
+            <d:Setter Property="Opacity" Value="0.5" />
+            <d:Setter Property="StrokeThickness" Value="5" />
         </Style>
 
         <Style x:Key="HintHelperStyle" TargetType="Label">
@@ -43,16 +48,39 @@
         </Style>
     </UserControl.Resources>
 
-
-
-    <Border x:Name="ControlBorder" BorderBrush="DarkSlateGray" Background="{DynamicResource ControlColorBrush}" 
+    <Border x:Name="ControlBorder" BorderBrush="DarkSlateGray" Background="{DynamicResource ControlDarkColorBrush}" 
+            MinWidth="546"
+            MinHeight="540"
             BorderThickness="3" CornerRadius="520,520,320,320"  
             Margin="0" Padding="0"
-            Opacity="1"
-            Focusable="False" >
-        <Grid Margin="0">
+            Opacity="1" Focusable="False" 
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"      
+            RenderTransformOrigin="0.5,0.5"
+            >
+        <Border.RenderTransform>
+            <ScaleTransform  x:Name="borderScaleTransform"
+                   ScaleX="{Binding ScaleZoom}" 
+                   ScaleY="{Binding ScaleZoom}"
+                   CenterX="{Binding Center.X}"
+                   CenterY="{Binding Center.Y}"
+                   Changed="ScaleTransform_Changed" 
+                   />
+        </Border.RenderTransform>
 
-            <Canvas x:Name="CubeNet" Style="{DynamicResource canvasGroup}" Margin="50,50,50,65" >
+        <Grid>
+            <Grid.OpacityMask>
+                <VisualBrush x:Name="opacityMaskVisualBrush" Visual="{Binding ElementName=CubeNet}" Opacity="1" />
+            </Grid.OpacityMask>
+
+            <Canvas x:Name="CubeNet" Style="{DynamicResource canvasGroup}" Margin="50,50,50,65" MouseLeftButtonDown="CubeNet_MouseLeftButtonDown"  >
+
+                <Button x:Name="closeButton" Click="closeButton_Click" 
+                        Content="r" FontFamily="Marlett" FontSize="20" 
+                        Background="{DynamicResource ControlColorBrush}" 
+                        Foreground="Black" BorderThickness="1.75" Padding="2"
+                        Width="27" Height="27" Canvas.Left="402" Canvas.Top="-45"
+                        Focusable="True"  />
 
                 <!--
                   ████████ ██████   █████   ██████ ██   ██ ███████
@@ -110,7 +138,7 @@
                    ██████ ██ ██   ██  ██████ ███████ ███████ ███████
                  -->
 
-                <Canvas x:Name="Circles" Style="{DynamicResource canvasGroup}" Margin="-5,-5,0,0">
+                <Canvas x:Name="Circles" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" Canvas.Left="-2" Canvas.Top="-2">
 
                     <!--     _  _  __                   __ _____
                             |_)|_|/  |/             |  |_ |_  | 

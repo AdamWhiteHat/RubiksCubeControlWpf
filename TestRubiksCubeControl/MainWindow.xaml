@@ -5,13 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TestRubiksCubeControl"
         xmlns:ctrl="clr-namespace:RubiksCubeControlWpf;assembly=RubiksCubeControlWpf"
-        mc:Ignorable="d"
-        Title="Rubik's Rings"         
-        Width="546" Height="541" SizeToContent="WidthAndHeight"
-        Background="Transparent"
+        mc:Ignorable="d" 
+        DataContext="{Binding ElementName=rubiksCubeControl, Mode=OneWay}"    
+        Title="Rubik's Rings"                
+        Background="Transparent" AllowsTransparency="True"
+        Width="561" Height="578" Margin="0" Padding="0" 
+        WindowStyle="None"       
+        HorizontalAlignment="Center" VerticalAlignment="Center"
+        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+        WindowStartupLocation="CenterScreen"
+        KeyDown="Window_KeyDown"
         >
-    <Grid>
-            <ctrl:RubiksCubeControl x:Name="rubiksCubeControl"  /> 
-
-    </Grid>
+    <ctrl:RubiksCubeControl x:Name="rubiksCubeControl" Margin="0" Padding="0">
+    </ctrl:RubiksCubeControl>
 </Window>
