@@ -147,9 +147,9 @@
                     <Canvas x:Name="Back_Left_Face" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
 
                         <Canvas x:Name="BL_Left_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                            <shapes:Circle x:Name="yNW" Style="{DynamicResource peice}" Stroke="#ffa"               Canvas.Left="56"     Canvas.Top="127"    />
-                            <shapes:Circle x:Name="yWW" Style="{DynamicResource peice}" Stroke="#ffa"               Canvas.Left="55"     Canvas.Top="168"    />
-                            <shapes:Circle x:Name="ySW" Style="{DynamicResource peice}" Stroke="#ffa"               Canvas.Left="64"     Canvas.Top ="209"    />
+                            <shapes:Circle x:Name="yNW" Style="{DynamicResource peice}" Stroke="yellow"               Canvas.Left="56"     Canvas.Top="127"    />
+                            <shapes:Circle x:Name="yWW" Style="{DynamicResource peice}" Stroke="yellow"               Canvas.Left="55"     Canvas.Top="168"    />
+                            <shapes:Circle x:Name="ySW" Style="{DynamicResource peice}" Stroke="yellow"               Canvas.Left="64"     Canvas.Top ="209"    />
                         </Canvas>
 
                         <Canvas x:Name="BL_Middle_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
@@ -159,9 +159,9 @@
                         </Canvas>
 
                         <Canvas x:Name="BL_Right_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                            <shapes:Circle x:Name="yNE" Style="{DynamicResource peice}" Stroke="#cc0"               Canvas.Left="133"     Canvas.Top="95"    />
-                            <shapes:Circle x:Name="yEE" Style="{DynamicResource peice}" Stroke="#cc0"               Canvas.Left="117"     Canvas.Top="129"    />
-                            <shapes:Circle x:Name="ySE" Style="{DynamicResource peice}" Stroke="#cc0"               Canvas.Left="114"     Canvas.Top ="162"    />
+                            <shapes:Circle x:Name="yNE" Style="{DynamicResource peice}" Stroke="yellow"               Canvas.Left="133"     Canvas.Top="95"    />
+                            <shapes:Circle x:Name="yEE" Style="{DynamicResource peice}" Stroke="yellow"               Canvas.Left="117"     Canvas.Top="129"    />
+                            <shapes:Circle x:Name="ySE" Style="{DynamicResource peice}" Stroke="yellow"               Canvas.Left="114"     Canvas.Top ="162"    />
                         </Canvas>
 
                     </Canvas>
@@ -173,9 +173,9 @@
                     <Canvas x:Name="Front_Top_Face" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
 
                         <Canvas x:Name="FT_Left_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                            <shapes:Circle x:Name="gNW" Style="{DynamicResource peice}" Stroke="lightgreen"         Canvas.Left="177"     Canvas.Top="125"   />
-                            <shapes:Circle x:Name="gWW" Style="{DynamicResource peice}" Stroke="lightgreen"         Canvas.Left="148"     Canvas.Top="154"   />
-                            <shapes:Circle x:Name="gSW" Style="{DynamicResource peice}" Stroke="lightgreen"         Canvas.Left="185"     Canvas.Top="158"   />
+                            <shapes:Circle x:Name="gNW" Style="{DynamicResource peice}" Stroke="green"         Canvas.Left="177"     Canvas.Top="125"   />
+                            <shapes:Circle x:Name="gWW" Style="{DynamicResource peice}" Stroke="green"         Canvas.Left="148"     Canvas.Top="154"   />
+                            <shapes:Circle x:Name="gSW" Style="{DynamicResource peice}" Stroke="green"         Canvas.Left="185"     Canvas.Top="158"   />
 
                         </Canvas>
 
@@ -186,9 +186,9 @@
                         </Canvas>
 
                         <Canvas x:Name="FT_Right_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                            <shapes:Circle x:Name="gNE" Style="{DynamicResource peice}" Stroke="darkgreen"          Canvas.Left="250"     Canvas.Top="126"   />
-                            <shapes:Circle x:Name="gEE" Style="{DynamicResource peice}" Stroke="darkgreen"          Canvas.Left="278"     Canvas.Top="153"   />
-                            <shapes:Circle x:Name="gSE" Style="{DynamicResource peice}" Stroke="darkgreen"          Canvas.Left="242"     Canvas.Top="158"   />
+                            <shapes:Circle x:Name="gNE" Style="{DynamicResource peice}" Stroke="green"          Canvas.Left="250"     Canvas.Top="126"   />
+                            <shapes:Circle x:Name="gEE" Style="{DynamicResource peice}" Stroke="green"          Canvas.Left="278"     Canvas.Top="153"   />
+                            <shapes:Circle x:Name="gSE" Style="{DynamicResource peice}" Stroke="green"          Canvas.Left="242"     Canvas.Top="158"   />
                         </Canvas>
 
                     </Canvas>
@@ -200,9 +200,9 @@
                     <Canvas x:Name="Back_Right_Face" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
 
                         <Canvas x:Name="BR_Left_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                            <shapes:Circle x:Name="oNW" Style="{DynamicResource peice}" Stroke="NavajoWhite"        Canvas.Left="294"     Canvas.Top="95"   />
-                            <shapes:Circle x:Name="oWW" Style="{DynamicResource peice}" Stroke="NavajoWhite"        Canvas.Left="310"     Canvas.Top="129"   />
-                            <shapes:Circle x:Name="oSW" Style="{DynamicResource peice}" Stroke="NavajoWhite"        Canvas.Left="312"     Canvas.Top="162"   />
+                            <shapes:Circle x:Name="oNW" Style="{DynamicResource peice}" Stroke="Orange"        Canvas.Left="294"     Canvas.Top="95"   />
+                            <shapes:Circle x:Name="oWW" Style="{DynamicResource peice}" Stroke="Orange"        Canvas.Left="310"     Canvas.Top="129"   />
+                            <shapes:Circle x:Name="oSW" Style="{DynamicResource peice}" Stroke="Orange"        Canvas.Left="312"     Canvas.Top="162"   />
                         </Canvas>
 
                         <Canvas x:Name="BR_Middle_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
@@ -212,9 +212,9 @@
                         </Canvas>
 
                         <Canvas x:Name="BR_Right_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                            <shapes:Circle x:Name="oNE" Style="{DynamicResource peice}" Stroke="DarkOrange"         Canvas.Left="370"     Canvas.Top="127"   />
-                            <shapes:Circle x:Name="oEE" Style="{DynamicResource peice}" Stroke="DarkOrange"         Canvas.Left="372"     Canvas.Top="169"   />
-                            <shapes:Circle x:Name="oSE" Style="{DynamicResource peice}" Stroke="DarkOrange"         Canvas.Left="363"     Canvas.Top="209"   />
+                            <shapes:Circle x:Name="oNE" Style="{DynamicResource peice}" Stroke="Orange"         Canvas.Left="370"     Canvas.Top="127"   />
+                            <shapes:Circle x:Name="oEE" Style="{DynamicResource peice}" Stroke="Orange"         Canvas.Left="372"     Canvas.Top="169"   />
+                            <shapes:Circle x:Name="oSE" Style="{DynamicResource peice}" Stroke="Orange"         Canvas.Left="363"     Canvas.Top="209"   />
                         </Canvas>
 
                     </Canvas>
@@ -226,9 +226,9 @@
                     <Canvas x:Name="Front_Left_Face" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
 
                         <Canvas x:Name="FL_Left_Slice" Style="{DynamicResource canvasGroup}"  Margin="0,0,0,0">
-                            <shapes:Circle x:Name="rNW" Style="{DynamicResource peice}" Stroke="HotPink"            Canvas.Left="124"     Canvas.Top="197"     />
-                            <shapes:Circle x:Name="rWW" Style="{DynamicResource peice}" Stroke="HotPink"            Canvas.Left="115"     Canvas.Top="237"     />
-                            <shapes:Circle x:Name="rSW" Style="{DynamicResource peice}" Stroke="HotPink"            Canvas.Left="115"     Canvas.Top="279"     />
+                            <shapes:Circle x:Name="rNW" Style="{DynamicResource peice}" Stroke="Red"            Canvas.Left="124"     Canvas.Top="197"     />
+                            <shapes:Circle x:Name="rWW" Style="{DynamicResource peice}" Stroke="Red"            Canvas.Left="115"     Canvas.Top="237"     />
+                            <shapes:Circle x:Name="rSW" Style="{DynamicResource peice}" Stroke="Red"            Canvas.Left="115"     Canvas.Top="279"     />
                         </Canvas>
 
                         <Canvas x:Name="FL_Middle_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
@@ -238,9 +238,9 @@
                         </Canvas>
 
                         <Canvas x:Name="FL_Right_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                            <shapes:Circle x:Name="rNE" Style="{DynamicResource peice}" Stroke="DarkRed"            Canvas.Left="174"     Canvas.Top="244"     />
-                            <shapes:Circle x:Name="rEE" Style="{DynamicResource peice}" Stroke="DarkRed"            Canvas.Left="177"     Canvas.Top="277"     />
-                            <shapes:Circle x:Name="rSE" Style="{DynamicResource peice}" Stroke="DarkRed"            Canvas.Left="193"     Canvas.Top="311.25"     />
+                            <shapes:Circle x:Name="rNE" Style="{DynamicResource peice}" Stroke="Red"            Canvas.Left="174"     Canvas.Top="244"     />
+                            <shapes:Circle x:Name="rEE" Style="{DynamicResource peice}" Stroke="Red"            Canvas.Left="177"     Canvas.Top="277"     />
+                            <shapes:Circle x:Name="rSE" Style="{DynamicResource peice}" Stroke="Red"            Canvas.Left="193"     Canvas.Top="311.25"     />
                         </Canvas>
 
                     </Canvas>
@@ -258,15 +258,15 @@
                         </Canvas>
 
                         <Canvas x:Name="FR_Middle_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                            <shapes:Circle x:Name="wNN" Style="{DynamicResource peice}" Stroke="AliceBlue"          Canvas.Left="279"     Canvas.Top="227"     />
-                            <shapes:Circle x:Name="wCC" Style="{DynamicResource peice}" Stroke="AliceBlue"          Canvas.Left="282"     Canvas.Top="263"     />
-                            <shapes:Circle x:Name="wSS" Style="{DynamicResource peice}" Stroke="AliceBlue"          Canvas.Left="274"     Canvas.Top="300"     />
+                            <shapes:Circle x:Name="wNN" Style="{DynamicResource peice}" Stroke="White"          Canvas.Left="279"     Canvas.Top="227"     />
+                            <shapes:Circle x:Name="wCC" Style="{DynamicResource peice}" Stroke="White"          Canvas.Left="282"     Canvas.Top="263"     />
+                            <shapes:Circle x:Name="wSS" Style="{DynamicResource peice}" Stroke="White"          Canvas.Left="274"     Canvas.Top="300"     />
                         </Canvas>
 
                         <Canvas x:Name="FR_Right_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                            <shapes:Circle x:Name="wNE" Style="{DynamicResource peice}" Stroke="Gainsboro"          Canvas.Left="302"     Canvas.Top="197"     />
-                            <shapes:Circle x:Name="wEE" Style="{DynamicResource peice}" Stroke="Gainsboro"          Canvas.Left="312"     Canvas.Top="237"     />
-                            <shapes:Circle x:Name="wSE" Style="{DynamicResource peice}" Stroke="Gainsboro"          Canvas.Left="310"     Canvas.Top="279"     />
+                            <shapes:Circle x:Name="wNE" Style="{DynamicResource peice}" Stroke="White"          Canvas.Left="302"     Canvas.Top="197"     />
+                            <shapes:Circle x:Name="wEE" Style="{DynamicResource peice}" Stroke="White"          Canvas.Left="312"     Canvas.Top="237"     />
+                            <shapes:Circle x:Name="wSE" Style="{DynamicResource peice}" Stroke="White"          Canvas.Left="310"     Canvas.Top="279"     />
                         </Canvas>
 
                     </Canvas>
@@ -278,9 +278,9 @@
                     <Canvas x:Name="Back_Bottom_Face" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" d:IsLocked="True">
 
                         <Canvas x:Name="BB_Left_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                            <shapes:Circle x:Name="bNW" Style="{DynamicResource peice}" Stroke="CornflowerBlue"     Canvas.Left="185"     Canvas.Top="348"      />
-                            <shapes:Circle x:Name="bWW" Style="{DynamicResource peice}" Stroke="CornflowerBlue"     Canvas.Left="148"     Canvas.Top="352"      />
-                            <shapes:Circle x:Name="bSW" Style="{DynamicResource peice}" Stroke="CornflowerBlue"     Canvas.Left="177"     Canvas.Top="380"      />
+                            <shapes:Circle x:Name="bNW" Style="{DynamicResource peice}" Stroke="blue"     Canvas.Left="185"     Canvas.Top="348"      />
+                            <shapes:Circle x:Name="bWW" Style="{DynamicResource peice}" Stroke="blue"     Canvas.Left="148"     Canvas.Top="352"      />
+                            <shapes:Circle x:Name="bSW" Style="{DynamicResource peice}" Stroke="blue"     Canvas.Left="177"     Canvas.Top="380"      />
                         </Canvas>
 
                         <Canvas x:Name="BB_Middle_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
@@ -290,9 +290,9 @@
                         </Canvas>
 
                         <Canvas x:Name="BB_Right_Slice" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                            <shapes:Circle x:Name="bNE" Style="{DynamicResource peice}" Stroke="Navy"               Canvas.Left="242"     Canvas.Top="347"      />
-                            <shapes:Circle x:Name="bEE" Style="{DynamicResource peice}" Stroke="Navy"               Canvas.Left="278"     Canvas.Top="352"      />
-                            <shapes:Circle x:Name="bSE" Style="{DynamicResource peice}" Stroke="Navy"               Canvas.Left="249"     Canvas.Top="380"      />
+                            <shapes:Circle x:Name="bNE" Style="{DynamicResource peice}" Stroke="blue"               Canvas.Left="242"     Canvas.Top="347"      />
+                            <shapes:Circle x:Name="bEE" Style="{DynamicResource peice}" Stroke="blue"               Canvas.Left="278"     Canvas.Top="352"      />
+                            <shapes:Circle x:Name="bSE" Style="{DynamicResource peice}" Stroke="blue"               Canvas.Left="249"     Canvas.Top="380"      />
                         </Canvas>
                     </Canvas>
 
