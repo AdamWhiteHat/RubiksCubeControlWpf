@@ -13,4 +13,16 @@
 	  <ProjectReference Include="..\RubiksCubeControl\RubiksCubeControl.csproj" />
 	</ItemGroup>
 
+	<PropertyGroup>
+		<MajorVersion Condition=" '$(MajorVersion)' == '' ">1</MajorVersion>
+		<MinorVersion Condition=" '$(MinorVersion)' == '' ">0</MinorVersion>
+		<PatchVersion Condition=" '$(PatchVersion)' == '' ">0</PatchVersion>
+
+		<BuildTimestamp>$([System.DateTime]::Now.DayOfYear.ToString().PadLeft(3,'0'))</BuildTimestamp>
+
+		<Version>$(MajorVersion).$(MinorVersion).$(PatchVersion)</Version>
+		<AssemblyVersion>$(Version).$(BuildTimestamp)</AssemblyVersion>
+		<PackageVersion>$(AssemblyVersion)</PackageVersion>
+	</PropertyGroup>
+
 </Project>
