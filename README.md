@@ -15,3 +15,11 @@ This project was inspired by this animated gif found on [this reddit post](https
 And here is a screen recording of my recreation.
 
 ![Screen recording](https://raw.githubusercontent.com/AdamWhiteHat/RubiksCubeControlWpf/refs/heads/master/RubiksCubeApplication001.gif)
+
+## Download links
+
+Download the [pre-compiled windows binary here](https://github.com/AdamWhiteHat/RubiksCubeControlWpf/releases).
+
+Download the [latest version of the source code here](https://github.com/AdamWhiteHat/RubiksCubeControlWpf/archive/refs/heads/master.zip)
+
+
