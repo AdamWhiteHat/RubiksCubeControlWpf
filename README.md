@@ -8,10 +8,10 @@ One of the advantages of this visualization is you can see all the the faces of 
 
 This project was inspired by this animated gif found on [this reddit post](https://www.reddit.com/r/Damnthatsinteresting/comments/yzq15g/now_the_legendary_rubiks_cube_is_easy_to/).
 
-[!Inspiration](https://github.com/AdamWhiteHat/RubiksCubeControlWpf/blob/master/Rubiks-Cube-Visualization.gif)
+![Inspiration](https://raw.githubusercontent.com/AdamWhiteHat/RubiksCubeControlWpf/refs/heads/master/Rubiks-Cube-Visualization.gif)
 
 ## Screen recording
 
 And here is a screen recording of my recreation.
 
-[!Screen recording](https://github.com/AdamWhiteHat/RubiksCubeControlWpf/blob/master/RubiksCubeApplication001.gif)
+![Screen recording](https://raw.githubusercontent.com/AdamWhiteHat/RubiksCubeControlWpf/refs/heads/master/RubiksCubeApplication001.gif)
