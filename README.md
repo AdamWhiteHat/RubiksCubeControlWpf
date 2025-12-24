@@ -4,6 +4,8 @@ This project features a WPF control that presents a unique 2D visualization of a
 
 One of the advantages of this visualization is you can see all the the faces of the cube at once, including the three back faces that face away from you and are occluded as a result of it being a 3-dimensional object.
 
+Jump [straight to the download links](https://github.com/AdamWhiteHat/RubiksCubeControlWpf/blob/master/README.md#download-links).
+
 ## Inspiration
 
 This project was inspired by this animated gif found on [this reddit post](https://www.reddit.com/r/Damnthatsinteresting/comments/yzq15g/now_the_legendary_rubiks_cube_is_easy_to/).
