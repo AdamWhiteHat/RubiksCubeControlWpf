@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RubiksCubeControlWpf
+namespace RubiksCubeControl
 {
     public static class RotationHelper
     {

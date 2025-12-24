@@ -14,17 +14,16 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Microsoft.Xaml.Behaviors.Media;
-using RubiksCubeControlWpf;
-using RubiksCubeControlWpf.Shapes;
-using static RubiksCubeControlWpf.AnimationHelper;
+using RubiksCubeControl;
+using RubiksCubeControl.Shapes;
+using static RubiksCubeControl.AnimationHelper;
 
-namespace RubiksCubeControlWpf
+namespace RubiksCubeControl
 {
     /// <summary>
     /// Interaction logic for RubiksCubeControl.xaml
     /// </summary>
-    public partial class RubiksCubeControl : UserControl
+    public partial class RubiksCubeCtrl : UserControl
     {
 
         public event RoutedEventHandler QuitClientRequested;
@@ -119,7 +118,7 @@ namespace RubiksCubeControlWpf
         private static GameBoard<Circle> _gameboard { get; set; }
         private ConcurrentQueue<Tuple<RubiksCubeMoves, bool>> _moveQueue { get; set; }
 
-        public RubiksCubeControl()
+        public RubiksCubeCtrl()
         {
             InitializeComponent();
 

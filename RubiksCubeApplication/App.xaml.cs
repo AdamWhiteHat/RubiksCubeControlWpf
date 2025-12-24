@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace TestRubiksCubeControl
+namespace RubiksCubeApplication
 {
     /// <summary>
     /// Interaction logic for App.xaml

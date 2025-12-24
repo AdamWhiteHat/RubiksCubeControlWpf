@@ -5,9 +5,9 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Media.Animation;
-using RubiksCubeControlWpf.Shapes;
+using RubiksCubeControl.Shapes;
 
-namespace RubiksCubeControlWpf
+namespace RubiksCubeControl
 {
     public static class AnimationPairExtensionMethods
     {

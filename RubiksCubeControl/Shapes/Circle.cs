@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace RubiksCubeControlWpf.Shapes
+namespace RubiksCubeControl.Shapes
 {
     public class Circle : System.Windows.Shapes.Shape
     {

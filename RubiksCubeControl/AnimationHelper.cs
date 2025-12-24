@@ -3,9 +3,9 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
-using RubiksCubeControlWpf.Shapes;
+using RubiksCubeControl.Shapes;
 
-namespace RubiksCubeControlWpf
+namespace RubiksCubeControl
 {
     public static class AnimationHelper
     {

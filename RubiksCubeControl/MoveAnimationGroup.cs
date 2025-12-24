@@ -1,9 +1,9 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using RubiksCubeControlWpf.Shapes;
+using RubiksCubeControl.Shapes;
 
-namespace RubiksCubeControlWpf
+namespace RubiksCubeControl
 {
     public class MoveAnimationGroup
     {
@@ -30,7 +30,7 @@ namespace RubiksCubeControlWpf
 
         public void AddRingFinalizerAction(RubiksCubeMoves move, bool counterRotate)
         {
-            FinalizerActions.Add(new Action(() => RubiksCubeControl.UpdatePositions_Rings(move, counterRotate)));
+            FinalizerActions.Add(new Action(() => RubiksCubeCtrl.UpdatePositions_Rings(move, counterRotate)));
         }
 
         public void AddFaceFinalizerAction(Face<Circle> face)

@@ -1,4 +1,4 @@
-﻿namespace RubiksCubeControlWpf
+﻿namespace RubiksCubeControl
 {
     public enum RubiksCubeMoves
     {

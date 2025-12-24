@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36414.22 d17.14
+# Blend for Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RubiksCubeControlWpf", "RubiksCubeControlWpf\RubiksCubeControlWpf.csproj", "{6E512527-CBB1-4E2F-BE78-BF8774514E08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RubiksCubeControl", "RubiksCubeControl\RubiksCubeControl.csproj", "{09D33B9C-2455-4546-6767-CE849390A3DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestRubiksCubeControl", "TestRubiksCubeControl\TestRubiksCubeControl.csproj", "{59D3FB78-111B-4E0A-83AE-AD76E4E6058A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RubiksCubeApplication", "RubiksCubeApplication\RubiksCubeApplication.csproj", "{767A59E0-EFE1-3053-A55F-2757F9A1CB77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6E512527-CBB1-4E2F-BE78-BF8774514E08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E512527-CBB1-4E2F-BE78-BF8774514E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E512527-CBB1-4E2F-BE78-BF8774514E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E512527-CBB1-4E2F-BE78-BF8774514E08}.Release|Any CPU.Build.0 = Release|Any CPU
-		{59D3FB78-111B-4E0A-83AE-AD76E4E6058A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{59D3FB78-111B-4E0A-83AE-AD76E4E6058A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{59D3FB78-111B-4E0A-83AE-AD76E4E6058A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{59D3FB78-111B-4E0A-83AE-AD76E4E6058A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09D33B9C-2455-4546-6767-CE849390A3DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09D33B9C-2455-4546-6767-CE849390A3DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09D33B9C-2455-4546-6767-CE849390A3DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09D33B9C-2455-4546-6767-CE849390A3DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{767A59E0-EFE1-3053-A55F-2757F9A1CB77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{767A59E0-EFE1-3053-A55F-2757F9A1CB77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{767A59E0-EFE1-3053-A55F-2757F9A1CB77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{767A59E0-EFE1-3053-A55F-2757F9A1CB77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

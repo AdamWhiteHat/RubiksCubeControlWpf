@@ -10,9 +10,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using RubiksCubeControlWpf;
+using RubiksCubeControl;
 
-namespace TestRubiksCubeControl
+namespace RubiksCubeApplication
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
