@@ -130,7 +130,7 @@ namespace RubiksCubeControlWpf.Shapes
 
         public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(nameof(Radius), typeof(double), typeof(Circle), new FrameworkPropertyMetadata(10.0, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, new PropertyChangedCallback(Circle.RaiseRadiusChanged), new CoerceValueCallback(CoerceRadiusProperty)));
 
-        public static readonly DependencyProperty LocationProperty = DependencyProperty.Register(nameof(Location), typeof(Point), typeof(Circle), new PropertyMetadata(default(Point), new PropertyChangedCallback(Circle.RaiseLocationChanged)));
+        public static readonly DependencyProperty LocationProperty = DependencyProperty.Register(nameof(Location), typeof(Point), typeof(Circle), new FrameworkPropertyMetadata(default(Point), new PropertyChangedCallback(Circle.RaiseLocationChanged)));
 
         public static readonly DependencyProperty LeftProperty = Canvas.LeftProperty.AddOwner(typeof(Circle), new FrameworkPropertyMetadata(double.NaN, new PropertyChangedCallback(Circle.RaiseLeftChanged)));
         public static readonly DependencyProperty TopProperty = Canvas.TopProperty.AddOwner(typeof(Circle), new FrameworkPropertyMetadata(double.NaN, new PropertyChangedCallback(Circle.RaiseTopChanged)));
@@ -143,39 +143,6 @@ namespace RubiksCubeControlWpf.Shapes
         {
             return Math.Max(0, (double)baseValue);
         }
-        /*
-        private static object CoerceStrokeThicknessProperty(DependencyObject dp, object baseValue)
-        {
-            Circle circle = (Circle)dp;
-            double strokeThickness = (double)baseValue;
-            if (strokeThickness != circle.Radius)
-            {
-                strokeThickness = circle.Radius;
-            }
-            return strokeThickness;
-        }
-        */
-        private static object CoerceWidthProperty(DependencyObject dp, object baseValue)
-        {
-            Circle circle = (Circle)dp;
-            return CoerceWidthOrHeight(circle, (double)baseValue);
-        }
-
-        private static object CoerceHeightProperty(DependencyObject dp, object baseValue)
-        {
-            Circle circle = (Circle)dp;
-            return CoerceWidthOrHeight(circle, (double)baseValue);
-        }
-
-        private static double CoerceWidthOrHeight(Circle circle, double baseValue)
-        {
-            double correctValue = circle.Radius * 2.0d;
-            if (baseValue == correctValue)
-            {
-                return baseValue;
-            }
-            return correctValue;
-        }
 
         #endregion
 
@@ -184,16 +151,18 @@ namespace RubiksCubeControlWpf.Shapes
             StretchProperty.OverrideMetadata(typeof(Circle), new FrameworkPropertyMetadata(Stretch.Fill));
 
             WidthProperty.OverrideMetadata(typeof(Circle),
-                new FrameworkPropertyMetadata(14.0d, FrameworkPropertyMetadataOptions.AffectsMeasure,
-                    new PropertyChangedCallback(Circle.RaiseWidthChanged), new CoerceValueCallback(CoerceWidthProperty)));
+                new FrameworkPropertyMetadata(18.0d, FrameworkPropertyMetadataOptions.AffectsMeasure,
+                    new PropertyChangedCallback(Circle.RaiseWidthChanged)));
 
             HeightProperty.OverrideMetadata(typeof(Circle),
-                new FrameworkPropertyMetadata(14.0d, FrameworkPropertyMetadataOptions.AffectsMeasure,
-                    new PropertyChangedCallback(Circle.RaiseHeightChanged), new CoerceValueCallback(CoerceHeightProperty)));
+                new FrameworkPropertyMetadata(18.0d, FrameworkPropertyMetadataOptions.AffectsMeasure,
+                    new PropertyChangedCallback(Circle.RaiseHeightChanged)));
 
             StrokeThicknessProperty.OverrideMetadata(typeof(Circle),
-                new FrameworkPropertyMetadata(7.0d, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
+                new FrameworkPropertyMetadata(9.0d, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
                     new PropertyChangedCallback(Circle.RaiseStrokeThicknessChanged)));
+
+            MarginProperty.OverrideMetadata(typeof(Circle), new FrameworkPropertyMetadata(new Thickness(-9, -9, 0, 0)));
         }
 
         public Circle()
@@ -206,7 +175,7 @@ namespace RubiksCubeControlWpf.Shapes
 
         private void Circle_TopChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            double newY = e.NewValue + Radius;
+            double newY = e.NewValue; // + Radius;
             if (!double.IsSubnormal(newY) && ((Point)GetValue(LocationProperty)).Y != newY)
             {
                 SetValue(LocationProperty, new Point(Location.X, newY));
@@ -215,7 +184,7 @@ namespace RubiksCubeControlWpf.Shapes
 
         private void Circle_LeftChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            double newX = e.NewValue + Radius;
+            double newX = e.NewValue; // + Radius;
             if (!double.IsSubnormal(newX) && ((Point)GetValue(LocationProperty)).X != newX)
             {
                 SetValue(LocationProperty, new Point(newX, Location.Y));
@@ -225,12 +194,12 @@ namespace RubiksCubeControlWpf.Shapes
         private void Circle_LocationChanged(object sender, RoutedPropertyChangedEventArgs<Point> e)
         {
             double radius = (double)GetValue(RadiusProperty);
-            double newLeft = e.NewValue.X - radius;
+            double newLeft = e.NewValue.X;// - radius;
             if (!double.IsSubnormal(newLeft) && (double)GetValue(LeftProperty) != newLeft)
             {
                 SetValue(LeftProperty, newLeft);
             }
-            double newTop = e.NewValue.Y - radius;
+            double newTop = e.NewValue.Y;// - radius;
             if (!double.IsSubnormal(newTop) && (double)GetValue(TopProperty) != newTop)
             {
                 SetValue(TopProperty, newTop);
@@ -252,9 +221,12 @@ namespace RubiksCubeControlWpf.Shapes
                     SetValue(HeightProperty, newDimensions);
                 }
 
-                if ((double)GetValue(StrokeThicknessProperty) != e.NewValue)
+                Thickness newMargin = new Thickness(-e.NewValue, -e.NewValue, 0, 0);
+                Thickness oldMargin = (Thickness)GetValue(MarginProperty);
+
+                if (oldMargin.Top != newMargin.Top || oldMargin.Left != newMargin.Left)
                 {
-                    SetValue(StrokeThicknessProperty, e.NewValue);
+                    SetValue(MarginProperty, newMargin);
                 }
             }
         }

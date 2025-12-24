@@ -1,0 +1,231 @@
+﻿<Window x:Class="RubiksCubeControlWpf.HelpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RubiksCubeControlWpf"
+        mc:Ignorable="d"
+        Title="Help" 
+        WindowStyle="ToolWindow"
+        HorizontalAlignment="Center" VerticalAlignment="Center"
+        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"      
+        WindowStartupLocation="CenterOwner"
+        Width="488"
+        Height="550"                
+        >
+
+    <Window.Resources>
+        <Style x:Key="TableStyle" TargetType="Table">
+            <Setter Property="CellSpacing" Value="0pt" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderThickness" Value="1pt" />
+            <Setter Property="FontFamily" Value="Cascadia Mono" />
+
+        </Style>
+
+        <Style x:Key="RightColumn" TargetType="Paragraph">
+            <Setter Property="TextAlignment" Value="Left" />
+
+        </Style>
+
+        <Style x:Key="TableRowStyle" TargetType="TableRow">
+        </Style>
+
+
+        <Style TargetType="TableCell">
+            <Setter Property="BorderBrush" Value="LightGray" />
+            <Setter Property="BorderThickness" Value="1pt" />
+        </Style>
+
+        <Style x:Key="AltRowStyle" TargetType="TableRowGroup">
+            <Setter Property="Background" Value="AliceBlue" />
+        </Style>
+
+        <Style x:Key="GropStyle" TargetType="TableRowGroup">
+            <Setter Property="Background" Value="Black" />
+        </Style>
+
+        <Style x:Key="RowBreak" TargetType="TableRow">
+            <Setter Property="Background" Value="Black" />
+        </Style>
+    </Window.Resources>
+
+
+    <FlowDocument ColumnRuleBrush="Black" ColumnRuleWidth="1" ColumnGap="3" >
+        <Table Style="{DynamicResource TableStyle}">
+            <Table.Columns>
+                <TableColumn Width="*" />
+                <TableColumn Width="2*" />
+            </Table.Columns>
+            <TableRowGroup >
+                <TableRow>
+                    <TableCell>
+                        <Paragraph>Esc</Paragraph>
+                    </TableCell>
+                    <TableCell>
+                        <Paragraph Style="{DynamicResource RightColumn}">Exit the application</Paragraph>
+                    </TableCell>
+                </TableRow>
+            </TableRowGroup>
+        </Table>
+
+        <Table Style="{DynamicResource TableStyle}">
+            <Table.Columns>
+                <TableColumn Width="*" />
+                <TableColumn Width="2*" />
+            </Table.Columns>
+            <TableRowGroup >
+                <TableRow>
+                    <TableCell>
+                        <Paragraph>
+                            <Run Text="        "></Run> [Key]
+                        </Paragraph>
+                    </TableCell>
+                    <TableCell>
+                        <Paragraph Style="{DynamicResource RightColumn}">Rotate face clockwise</Paragraph>
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>
+                        <Paragraph>Shift + [Key]</Paragraph>
+                    </TableCell>
+                    <TableCell>
+                        <Paragraph Style="{DynamicResource RightColumn}">Rotate face counter-clockwise</Paragraph>
+                    </TableCell>
+                </TableRow>
+            </TableRowGroup>
+            <TableRowGroup >
+                <TableRow Style="{DynamicResource RowBreak}" >
+                </TableRow>
+            </TableRowGroup>
+            <TableRowGroup>
+                <TableRow>
+                    <TableCell>
+                        <Paragraph>F</Paragraph>
+                    </TableCell>
+                    <TableCell>
+                        <Paragraph  Style="{DynamicResource RightColumn}">Rotate front face</Paragraph>
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>
+                        <Paragraph>B</Paragraph>
+                    </TableCell>
+                    <TableCell>
+                        <Paragraph Style="{DynamicResource RightColumn}">Rotate back face</Paragraph>
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>
+                        <Paragraph>L</Paragraph>
+                    </TableCell>
+                    <TableCell>
+                        <Paragraph Style="{DynamicResource RightColumn}">Rotate left face</Paragraph>
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>
+                        <Paragraph>R</Paragraph>
+                    </TableCell>
+                    <TableCell>
+                        <Paragraph Style="{DynamicResource RightColumn}">Rotate right face</Paragraph>
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>
+                        <Paragraph>U</Paragraph>
+                    </TableCell>
+                    <TableCell>
+                        <Paragraph>Rotate up face</Paragraph>
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>
+                        <Paragraph>D</Paragraph>
+                    </TableCell>
+                    <TableCell>
+                        <Paragraph Style="{DynamicResource RightColumn}">Rotate down face</Paragraph>
+                    </TableCell>
+                </TableRow>
+
+                <TableRow>
+                    <TableCell>
+                        <Paragraph>M</Paragraph>
+                    </TableCell>
+                    <TableCell>
+                        <Paragraph Style="{DynamicResource RightColumn}">Rotate middle slice</Paragraph>
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>
+                        <Paragraph>S</Paragraph>
+                    </TableCell>
+                    <TableCell>
+                        <Paragraph Style="{DynamicResource RightColumn}">Rotate 'Slice' slice</Paragraph>
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>
+                        <Paragraph>E</Paragraph>
+                    </TableCell>
+                    <TableCell>
+                        <Paragraph Style="{DynamicResource RightColumn}">Rotate equator slice</Paragraph>
+                    </TableCell>
+                </TableRow>
+
+                <TableRow>
+                    <TableCell>
+                        <Paragraph>X</Paragraph>
+                    </TableCell>
+                    <TableCell>
+                        <Paragraph Style="{DynamicResource RightColumn}">Rotate whole cube about X axis</Paragraph>
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>
+                        <Paragraph>Y</Paragraph>
+                    </TableCell>
+                    <TableCell>
+                        <Paragraph Style="{DynamicResource RightColumn}">Rotate whole cube about Y axis</Paragraph>
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>
+                        <Paragraph>Z</Paragraph>
+                    </TableCell>
+                    <TableCell>
+                        <Paragraph Style="{DynamicResource RightColumn}">Rotate whole cube about Z axis</Paragraph>
+                    </TableCell>
+                </TableRow>
+            </TableRowGroup>
+        </Table>
+
+        <Table Style="{DynamicResource TableStyle}">
+            <Table.Columns>
+                <TableColumn Width="*" />
+                <TableColumn Width="*" />
+            </Table.Columns>
+            <TableRowGroup>
+                <TableRow>
+                    <TableCell >
+                        <Paragraph>Ctrl + MouseWheel Up</Paragraph>
+                    </TableCell>
+                    <TableCell >
+                        <Paragraph>Zoom In</Paragraph>
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell >
+                        <Paragraph>Ctrl + MouseWheel Down</Paragraph>
+                    </TableCell>
+                    <TableCell >
+                        <Paragraph>Zoom Out</Paragraph>
+                    </TableCell>
+                </TableRow>
+            </TableRowGroup>
+        </Table>
+
+
+    </FlowDocument>
+
+</Window>

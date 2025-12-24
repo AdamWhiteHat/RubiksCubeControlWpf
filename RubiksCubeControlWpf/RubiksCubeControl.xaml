@@ -8,17 +8,19 @@
              mc:Ignorable="d"  
              Background="Transparent"         
              DataContext="{Binding Mode=OneWay, RelativeSource={RelativeSource Self}}"
-             Width="Auto"
-             Height="Auto" 
-             PreviewMouseWheel="rubiksCubeUserControl_PreviewMouseWheel"
+             Width="546"
+             Height="540" 
              Margin="0"
              Padding="0"
              x:Name="rubiksCubeUserControl"
+             HorizontalAlignment="Center" VerticalAlignment="Center"
+             HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
              >
+
     <UserControl.Resources>
+
         <SolidColorBrush x:Key="ControlDarkColorBrush" Color="{x:Static SystemColors.ControlDarkColor}" />
         <SolidColorBrush x:Key="ControlColorBrush" Color="{x:Static SystemColors.ControlColor}" />
-
 
         <Style x:Key="canvasGroup" TargetType="Canvas">
             <Setter Property="Width" Value="Auto" />
@@ -35,8 +37,55 @@
         <Style x:Key="peice" TargetType="shapes:Circle">
             <Setter Property="Radius" Value="9" />
             <Setter Property="Fill" Value="Transparent" />
+            <Setter Property="Margin" Value="-9,-9,0,0" />
+            <Setter Property="Stretch" Value="Fill" />
+            <Setter Property="StrokeThickness" Value="9" />
+        </Style>
+
+        <Style x:Key="EndMarkers" TargetType="shapes:Circle">
+            <Setter Property="Stroke" Value="Black" />
+            <Setter Property="Radius" Value="2" />
+            <Setter Property="Fill" Value="Transparent" />
+            <Setter Property="Opacity" Value="0" />
             <d:Setter Property="Opacity" Value="0.5" />
-            <d:Setter Property="StrokeThickness" Value="5" />
+            <Setter Property="Margin" Value="-2,-2,0,0" />
+        </Style>
+
+        <Style x:Key="EndMarkers_" TargetType="shapes:Circle">
+            <Setter Property="Stroke" Value="White" />
+            <Setter Property="Fill" Value="Transparent" />
+            <Setter Property="Opacity" Value="0" />
+            <d:Setter Property="Opacity" Value="0.8" />
+            <Setter Property="Radius" Value="1" />
+            <Setter Property="Margin" Value="-1,-1,0,0" />
+        </Style>
+
+        <Style x:Key="EndMarkers__" TargetType="shapes:Circle">
+            <Setter Property="Stroke" Value="White" />
+            <Setter Property="Fill" Value="Transparent" />
+            <Setter Property="Opacity" Value="0" />
+            <d:Setter Property="Opacity" Value="1" />
+            <Setter Property="Radius" Value="0.1" />
+            <Setter Property="Margin" Value="-0.1,-0.1,0,0" />
+        </Style>
+
+
+        <Style TargetType="Path">
+            <Setter Property="Fill" Value="Transparent" />
+            <Setter Property="Opacity" Value="0.1" />
+            <Setter Property="Stroke"   Value="Transparent" />
+        </Style>
+
+        <Style x:Key="RingPathStyle" TargetType="Path">
+            <Setter Property="Fill" Value="Transparent" />
+            <Setter Property="Opacity" Value="0" />
+            <d:Setter Property="Opacity" Value="0" />
+        </Style>
+
+        <Style x:Key="RingPathStyle_Highlight" TargetType="Path">
+            <Setter Property="Fill" Value="Transparent" />
+            <Setter Property="Opacity" Value="0" />
+            <d:Setter Property="Opacity" Value="0" />
         </Style>
 
         <Style x:Key="HintHelperStyle" TargetType="Label">
@@ -46,41 +95,44 @@
             <Setter Property="FontStyle" Value="Normal" />
             <Setter Property="FontSize" Value="32" />
         </Style>
+
     </UserControl.Resources>
 
-    <Border x:Name="ControlBorder" BorderBrush="DarkSlateGray" Background="{DynamicResource ControlDarkColorBrush}" 
+    <Border x:Name="ControlBorder" 
+            BorderBrush="DarkSlateGray" Background="{DynamicResource ControlDarkColorBrush}" 
             MinWidth="546"
             MinHeight="540"
             BorderThickness="3" CornerRadius="520,520,320,320"  
             Margin="0" Padding="0"
             Opacity="1" Focusable="False" 
             HorizontalAlignment="Center"
-            VerticalAlignment="Bottom"      
-            RenderTransformOrigin="0.5,0.5"
+            VerticalAlignment="Center"             
             >
-        <Border.RenderTransform>
-            <ScaleTransform  x:Name="borderScaleTransform"
-                   ScaleX="{Binding ScaleZoom}" 
-                   ScaleY="{Binding ScaleZoom}"
-                   CenterX="{Binding Center.X}"
-                   CenterY="{Binding Center.Y}"
-                   Changed="ScaleTransform_Changed" 
-                   />
-        </Border.RenderTransform>
 
-        <Grid>
-            <Grid.OpacityMask>
-                <VisualBrush x:Name="opacityMaskVisualBrush" Visual="{Binding ElementName=CubeNet}" Opacity="1" />
-            </Grid.OpacityMask>
+        <Grid Margin="0">
 
-            <Canvas x:Name="CubeNet" Style="{DynamicResource canvasGroup}" Margin="50,50,50,65" MouseLeftButtonDown="CubeNet_MouseLeftButtonDown"  >
+            <Canvas x:Name="CubeNet" Style="{DynamicResource canvasGroup}" Margin="50,50,50,65" MouseLeftButtonDown="CubeNet_MouseLeftButtonDown" >
 
-                <Button x:Name="closeButton" Click="closeButton_Click" 
-                        Content="r" FontFamily="Marlett" FontSize="20" 
+
+                <WrapPanel Canvas.Left="402" Canvas.Top="-45">
+
+                    <Button x:Name="helpButton" Click="helpButton_Click" 
+                        Content="s" FontFamily="Marlett" FontSize="20"
                         Background="{DynamicResource ControlColorBrush}" 
                         Foreground="Black" BorderThickness="1.75" Padding="2"
-                        Width="27" Height="27" Canvas.Left="402" Canvas.Top="-45"
+                        Width="27" Height="27"                        
                         Focusable="True"  />
+                    
+                    <Button x:Name="closeButton" Click="closeButton_Click" 
+                        Content="r" FontFamily="Marlett" FontSize="20" FontWeight="Bold"
+                        Background="{DynamicResource ControlColorBrush}" 
+                        Foreground="Black" BorderThickness="1.75" Padding="2"
+                        Width="27" Height="27"                        
+                        Focusable="True"  />
+
+
+                </WrapPanel>
+
 
                 <!--
                   ████████ ██████   █████   ██████ ██   ██ ███████
@@ -103,7 +155,6 @@
                     <Label x:Name="HintHelper_E" Content="E" Style="{DynamicResource HintHelperStyle}"  Canvas.Left="210.719" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="4" />
                     <Label x:Name="HintHelper_U" Content="U" Style="{DynamicResource HintHelperStyle}"  Canvas.Left="250.672"    Canvas.Top="45" HorizontalAlignment="Center" VerticalAlignment="Top" />
                 </Canvas>
-
 
                 <Canvas x:Name="Circle_Tracks" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" IsEnabled="False">
 
@@ -130,6 +181,7 @@
 
                 </Canvas>
 
+
                 <!--
                    ██████ ██ ██████   ██████ ██      ███████ ███████
                   ██      ██ ██   ██ ██      ██      ██      ██     
@@ -138,7 +190,7 @@
                    ██████ ██ ██   ██  ██████ ███████ ███████ ███████
                  -->
 
-                <Canvas x:Name="Circles" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" Canvas.Left="-2" Canvas.Top="-2">
+                <Canvas x:Name="Circles" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0" Canvas.Left="0" Canvas.Top="0">
 
                     <!--     _  _  __                   __ _____
                             |_)|_|/  |/             |  |_ |_  | 
@@ -313,269 +365,283 @@
                     |_|_|\__|_|\__|___|_|_\
                 -->
 
-                <!--             ___ _  _ 
+                <Canvas x:Name="Track_Inner">
+
+                    <!--         ___ _  _ 
                                   | / \|_)
                                   | \_/|            -->
 
-                <Canvas Visibility="Collapsed" x:Name="Track_Top_Inner" Canvas.Left="222" Canvas.Top="159" RenderTransformOrigin="0.5,0.5" d:IsLocked="True">
-                    <Canvas.RenderTransform>
-                        <TransformGroup>
-                            <RotateTransform Angle="239" CenterX="0" CenterY="0" />
-                        </TransformGroup>
-                    </Canvas.RenderTransform>
+                    <Canvas  x:Name="Track_Inner_Top"  d:IsLocked="True">
 
-                    <Canvas x:Name="Track_TopInner_BottomLeft">
+                        <Canvas x:Name="Track_Inner_Top_1">
 
-                        <Path  x:Name="Path_TopInner_A1" Fill="Transparent" Stroke="GreenYellow">
-                            <Path.Data>
-                                <PathGeometry Figures="M5,97 C-53,100 -80.5,55.5 -80.5,55.5"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_TopInner_A2" Fill="Transparent" Stroke="Purple">
-                            <Path.Data>
-                                <PathGeometry Figures="M-32,92 C-85,75.167 -96.5,22.5 -97,21"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_TopInner_A3" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-60,77 C-106.5,41.75 -99,-10.5 -99.5,-10.5"/>
-                            </Path.Data>
-                        </Path>
+                            <Path x:Name="Path_Inner_Top_A1" Style="{DynamicResource RingPathStyle}" Stroke="White">
+                                <Path.Data>
+                                    <PathGeometry Figures="M301,101.5 C335.014,152.926 311.033,199.417 310,204" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Top_B1" Style="{DynamicResource RingPathStyle}" Stroke="Cyan">
+                                <Path.Data>
+                                    <PathGeometry Figures="M310,204 C274.688,270.125 206.938,264.812 180.266,251.718" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Top_C1" Style="{DynamicResource RingPathStyle}" Stroke="White">
+                                <Path.Data>
+                                    <PathGeometry Figures="M180.266,251.718 C128.75,229.667 120.25,177.833 120.4,168.1" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Top_D1" Style="{DynamicResource RingPathStyle}" Stroke="Black">
+                                <Path.Data>
+                                    <PathGeometry Figures="M120.4,168.1 C117.377,44.098 262.287,32.859 301,101.5" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
+                        <Canvas x:Name="Track_Inner_Top_2">
+
+                            <Path x:Name="Path_Inner_Top_A2" Style="{DynamicResource RingPathStyle}" Stroke="Orange">
+                                <Path.Data>
+                                    <PathGeometry Figures="M317,135.5 C330.209,193.145 290.987,230.128 287.5,234" />
+                                </Path.Data>
+
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Top_B2" Style="{DynamicResource RingPathStyle}" Stroke="White">
+                                <Path.Data>
+                                    <PathGeometry Figures="M287.5,234 C231.083,282.5 168.917,251.667 152.6,234" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Top_C2" Style="{DynamicResource RingPathStyle}" Stroke="HotPink">
+                                <Path.Data>
+                                    <PathGeometry Figures="M152.6,234 C106.75,189.75 122.365,137.116 123,135.4" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Top_D2" Style="{DynamicResource RingPathStyle}" Stroke="Fuchsia">
+                                <Path.Data>
+                                    <PathGeometry Figures="M123,135.4 C151.5,36 288,34.333 317,135.5" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
+                        <Canvas x:Name="Track_Inner_Top_3">
+
+                            <Path x:Name="Path_Inner_Top_A3" Style="{DynamicResource RingPathStyle}" Stroke="HotPink">
+                                <Path.Data>
+                                    <PathGeometry Figures="M319.6,168 C313.312,230.875 263.688,249.438 260,252" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Top_B3" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M259.66,252.262 C195.5,277.5 145.297,236.599 130.234,203.891" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Top_C3" Style="{DynamicResource RingPathStyle}" Stroke="BlueViolet">
+                                <Path.Data>
+                                    <PathGeometry Figures="M130.203,203.938 C105.75,151.458 132.5,110.125 139,102" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Top_D3" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M139,101.999 C187.5,30.833 319.5,49.333 319.6,167.999" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
                     </Canvas>
 
-
-                    <Canvas x:Name="Track_TopInner_TopLeft">
-
-                        <Path x:Name="Path_TopInner_B1" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-80.5,55.5 C-133.16,-24.375 -59.5,-80.5 -60,-81"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_TopInner_B2" Fill="Transparent" Stroke="Maroon">
-                            <Path.Data>
-                                <PathGeometry Figures="M-97,21 C-113,-70 -36,-94.5 -32,-97"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_TopInner_B3" Fill="Transparent" Stroke="Green">
-                            <Path.Data>
-                                <PathGeometry Figures="M-99.5,-10.5 C-84,-108 3.8,-101.4 5,-101.5"/>
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-
-                    <Canvas x:Name="Track_TopInner_TopRight"  Canvas.Left="0" Canvas.Top="0">
-
-                        <Path x:Name="Path_TopInner_C1" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-60,-81 C-15.5,-114.6 36,-96 39,-94"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_TopInner_C2" Fill="Transparent" Stroke="DarkGoldenrod">
-                            <Path.Data>
-                                <PathGeometry Figures="M-32,-97 C30.67,-115 66,-77 67,-75.5"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_TopInner_C3" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M5,-101.5 C72,-94 89,-44 90,-46"/>
-                            </Path.Data>
-                        </Path>
-
-                    </Canvas>
-
-                    <Canvas x:Name="Track_TopInner_BottomRight">
-
-                        <Path x:Name="Path_TopInner_D1" Fill="Transparent" Stroke="OrangeRed">
-                            <Path.Data>
-                                <PathGeometry Figures="M39,-94 C152.375,-30.5 87.375,99.5 5,97"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_TopInner_D2" Fill="Transparent" Stroke="DarkViolet">
-                            <Path.Data>
-                                <PathGeometry Figures="M67,-75.5 C146.5,0 71.5,125 -32,92"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_TopInner_D3" Fill="Transparent" Stroke="Blue">
-                            <Path.Data>
-                                <PathGeometry Figures="M90,-46 C128,19 53,146 -60,77"/>
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-
-                </Canvas>
-
-                <!--              _ ___ __   ___
+                    <!--          _ ___ __   ___
                                  |_) | /__|_| | 
                                  | \_|_\_|| | |           -->
 
-                <Canvas Visibility="Collapsed" x:Name="Track_Right_Inner" Canvas.Left="280" Canvas.Top="262" RenderTransformOrigin="0.5,0.5" d:IsLocked="True">
+                    <Canvas   x:Name="Track_Inner_Right"  d:IsLocked="True">
 
-                    <Canvas  x:Name="Track_RightInner_BottomLeft">
+                        <Canvas x:Name="Track_Inner_Right_1">
 
-                        <Path x:Name="Path_RightInner_A1" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M5,97 C-53,100 -80.5,55.5 -80.5,55.5"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_RightInner_A2" Fill="Transparent" Stroke="White">
-                            <Path.Data>
-                                <PathGeometry Figures="M-32,92 C-85,75.167 -96.5,22.5 -97,21"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_RightInner_A3" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-60,77 C-106.5,41.75 -99,-10.5 -99.5,-10.5"/>
-                            </Path.Data>
-                        </Path>
+                            <Path x:Name="Path_Inner_Right_A1" Style="{DynamicResource RingPathStyle}" Stroke="Cyan">
+                                <Path.Data>
+                                    <PathGeometry Figures="M285.107,359.843 C252.583,361.5 219.75,347.203 199.031,318.578" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Right_B1" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M199,318.6 C159.5,261.75 188,205 220,180" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Right_C1" Style="{DynamicResource RingPathStyle}" Stroke="Cyan">
+                                <Path.Data>
+                                    <PathGeometry Figures="M220,180 C264.5,147.4 316,166 319.6,168.2" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Right_D1" Style="{DynamicResource RingPathStyle}" Stroke="OrangeRed">
+                                <Path.Data>
+                                    <PathGeometry Figures="M319.6,168.2 C432.375,231.5 367.375,361.5 285,359" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
+                        <Canvas x:Name="Track_Inner_Right_2">
+
+                            <Path x:Name="Path_Inner_Right_A2" Style="{DynamicResource RingPathStyle}" Stroke="Black">
+                                <Path.Data>
+                                    <PathGeometry Figures="M248.5,355 C195,337.167 183,284.6 183,284.6" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Right_B2" Style="{DynamicResource RingPathStyle}" Stroke="Fuchsia">
+                                <Path.Data>
+                                    <PathGeometry Figures="M183,284.6 C167,192 244,167.5 248.7,165" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Right_C2" Style="{DynamicResource RingPathStyle}" Stroke="Pink">
+                                <Path.Data>
+                                    <PathGeometry Figures="M248.7,165 C310.67,147 346,185 347.3,186.1" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Right_D2" Style="{DynamicResource RingPathStyle}" Stroke="Black">
+                                <Path.Data>
+                                    <PathGeometry Figures="M347.3,186.1 C426.5,262 351.5,387 248.5,355" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
+                        <Canvas x:Name="Track_Inner_Right_3">
+
+                            <Path x:Name="Path_Inner_Right_A3" Style="{DynamicResource RingPathStyle}" Stroke="Red">
+                                <Path.Data>
+                                    <PathGeometry Figures="M220,340 C191.938,319.812 177.125,283 180.4,251.8" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Right_B3" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M180.4,251.8 C196,154 283.8,160.6 285,160.2" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Right_C3" Style="{DynamicResource RingPathStyle}" Stroke="Red">
+                                <Path.Data>
+                                    <PathGeometry Figures="M285,160.2 C352,168 369,218 370,216" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Right_D3" Style="{DynamicResource RingPathStyle}" Stroke="Cyan">
+                                <Path.Data>
+                                    <PathGeometry Figures="M370,216 C408,281 333,408 220,340" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
                     </Canvas>
 
-
-                    <Canvas x:Name="Track_RightInner_TopLeft">
-
-                        <Path x:Name="Path_RightInner_B1" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-80.5,55.5 C-133.16,-24.375 -59.5,-80.5 -60,-81"/>
-                            </Path.Data>
-                        </Path>
-                        <Path  x:Name="Path_RightInner_B2" Fill="Transparent" Stroke="GreenYellow">
-                            <Path.Data>
-                                <PathGeometry Figures="M-97,21 C-113,-70 -36,-94.5 -32,-97"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_RightInner_B3" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-99.5,-10.5 C-84,-108 3.8,-101.4 5,-101.5"/>
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-
-                    <Canvas x:Name="Track_RightInner_TopRight">
-
-                        <Path x:Name="Path_RightInner_C1" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-60,-81 C-15.5,-114.6 36,-96 39,-94"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_RightInner_C2" Fill="Transparent" Stroke="DarkGoldenrod">
-                            <Path.Data>
-                                <PathGeometry Figures="M-32,-97 C30.67,-115 66,-77 67,-75.5"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_RightInner_C3" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M5,-101.5 C72,-94 89,-44 90,-46"/>
-                            </Path.Data>
-                        </Path>
-
-                    </Canvas>
-
-                    <Canvas x:Name="Track_RightInner_BottomRight">
-
-                        <Path x:Name="Path_RightInner_D1" Fill="Transparent" Stroke="OrangeRed">
-                            <Path.Data>
-                                <PathGeometry Figures="M39,-94 C152.375,-30.5 87.375,99.5 5,97"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_RightInner_D2" Fill="Transparent" Stroke="DarkViolet">
-                            <Path.Data>
-                                <PathGeometry Figures="M67,-75.5 C146.5,0 71.5,125 -32,92"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_RightInner_D3" Fill="Transparent" Stroke="GreenYellow">
-                            <Path.Data>
-                                <PathGeometry Figures="M90,-46 C128,19 53,146 -60,77"/>
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-
-                </Canvas>
-
-                <!--                 __ _____
+                    <!--             __ _____
                                  |  |_ |_  | 
                                  |__|__|   |            -->
 
-                <Canvas Visibility="Collapsed" x:Name="Track_Left_Inner" Canvas.Left="159" Canvas.Top="259" RenderTransformOrigin="0.5,0.5" d:IsLocked="True">
-                    <Canvas.RenderTransform>
-                        <TransformGroup>
-                            <RotateTransform Angle="120"  CenterX="0" CenterY="0"/>
-                        </TransformGroup>
-                    </Canvas.RenderTransform>
+                    <Canvas x:Name="Track_Inner_Left"  d:IsLocked="True">
 
-                    <Canvas x:Name="Track_LeftInner_BottomLeft">
+                        <Canvas x:Name="Track_Inner_Left_1">
 
-                        <Path  x:Name="Path_LeftInner_A1" Fill="Transparent" Stroke="GreenYellow">
-                            <Path.Data>
-                                <PathGeometry Figures="M5,97 C-53,100 -80.5,55.5 -80.5,55.5"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_LeftInner_A2" Fill="Transparent" Stroke="Purple">
-                            <Path.Data>
-                                <PathGeometry Figures="M-32,92 C-85,75.167 -96.5,22.5 -97,21"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_LeftInner_A3" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-60,77 C-106.5,41.75 -99,-10.5 -99.5,-10.5"/>
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
+                            <Path x:Name="Path_Inner_Left_A1" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M71,215 C98.897,163.101 155,159 155,160" />
+                                </Path.Data>
+                            </Path>
 
-                    <Canvas x:Name="Track_LeftInner_TopLeft">
+                            <Path x:Name="Path_Inner_Left_B1" Style="{DynamicResource RingPathStyle}" Stroke="White">
+                                <Path.Data>
+                                    <PathGeometry Figures="M155,160 C229.25,158.25 259.562,222.562 259.6,251.7" />
+                                </Path.Data>
+                            </Path>
 
-                        <Path x:Name="Path_LeftInner_B1" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-80.5,55.5 C-133.16,-24.375 -59.5,-80.5 -60,-81"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_LeftInner_B2" Fill="Transparent" Stroke="Maroon">
-                            <Path.Data>
-                                <PathGeometry Figures="M-97,21 C-113,-70 -36,-94.5 -32,-97"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_LeftInner_B3" Fill="Transparent" Stroke="Green">
-                            <Path.Data>
-                                <PathGeometry Figures="M-99.5,-10.5 C-84,-108 3.8,-101.4 5,-101.5"/>
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
+                            <Path x:Name="Path_Inner_Left_C1" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M259.6,251.7 C263.5,285.25 246.125,321.125 220,340" />
+                                </Path.Data>
+                            </Path>
 
-                    <Canvas x:Name="Track_LeftInner_TopRight"  Canvas.Left="0" Canvas.Top="0">
+                            <Path x:Name="Path_Inner_Left_D1" Style="{DynamicResource RingPathStyle}" Stroke="Black">
+                                <Path.Data>
+                                    <PathGeometry Figures="M220.001,340 C123.249,405.125 30.125,304.875 70.282,216.016" />
+                                </Path.Data>
+                            </Path>
 
-                        <Path x:Name="Path_LeftInner_C1" Fill="Transparent" Stroke="Green">
-                            <Path.Data>
-                                <PathGeometry Figures="M-60,-81 C-15.5,-114.6 36,-96 39,-94"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_LeftInner_C2" Fill="Transparent" Stroke="DarkGoldenrod">
-                            <Path.Data>
-                                <PathGeometry Figures="M-32,-97 C30.67,-115 66,-77 67,-75.5"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_LeftInner_C3" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M5,-101.5 C72,-94 89,-44 90,-46"/>
-                            </Path.Data>
-                        </Path>
+                        </Canvas>
 
-                    </Canvas>
+                        <Canvas x:Name="Track_Inner_Left_2">
 
-                    <Canvas x:Name="Track_LeftInner_BottomRight">
+                            <Path x:Name="Path_Inner_Left_A2" Style="{DynamicResource RingPathStyle}" Stroke="Purple">
+                                <Path.Data>
+                                    <PathGeometry Figures="M92.7,186.1 C136.403,147.804 187.764,164.179 191,165" />
+                                </Path.Data>
+                            </Path>
 
-                        <Path x:Name="Path_LeftInner_D1" Fill="Transparent" Stroke="OrangeRed">
-                            <Path.Data>
-                                <PathGeometry Figures="M39,-94 C152.375,-30.5 87.375,99.5 5,97"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_LeftInner_D2" Fill="Transparent" Stroke="DarkViolet">
-                            <Path.Data>
-                                <PathGeometry Figures="M67,-75.5 C146.5,0 71.5,125 -32,92"/>
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_LeftInner_D3" Fill="Transparent" Stroke="Blue">
-                            <Path.Data>
-                                <PathGeometry Figures="M90,-46 C128,19 53,146 -60,77"/>
-                            </Path.Data>
-                        </Path>
+                            <Path x:Name="Path_Inner_Left_B2" Style="{DynamicResource RingPathStyle}" Stroke="White">
+                                <Path.Data>
+                                    <PathGeometry Figures="M191,165 C276.122,196.139 258.839,275.073 257,285" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Left_C2" Style="{DynamicResource RingPathStyle}" Stroke="DarkViolet">
+                                <Path.Data>
+                                    <PathGeometry Figures="M256.922,284.578 C249.438,317.375 221.75,345.75 191.3,355" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Left_D2" Style="{DynamicResource RingPathStyle}" Stroke="White">
+                                <Path.Data>
+                                    <PathGeometry Figures="M191.3,355 C85.75,385.873 14.997,258.421 92.7,186.1" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
+                        <Canvas x:Name="Track_Inner_Left_3">
+
+                            <Path x:Name="Path_Inner_Left_A3" Style="{DynamicResource RingPathStyle}" Stroke="Red">
+                                <Path.Data>
+                                    <PathGeometry Figures="M120.4,168.1 C176.093,145.893 217.593,178.513 220,180" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Left_B3" Style="{DynamicResource RingPathStyle}" Stroke="White">
+                                <Path.Data>
+                                    <PathGeometry Figures="M220,180 C294.531,240.254 244.915,312.991 241,318.5" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Left_C3" Style="{DynamicResource RingPathStyle}" Stroke="Green">
+                                <Path.Data>
+                                    <PathGeometry Figures="M241,318.5 C221.333,346.083 188.583,361.75 155,360" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Inner_Left_D3" Style="{DynamicResource RingPathStyle}" Stroke="White">
+                                <Path.Data>
+                                    <PathGeometry Figures="M155,360 C60.167,356 16.167,222.333 120.4,168.1" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
                     </Canvas>
 
                 </Canvas>
@@ -587,243 +653,285 @@
                     |_| |_|_|__/|__/|___|___|
                 -->
 
-                <!--             ___ _  _ 
+                <Canvas x:Name="Track_Middle">
+
+                    <!--         ___ _  _ 
                                   | / \|_)
                                   | \_/|            -->
 
-                <Canvas Visibility="Collapsed" x:Name="Track_Top_Middle" Canvas.Left="222" Canvas.Top="159" RenderTransformOrigin="0.5,0.5" d:IsLocked="True">
-                    <Canvas.RenderTransform>
-                        <TransformGroup>
-                            <RotateTransform Angle="239" CenterX="0" CenterY="0" />
-                        </TransformGroup>
-                    </Canvas.RenderTransform>
+                    <Canvas x:Name="Track_Middle_Top"  d:IsLocked="True">
 
-                    <Canvas x:Name="Track_TopMiddle_BottomLeft">
-                        <Path x:Name="Path_TopMiddle_A1" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-24,125.2 C-98,110.5 -120.38,45.96 -120.38,45.96" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_TopMiddle_A2" Fill="Transparent" Stroke="White">
-                            <Path.Data>
-                                <PathGeometry Figures="M-60,112.7 C-115.67,83.67 -128,28.5 -129,7.75" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_TopMiddle_A3" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-88.35,92.6 C-125.75,58.5 -135.42,7.22 -127,-28" />
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-                    <Canvas x:Name="Track_TopMiddle_TopLeft">
-                        <Path x:Name="Path_TopMiddle_B1" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-120.33,45.71 C-140.25,-3 -128,-60.5 -88,-96.5" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_TopMiddle_B2" Fill="Transparent" Stroke="GreenYellow">
-                            <Path.Data>
-                                <PathGeometry Figures="M-129,7.75 C-133,-41.33 -106.5,-93 -60,-117" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_TopMiddle_B3" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-127,-28 C-118.46,-70.21 -85.54,-116.48 -24,-129.31" />
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-                    <Canvas x:Name="Track_TopMiddle_TopRight">
-                        <Path x:Name="Path_TopMiddle_C1" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-88,-96.5 C-58,-125.12 -14.75,-139.75 37,-126.5" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_TopMiddle_C2" Fill="Transparent" Stroke="DarkGoldenrod">
-                            <Path.Data>
-                                <PathGeometry Figures="M-60,-117 C-25.5,-135.75 28.62,-138 69,-111.5" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_TopMiddle_C3" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-24,-129.31 C23.5,-139.33 72,-118 98.5,-85.9" />
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-                    <Canvas x:Name="Track_TopMiddle_BottomRight">
-                        <Path x:Name="Path_TopMiddle_D1" Fill="Transparent" Stroke="OrangeRed">
-                            <Path.Data>
-                                <PathGeometry Figures="M37,-126.5 C195.5,-71 134,150.33 -24,125.2" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_TopMiddle_D2" Fill="Transparent" Stroke="DarkViolet">
-                            <Path.Data>
-                                <PathGeometry Figures="M69,-111.5 C207,-13 87,182 -60,112.7" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_TopMiddle_D3" Fill="Transparent" Stroke="GreenYellow">
-                            <Path.Data>
-                                <PathGeometry Figures="M98.5,-85.9 C197,32 47,202 -88.35,92.6" />
-                            </Path.Data>
-                        </Path>
+                        <Canvas x:Name="Track_Middle_Top_1">
+
+                            <Path x:Name="Path_Middle_Top_A1" Style="{DynamicResource RingPathStyle}" Stroke="Black">
+                                <Path.Data>
+                                    <PathGeometry Figures="M340.8,112 C367.191,186.091 323.396,238.515 319,244" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Top_B1" Style="{DynamicResource RingPathStyle}" Stroke="White">
+                                <Path.Data>
+                                    <PathGeometry Figures="M319,244 C291.663,280.763 236.066,299.877 183.5,284" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Top_C1" Style="{DynamicResource RingPathStyle}" Stroke="Cyan">
+                                <Path.Data>
+                                    <PathGeometry Figures="M183.5,284 C144.623,273.157 109.808,243.62 92.7,186.1" />
+                                </Path.Data>
+                            </Path>
+
+
+                            <Path x:Name="Path_Middle_Top_D1" Style="{DynamicResource RingPathStyle}" Stroke="OrangeRed">
+                                <Path.Data>
+                                    <PathGeometry Figures="M92.7,186.1 C60.451,27.991 281.843,-33.286 340.8,112" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
+                        <Canvas x:Name="Track_Middle_Top_2">
+
+                            <Path x:Name="Path_Middle_Top_A2" Style="{DynamicResource RingPathStyle}" Stroke="DarkViolet">
+                                <Path.Data>
+                                    <PathGeometry Figures="M349.5,150.2 C353.294,215.055 312.354,254.039 289.5,269.8" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Top_B2" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M289.5,269.8 C255.073,294.29 197.135,298.187 150.5,269" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Top_C2" Style="{DynamicResource RingPathStyle}" Stroke="Black">
+                                <Path.Data>
+                                    <PathGeometry Figures="M150.5,269 C118.773,250.774 88.971,205.543 90,151" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Top_D2" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M90,151 C104.244,-11.738 333.196,-9.31 349.5,150.2" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
+                        <Canvas x:Name="Track_Middle_Top_3">
+
+                            <Path x:Name="Path_Middle_Top_A3" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M347.4,186 C336.91,236.659 297.935,271.359 257,284.5" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Top_B3" Style="{DynamicResource RingPathStyle}" Stroke="Red">
+                                <Path.Data>
+                                    <PathGeometry Figures="M257,284.5 C222.83,296.701 166.214,292.314 121,244" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Top_C3" Style="{DynamicResource RingPathStyle}" Stroke="White">
+                                <Path.Data>
+                                    <PathGeometry Figures="M121,244 C90.281,208.328 81.25,156.844 99,112" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Top_D3" Style="{DynamicResource RingPathStyle}" Stroke="Red">
+                                <Path.Data>
+                                    <PathGeometry Figures="M99,112 C147.967,-26.343 370.941,14.675 347.4,186" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
                     </Canvas>
 
-                </Canvas>
 
-                <!--              _ ___ __   ___
+
+                    <!--          _ ___ __   ___
                                  |_) | /__|_| | 
                                  | \_|_\_|| | |           -->
 
-                <Canvas  Visibility="Collapsed" x:Name="Track_Right_Middle" Canvas.Left="280" Canvas.Top="262" RenderTransformOrigin="0.5,0.5" d:IsLocked="True">
+                    <Canvas x:Name="Track_Middle_Right"  d:IsLocked="True">
 
-                    <Canvas x:Name="Track_RightMiddle_BottomLeft">
-                        <Path x:Name="Path_RightMiddle_A1" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-24,125.2 C-98,110.5 -120.38,45.96 -120.38,45.96" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_RightMiddle_A2" Fill="Transparent" Stroke="White">
-                            <Path.Data>
-                                <PathGeometry Figures="M-60,112.7 C-115.67,83.67 -128,28.5 -129,7.75" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_RightMiddle_A3" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-88.35,92.6 C-125.75,58.5 -135.42,7.22 -127,-28" />
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-                    <Canvas x:Name="Track_RightMiddle_TopLeft">
-                        <Path x:Name="Path_RightMiddle_B1" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-120.33,45.71 C-140.25,-3 -128,-60.5 -88,-96.5" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_RightMiddle_B2" Fill="Transparent" Stroke="GreenYellow">
-                            <Path.Data>
-                                <PathGeometry Figures="M-129,7.75 C-133,-41.33 -106.5,-93 -60,-117" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_RightMiddle_B3" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-127,-28 C-118.46,-70.21 -85.54,-116.48 -24,-129.31" />
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-                    <Canvas x:Name="Track_RightMiddle_TopRight">
-                        <Path x:Name="Path_RightMiddle_C1" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-88,-96.5 C-58,-125.12 -14.75,-139.75 37,-126.5" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_RightMiddle_C2" Fill="Transparent" Stroke="DarkGoldenrod">
-                            <Path.Data>
-                                <PathGeometry Figures="M-60,-117 C-25.5,-135.75 28.62,-138 69,-111.5" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_RightMiddle_C3" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-24,-129.31 C23.5,-139.33 72,-118 98.5,-85.9" />
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-                    <Canvas x:Name="Track_RightMiddle_BottomRight">
-                        <Path x:Name="Path_RightMiddle_D1" Fill="Transparent" Stroke="OrangeRed">
-                            <Path.Data>
-                                <PathGeometry Figures="M37,-126.5 C195.5,-71 134,150.33 -24,125.2" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_RightMiddle_D2" Fill="Transparent" Stroke="DarkViolet">
-                            <Path.Data>
-                                <PathGeometry Figures="M69,-111.5 C207,-13 87,182 -60,112.7" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_RightMiddle_D3" Fill="Transparent" Stroke="GreenYellow">
-                            <Path.Data>
-                                <PathGeometry Figures="M98.5,-85.9 C197,32 47,202 -88.35,92.6" />
-                            </Path.Data>
-                        </Path>
+                        <Canvas x:Name="Track_Middle_Right_1">
+
+                            <Path x:Name="Path_Middle_Right_A1" Style="{DynamicResource RingPathStyle}" Stroke="Cyan">
+                                <Path.Data>
+                                    <PathGeometry Figures="M256.2,387.75 C212.875,379.5 176.625,351 159.25,308" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Right_B1" Style="{DynamicResource RingPathStyle}" Stroke="Black">
+                                <Path.Data>
+                                    <PathGeometry Figures="M159.25,308 C139.75,259 152,201.5 191.3,165" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Right_C1" Style="{DynamicResource RingPathStyle}" Stroke="Cyan">
+                                <Path.Data>
+                                    <PathGeometry Figures="M191.3,165 C222,136.88 265.25,122.25 317,135.4" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Right_D1" Style="{DynamicResource RingPathStyle}" Stroke="OrangeRed">
+                                <Path.Data>
+                                    <PathGeometry Figures="M317,135.4 C475.5,191 414,412.33 256.2,387.75" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
+                        <Canvas x:Name="Track_Middle_Right_2">
+
+                            <Path x:Name="Path_Middle_Right_A2" Style="{DynamicResource RingPathStyle}" Stroke="Black">
+                                <Path.Data>
+                                    <PathGeometry Figures="M220,374.7 C164.33,345.67 152,290.5 150.5,269.7" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Right_B2" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M150.5,269.7 C147,220.67 173.5,169 220,145" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Right_C2" Style="{DynamicResource RingPathStyle}" Stroke="DarkGoldenrod">
+                                <Path.Data>
+                                    <PathGeometry Figures="M220,145 C254.5,126.25 308.62,124 349.6,150.3" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Right_D2" Style="{DynamicResource RingPathStyle}" Stroke="DarkViolet">
+                                <Path.Data>
+                                    <PathGeometry Figures="M349.6,150.3 C487,249 367,444 220,374.7" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
+                        <Canvas x:Name="Track_Middle_Right_3">
+
+                            <Path x:Name="Path_Middle_Right_A3" Style="{DynamicResource RingPathStyle}" Stroke="Cyan">
+                                <Path.Data>
+                                    <PathGeometry Figures="M191.3,354.95 C154.25,320.5 144.58,269.22 153,234" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Right_B3" Style="{DynamicResource RingPathStyle}" Stroke="Red">
+                                <Path.Data>
+                                    <PathGeometry Figures="M153,234 C161.54,191.79 194.46,145.52 256,132.69" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Right_C3" Style="{DynamicResource RingPathStyle}" Stroke="Cyan">
+                                <Path.Data>
+                                    <PathGeometry Figures="M256,132.69 C303.5,122.67 352,144 378.5,176.1" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Right_D3" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M378.5,176.1 C477,294 327,464 191.3,354.95" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
                     </Canvas>
 
-                </Canvas>
-
-                <!--                 __ _____
+                    <!--             __ _____
                                  |  |_ |_  | 
                                  |__|__|   |            -->
 
-                <Canvas Visibility="Collapsed" x:Name="Track_Left_Middle" Canvas.Left="158" Canvas.Top="259" RenderTransformOrigin="0.5,0.5" d:IsLocked="True">
-                    <Canvas.RenderTransform>
-                        <TransformGroup>
-                            <RotateTransform Angle="120"  CenterX="0" CenterY="0"/>
-                        </TransformGroup>
-                    </Canvas.RenderTransform>
+                    <Canvas x:Name="Track_Middle_Left"  d:IsLocked="True">
 
-                    <Canvas x:Name="Track_LeftMiddle_BottomLeft">
-                        <Path x:Name="Path_LeftMiddle_A1" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-24,125.2 C-98,110.5 -120.38,45.96 -120.38,45.96" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_LeftMiddle_A2" Fill="Transparent" Stroke="White">
-                            <Path.Data>
-                                <PathGeometry Figures="M-60,112.7 C-115.67,83.67 -128,28.5 -129,7.75" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_LeftMiddle_A3" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-88.35,92.6 C-125.75,58.5 -135.42,7.22 -127,-28" />
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-                    <Canvas x:Name="Track_LeftMiddle_LeftLeft">
-                        <Path x:Name="Path_LeftMiddle_B1" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-120.33,45.71 C-140.25,-3 -128,-60.5 -88,-96.5" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_LeftMiddle_B2" Fill="Transparent" Stroke="GreenYellow">
-                            <Path.Data>
-                                <PathGeometry Figures="M-129,7.75 C-133,-41.33 -106.5,-93 -60,-117" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_LeftMiddle_B3" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-127,-28 C-118.46,-70.21 -85.54,-116.48 -24,-129.31" />
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-                    <Canvas x:Name="Track_LeftMiddle_LeftRight">
-                        <Path x:Name="Path_LeftMiddle_C1" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-88,-96.5 C-58,-125.12 -14.75,-139.75 37,-126.5" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_LeftMiddle_C2" Fill="Transparent" Stroke="DarkGoldenrod">
-                            <Path.Data>
-                                <PathGeometry Figures="M-60,-117 C-25.5,-135.75 28.62,-138 69,-111.5" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_LeftMiddle_C3" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-24,-129.31 C23.5,-139.33 72,-118 98.5,-85.9" />
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-                    <Canvas x:Name="Track_LeftMiddle_BottomRight">
-                        <Path x:Name="Path_LeftMiddle_D1" Fill="Transparent" Stroke="OrangeRed">
-                            <Path.Data>
-                                <PathGeometry Figures="M37,-126.5 C195.5,-71 134,150.33 -24,125.2" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_LeftMiddle_D2" Fill="Transparent" Stroke="DarkViolet">
-                            <Path.Data>
-                                <PathGeometry Figures="M69,-111.5 C207,-13 87,182 -60,112.7" />
-                            </Path.Data>
-                        </Path>
-                        <Path Visibility="Collapsed" x:Name="Path_LeftMiddle_D3" Fill="Transparent" Stroke="GreenYellow">
-                            <Path.Data>
-                                <PathGeometry Figures="M98.5,-85.9 C197,32 47,202 -88.35,92.6" />
-                            </Path.Data>
-                        </Path>
+                        <Canvas x:Name="Track_Middle_Left_1">
+
+                            <Path x:Name="Path_Middle_Left_A1" Style="{DynamicResource RingPathStyle}" Stroke="Cyan">
+                                <Path.Data>
+                                    <PathGeometry Figures="M61,176 C111.304,118.88 178.387,131.768 184,132.25" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Left_B1" Style="{DynamicResource RingPathStyle}" Stroke="Red">
+                                <Path.Data>
+                                    <PathGeometry Figures="M184,132.25 C230.723,139.04 274.395,178.399 287.5,234" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Left_C1" Style="{DynamicResource RingPathStyle}" Stroke="Cyan">
+                                <Path.Data>
+                                    <PathGeometry Figures="M287.5,234 C295.357,271.331 286.402,316.101 248.7,354.95" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Left_D1" Style="{DynamicResource RingPathStyle}" Stroke="OrangeRed">
+                                <Path.Data>
+                                    <PathGeometry Figures="M248.7,354.95 C121.738,463.808 -39.19,299.882 61,176" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
+                        <Canvas x:Name="Track_Middle_Left_2">
+
+                            <Path x:Name="Path_Middle_Left_A2" Style="{DynamicResource RingPathStyle}" Stroke="White">
+                                <Path.Data>
+                                    <PathGeometry Figures="M90.399,150.688 C143.375,116.992 197.318,133.899 220,144.5" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Left_B2" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M220,144.5 C260.293,164.484 291.79,213.268 289.5,270" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Left_C2" Style="{DynamicResource RingPathStyle}" Stroke="DarkGoldenrod">
+                                <Path.Data>
+                                    <PathGeometry Figures="M289.5,270 C288.313,304.791 263.202,352.786 220,375.3" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Left_D2" Style="{DynamicResource RingPathStyle}" Stroke="DarkViolet">
+                                <Path.Data>
+                                    <PathGeometry Figures="M220,375.3 C65.758,444.767 -43.117,243.344 90.399,150.688" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
+                        <Canvas x:Name="Track_Middle_Left_3">
+
+                            <Path x:Name="Path_Middle_Left_A3" Style="{DynamicResource RingPathStyle}" Stroke="Red">
+                                <Path.Data>
+                                    <PathGeometry Figures="M123,135.5 C170.213,120.847 219.457,138.113 248.5,165" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Left_B3" Style="{DynamicResource RingPathStyle}" Stroke="Black">
+                                <Path.Data>
+                                    <PathGeometry Figures="M248.5,165 C278.034,191.516 301.645,243.16 280.8,308" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Left_C3" Style="{DynamicResource RingPathStyle}" Stroke="White">
+                                <Path.Data>
+                                    <PathGeometry Figures="M280.8,308 C266.913,349.017 224.191,380.354 183.7,387.8" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Middle_Left_D3" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M183.7,387.8 C31.787,413.607 -40.437,198.703 123,135.5" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
                     </Canvas>
 
                 </Canvas>
@@ -835,334 +943,288 @@
                      \__/ \__/  |_| |___|_|_\
                 -->
 
-                <!--             ___ _  _ 
+                <Canvas  x:Name="Track_Outer">
+
+                    <!--         ___ _  _ 
                                   | / \|_)
                                   | \_/|            -->
 
-                <Canvas Visibility="Collapsed" x:Name="Track_Top_Outer" Canvas.Left="222" Canvas.Top="159" RenderTransformOrigin="0.5,0.5" d:IsLocked="True">
-                    <Canvas.RenderTransform>
-                        <TransformGroup>
-                            <RotateTransform Angle="240" CenterX="0" CenterY="0" />
-                        </TransformGroup>
-                    </Canvas.RenderTransform>
+                    <Canvas x:Name="Track_Outer_Top"  d:IsLocked="True">
 
-                    <Canvas x:Name="Track_TopOuter_BottomLeft">
-                        <Path x:Name="Path_TopOuter_A1" Fill="Transparent" Stroke="White">
-                            <Path.Data>
-                                <PathGeometry Figures="M-60,145.875 C-109.87,126.958 -150.927,74.667 -157.329,24.25" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_TopOuter_A2" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-96.234,125.25 C-143.667,88.25 -163.75,36 -158.7,-18.12" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_TopOuter_A3" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-125,97.25 C-184.334,22 -149.344,-58 -149.34,-58" />
-                            </Path.Data>
-                        </Path>
+                        <Canvas x:Name="Track_Outer_Top_1">
+
+                            <Path x:Name="Path_Outer_Top_A1" Style="{DynamicResource RingPathStyle}" Stroke="White">
+                                <Path.Data>
+                                    <PathGeometry Figures="M377.75,133.4 C387.917,196.167 362.127,252.373 318,286" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Top_B1" Style="{DynamicResource RingPathStyle}" Stroke="Black">
+                                <Path.Data>
+                                    <PathGeometry Figures="M318,286 C284.415,313.106 238.851,324.135 199,318.5" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Top_C1" Style="{DynamicResource RingPathStyle}" Stroke="Fuchsia">
+                                <Path.Data>
+                                    <PathGeometry Figures="M199,318.501 C143.375,311.501 93.167,275.25 70,216" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Top_D1" Style="{DynamicResource RingPathStyle}" Stroke="OrangeRed">
+                                <Path.Data>
+                                    <PathGeometry Figures="M70,216 C-10.031,-26.889 349.418,-84.306 377.75,133.4" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
+                        <Canvas x:Name="Track_Outer_Top_2">
+
+                            <Path x:Name="Path_Outer_Top_A2" Style="{DynamicResource RingPathStyle}" Stroke="Fuchsia">
+                                <Path.Data>
+                                    <PathGeometry Figures="M379.15,176 C372.125,239.312 332.375,286.75 281,308" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Top_B2" Style="{DynamicResource RingPathStyle}" Stroke="Cyan">
+                                <Path.Data>
+                                    <PathGeometry Figures="M281,308 C244.607,324.156 201.464,324.431 159.5,307.5" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path   x:Name="Path_Outer_Top_C2" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M159.5,307.5 C111.606,287.544 69.636,241.141 61,176" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Top_D2" Style="{DynamicResource RingPathStyle}" Stroke="LightGray">
+                                <Path.Data>
+                                    <PathGeometry Figures="M61,176 C39.431,-61.219 399.024,-58.386 379.15,176" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
+                        <Canvas x:Name="Track_Outer_Top_3">
+
+                            <Path x:Name="Path_Outer_Top_A3" Style="{DynamicResource RingPathStyle}" Stroke="White">
+                                <Path.Data>
+                                    <PathGeometry Figures="M370,216 C341.188,291.812 273.125,315.167 241,318.5" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Top_B3" Style="{DynamicResource RingPathStyle}" Stroke="Red">
+                                <Path.Data>
+                                    <PathGeometry Figures="M241,318.5 C202.5,324.25 157.438,314.25 122.5,286.8" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Top_C3" Style="{DynamicResource RingPathStyle}" Stroke="Lime">
+                                <Path.Data>
+                                    <PathGeometry Figures="M122.5,286.8 C80.146,255.072 52.375,198.625 62.4,133.4" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Top_D3" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M62.4,133.4 C90.729,-82.369 443.24,-26.468 370,216" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
                     </Canvas>
 
-                    <Canvas x:Name="Track_TopOuter_TopLeft">
-                        <Path x:Name="Path_TopOuter_B1" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-157.329,24.25 C-164.667,-23 -151.437,-67.974 -124.875,-101.275" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_TopOuter_B2" Fill="Transparent" Stroke="GreenYellow">
-                            <Path.Data>
-                                <PathGeometry Figures="M-158.7,-18.12 C-154.333,-63 -133,-100.5 -96,-129.25" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_TopOuter_B3" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-149.34,-58 C-133,-99.249 -105,-130.375 -59.85,-149.9" />
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-
-                    <Canvas x:Name="Track_TopOuter_TopRight">
-                        <Path x:Name="Path_TopOuter_C1" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-124.875,-101.275 C-95.167,-139.665 -40.49,-168.099 21.167,-160.2" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_TopOuter_C2" Fill="Transparent" Stroke="DarkGoldenrod">
-                            <Path.Data>
-                                <PathGeometry Figures="M-96,-129.25 C-56.125,-159.876 5.046,-173.021 60.4,-149.645" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_TopOuter_C3" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-59.85,-149.9 C-11.125,-170.875 54.5,-163 97.3,-128.35" />
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-
-                    <Canvas x:Name="Track_TopOuter_BottomRight">
-                        <Path x:Name="Path_TopOuter_D1" Fill="Transparent" Stroke="OrangeRed">
-                            <Path.Data>
-                                <PathGeometry Figures="M21.167,-160.2 C277,-108 147,232 -60,145.875" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_TopOuter_D2" Fill="Transparent" Stroke="LightGray">
-                            <Path.Data>
-                                <PathGeometry Figures="M60.4,-149.645 C282,-48 99.75,262 -96.234,125.25" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_TopOuter_D3" Fill="Transparent" Stroke="GreenYellow">
-                            <Path.Data>
-                                <PathGeometry Figures="M97.3,-128.35 C274.667,7 50,284.333 -125,97.25" />
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-
-                </Canvas>
-
-                <!--              _ ___ __   ___
+                    <!--          _ ___ __   ___
                                  |_) | /__|_| | 
                                  | \_|_\_|| | |           -->
 
-                <Canvas Visibility="Collapsed" x:Name="Track_Right_Outer" Canvas.Left="280" Canvas.Top="262" RenderTransformOrigin="0.5,0.5" d:IsLocked="True">
+                    <Canvas x:Name="Track_Outer_Right"  d:IsLocked="True">
 
-                    <Canvas x:Name="Track_RightOuter_BottomLeft">
-                        <Path x:Name="Path_RightOuter_A1" Fill="Transparent" Stroke="White">
-                            <Path.Data>
-                                <PathGeometry Figures="M-60,145.875 C-109.87,126.958 -150.927,74.667 -157.329,24.25" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_RightOuter_A2" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-96.234,125.25 C-143.667,88.25 -163.75,36 -158.7,-18.12" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_RightOuter_A3" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-125,97.25 C-184.334,22 -149.344,-58 -149.34,-58" />
-                            </Path.Data>
-                        </Path>
+                        <Canvas x:Name="Track_Outer_Right_1">
+
+                            <Path x:Name="Path_Outer_Right_A1" Style="{DynamicResource RingPathStyle}" Stroke="White">
+                                <Path.Data>
+                                    <PathGeometry Figures="M220,408.3 C170.13,388.958 129.073,336.667 122.671,286.25" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Right_B1" Style="{DynamicResource RingPathStyle}" Stroke="Red">
+                                <Path.Data>
+                                    <PathGeometry Figures="M122.671,286.25 C115.333,239 128.563,194.026 155.125,160.725" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Right_C1" Style="{DynamicResource RingPathStyle}" Stroke="Fuchsia">
+                                <Path.Data>
+                                    <PathGeometry Figures="M155.125,160.725 C184.833,122.335 239.51,93.901 301.167,101.8" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Right_D1" Style="{DynamicResource RingPathStyle}" Stroke="OrangeRed">
+                                <Path.Data>
+                                    <PathGeometry Figures="M301.167,101.8 C557,154 427,494 220,408.3" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
+                        <Canvas x:Name="Track_Outer_Right_2">
+
+                            <Path x:Name="Path_Outer_Right_A2" Style="{DynamicResource RingPathStyle}" Stroke="Red">
+                                <Path.Data>
+                                    <PathGeometry Figures="M183.8,387.75 C136.333,350.25 116.25,298 122,245" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Right_B2" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M122,245 C125.667,199 147,161.5 184,132.75" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Right_C2" Style="{DynamicResource RingPathStyle}" Stroke="DarkGoldenrod">
+                                <Path.Data>
+                                    <PathGeometry Figures="M184,132.75 C223.875,102.124 285.046,88.979 340.4,112.355" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Right_D2" Style="{DynamicResource RingPathStyle}" Stroke="LightGray">
+                                <Path.Data>
+                                    <PathGeometry Figures="M340.4,112.355 C562,214 379.75,524 183.8,387.75" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
+                        <Canvas x:Name="Track_Outer_Right_3">
+
+                            <Path x:Name="Path_Outer_Right_A3" Style="{DynamicResource RingPathStyle}" Stroke="Cyan">
+                                <Path.Data>
+                                    <PathGeometry Figures="M155.1,359.8 C95.666,284 130.656,204 130.66,204" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Right_B3" Style="{DynamicResource RingPathStyle}" Stroke="Red">
+                                <Path.Data>
+                                    <PathGeometry Figures="M130.66,204 C147,162.751 175,131.625 220.15,112.1" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Right_C3" Style="{DynamicResource RingPathStyle}" Stroke="Cyan">
+                                <Path.Data>
+                                    <PathGeometry Figures="M220.15,112.1 C268.875,91.125 334.5,99 377.3,133.65" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Right_D3" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M377.3,133.65 C554.667,269 330,546.333 155.1,359.8" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
                     </Canvas>
 
-                    <Canvas x:Name="Track_RightOuter_TopLeft">
-                        <Path x:Name="Path_RightOuter_B1" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-157.329,24.25 C-164.667,-23 -151.437,-67.974 -124.875,-101.275" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_RightOuter_B2" Fill="Transparent" Stroke="GreenYellow">
-                            <Path.Data>
-                                <PathGeometry Figures="M-158.7,-18.12 C-154.333,-63 -133,-100.5 -96,-129.25" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_RightOuter_B3" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-149.34,-58 C-133,-99.249 -105,-130.375 -59.85,-149.9" />
-                            </Path.Data>
-                        </Path>
+                    <!--              __  __ ___
+                                 |   |_  |_   | 
+                                 |__ |__ |    |            -->
+
+                    <Canvas x:Name="Track_Outer_Left"  d:IsLocked="True">
+
+                        <Canvas x:Name="Track_Outer_Left_1">
+
+                            <Path x:Name="Path_Outer_Left_A1" Style="{DynamicResource RingPathStyle}" Stroke="White">
+                                <Path.Data>
+                                    <PathGeometry Figures="M62.4,133.4 C109.312,97.25 170.375,91.312 220,111.7" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Left_B1" Style="{DynamicResource RingPathStyle}" Stroke="Red">
+                                <Path.Data>
+                                    <PathGeometry Figures="M220,111.7 C262.525,129.699 294.261,164.202 309.125,204.122" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Left_C1" Style="{DynamicResource RingPathStyle}" Stroke="Cyan">
+                                <Path.Data>
+                                    <PathGeometry Figures="M309.125,204.122 C326.731,249.359 322.943,310.871 284.416,359.653" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Left_D1" Style="{DynamicResource RingPathStyle}" Stroke="OrangeRed">
+                                <Path.Data>
+                                    <PathGeometry Figures="M284.416,359.653 C107.909,552.059 -116.573,265.515 62.4,133.4" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
+                        <Canvas x:Name="Track_Outer_Left_2">
+
+                            <Path x:Name="Path_Outer_Left_A2" Style="{DynamicResource RingPathStyle}" Stroke="Red">
+                                <Path.Data>
+                                    <PathGeometry Figures="M99,112 C156.349,90.401 211.479,100.097 255.268,132.3" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Left_B2" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M255.268,132.3 C291.489,159.158 312.645,196.758 319.15,244" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Left_C2" Style="{DynamicResource RingPathStyle}" Stroke="Red">
+                                <Path.Data>
+                                    <PathGeometry Figures="M319.15,244 C323.947,293.234 303.709,352.438 255.163,387.846" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Left_D2" Style="{DynamicResource RingPathStyle}" Stroke="LightGray">
+                                <Path.Data>
+                                    <PathGeometry Figures="M255.163,387.846 C53.903,525.443 -117.953,209.562 99,112" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
+                        <Canvas x:Name="Track_Outer_Left_3">
+
+                            <Path x:Name="Path_Outer_Left_A3" Style="{DynamicResource RingPathStyle}" Stroke="Cyan">
+                                <Path.Data>
+                                    <PathGeometry Figures="M139,101.4 C234.081,89.664 285,160.1 285,160.1" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Left_B3" Style="{DynamicResource RingPathStyle}" Stroke="Red">
+                                <Path.Data>
+                                    <PathGeometry Figures="M285,160.1 C311.573,196.114 323.832,236.146 317.314,284.903" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Left_C3" Style="{DynamicResource RingPathStyle}" Stroke="Cyan">
+                                <Path.Data>
+                                    <PathGeometry Figures="M317.314,284.903 C310.198,337.471 269.649,389.667 220,408.3" />
+                                </Path.Data>
+                            </Path>
+
+                            <Path x:Name="Path_Outer_Left_D3" Style="{DynamicResource RingPathStyle}" Stroke="GreenYellow">
+                                <Path.Data>
+                                    <PathGeometry Figures="M220,408.3 C10.536,490.83 -111.473,155.416 139,101.4" />
+                                </Path.Data>
+                            </Path>
+
+                        </Canvas>
+
                     </Canvas>
 
-                    <Canvas x:Name="Track_RightOuter_TopRight">
-                        <Path x:Name="Path_RightOuter_C1" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-124.875,-101.275 C-95.167,-139.665 -40.49,-168.099 21.167,-160.2" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_RightOuter_C2" Fill="Transparent" Stroke="DarkGoldenrod">
-                            <Path.Data>
-                                <PathGeometry Figures="M-96,-129.25 C-56.125,-159.876 5.046,-173.021 60.4,-149.645" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_RightOuter_C3" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-59.85,-149.9 C-11.125,-170.875 54.5,-163 97.3,-128.35" />
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-
-                    <Canvas x:Name="Track_RightOuter_BottomRight">
-                        <Path x:Name="Path_RightOuter_D1" Fill="Transparent" Stroke="OrangeRed">
-                            <Path.Data>
-                                <PathGeometry Figures="M21.167,-160.2 C277,-108 147,232 -60,145.875" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_RightOuter_D2" Fill="Transparent" Stroke="LightGray">
-                            <Path.Data>
-                                <PathGeometry Figures="M60.4,-149.645 C282,-48 99.75,262 -96.234,125.25" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_RightOuter_D3" Fill="Transparent" Stroke="GreenYellow">
-                            <Path.Data>
-                                <PathGeometry Figures="M97.3,-128.35 C274.667,7 50,284.333 -125,97.25" />
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-
-                </Canvas>
-
-                <!--                 __ _____
-                                 |  |_ |_  | 
-                                 |__|__|   |            -->
-
-                <Canvas Visibility="Collapsed" x:Name="Track_Left_Outer" Canvas.Left="158" Canvas.Top="259" RenderTransformOrigin="0.5,0.5" d:IsLocked="True">
-                    <Canvas.RenderTransform>
-                        <TransformGroup>
-                            <RotateTransform Angle="121"  CenterX="0" CenterY="0"/>
-                        </TransformGroup>
-                    </Canvas.RenderTransform>
-
-                    <Canvas x:Name="Track_LeftOuter_BottomLeft">
-                        <Path x:Name="Path_LeftOuter_A1" Fill="Transparent" Stroke="White">
-                            <Path.Data>
-                                <PathGeometry Figures="M-60,145.875 C-109.87,126.958 -150.927,74.667 -157.329,24.25" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_LeftOuter_A2" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-96.234,125.25 C-143.667,88.25 -163.75,36 -158.7,-18.12" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_LeftOuter_A3" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-125,97.25 C-184.334,22 -149.344,-58 -149.34,-58" />
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-
-                    <Canvas x:Name="Track_LeftOuter_TopLeft">
-                        <Path x:Name="Path_LeftOuter_B1" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-157.329,24.25 C-164.667,-23 -151.437,-67.974 -124.875,-101.275" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_LeftOuter_B2" Fill="Transparent" Stroke="GreenYellow">
-                            <Path.Data>
-                                <PathGeometry Figures="M-158.7,-18.12 C-154.333,-63 -133,-100.5 -96,-129.25" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_LeftOuter_B3" Fill="Transparent" Stroke="Red">
-                            <Path.Data>
-                                <PathGeometry Figures="M-149.34,-58 C-133,-99.249 -105,-130.375 -59.85,-149.9" />
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-
-                    <Canvas x:Name="Track_LeftOuter_TopRight">
-                        <Path x:Name="Path_LeftOuter_C1" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-124.875,-101.275 C-95.167,-139.665 -40.49,-168.099 21.167,-160.2" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_LeftOuter_C2" Fill="Transparent" Stroke="DarkGoldenrod">
-                            <Path.Data>
-                                <PathGeometry Figures="M-96,-129.25 C-56.125,-159.876 5.046,-173.021 60.4,-149.645" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_LeftOuter_C3" Fill="Transparent" Stroke="Cyan">
-                            <Path.Data>
-                                <PathGeometry Figures="M-59.85,-149.9 C-11.125,-170.875 54.5,-163 97.3,-128.35" />
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-
-                    <Canvas x:Name="Track_LeftOuter_BottomRight">
-                        <Path x:Name="Path_LeftOuter_D1" Fill="Transparent" Stroke="OrangeRed">
-                            <Path.Data>
-                                <PathGeometry Figures="M21.167,-160.2 C277,-108 147,232 -60,145.875" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_LeftOuter_D2" Fill="Transparent" Stroke="LightGray">
-                            <Path.Data>
-                                <PathGeometry Figures="M60.4,-149.645 C282,-48 99.75,262 -96.234,125.25" />
-                            </Path.Data>
-                        </Path>
-                        <Path x:Name="Path_LeftOuter_D3" Fill="Transparent" Stroke="GreenYellow">
-                            <Path.Data>
-                                <PathGeometry Figures="M97.3,-128.35 C274.667,7 50,284.333 -125,97.25" />
-                            </Path.Data>
-                        </Path>
-                    </Canvas>
-
-                </Canvas>
-
-                <!--
-                     ___ __   ______ 
-                    | __/  \ / _| __|
-                    | _| /\ | \_| _| 
-                    |_||_||_|\__|___|
-                -->
-
-                <Canvas x:Name="Track_Face_Yellow" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                </Canvas>
-
-                <Canvas x:Name="Track_Face_Green" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                </Canvas>
-
-                <Canvas x:Name="Track_Face_Orange" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                </Canvas>
-
-                <Canvas x:Name="Track_Face_Red" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
-                </Canvas>
-
-                <Canvas Visibility="Collapsed" x:Name="Track_Face_White" Style="{DynamicResource canvasGroup}" Margin="239,203.2,0,0">
-
-                    <Path x:Name="Path_Face_White_1"  Style="{DynamicResource animationPathStyle}" Stretch="Fill" Canvas.Left="-0.918"  Canvas.Top="45.57" >
-                        <Path.Data>
-                            <PathGeometry Figures="M257.83533,250.50498 C245.51009,271.04048 232.94628,286.06644 240.38433,317.62097"/>
-                        </Path.Data>
-                    </Path>
-                    <Path x:Name="Path_Face_White_2" Style="{DynamicResource animationPathStyle}" Stretch="Fill" Canvas.Left="-0.052" Canvas.Top="80.133" >
-                        <Path.Data>
-                            <PathGeometry Figures="M239.44875,318.43883 C256.06891,326.65936 311.10587,321.50171 316.5005,285.9375"/>
-                        </Path.Data>
-                    </Path>
-
-                    <Path x:Name="Path_Face_White_3" Style="{DynamicResource animationPathStyle}" Stretch="Fill" Canvas.Left="69.844" Canvas.Top="0.003" >
-                        <Path.Data>
-                            <PathGeometry Figures="M316.44238,286.42532 C351.61737,241.61513 320.99959,221.56718 307.92069,203.2263"/>
-                        </Path.Data>
-                    </Path>
-                    <Path x:Name="Path_Face_White_4" Style="{DynamicResource animationPathStyle}" Stretch="Fill" Canvas.Left="19.634" Canvas.Top="0.049">
-                        <Path.Data>
-                            <PathGeometry Figures="M309.14973,203.26406 C281.75546,211.47312 261.70341,223.84822 258.67012,251.02003"/>
-                        </Path.Data>
-                    </Path>
-                    <Path x:Name="Path_Face_White_5" Style="{DynamicResource animationPathStyle}" Stretch="Fill" Canvas.Left="14.374" Canvas.Top="30.675">
-                        <Path.Data>
-                            <PathGeometry Figures="M295.57842,230.35244 C269.11125,233.28504 256.58529,256.39046 266.96595,281.00965"/>
-                        </Path.Data>
-                    </Path>
-                    <Path x:Name="Path_Face_White_6" Style="{DynamicResource animationPathStyle}" Stretch="Fill" Canvas.Left="17.517" Canvas.Top="80.133">
-                        <Path.Data>
-                            <PathGeometry Figures="M256.5,282.22761 C256.48335,295.54405 266.48362,305.3946 280,306.5"/>
-                        </Path.Data>
-                    </Path>
-                    <Path x:Name="Path_Face_White_7" Style="{DynamicResource animationPathStyle}" Stretch="Fill" Canvas.Left="40.861" Canvas.Top="40.018">
-                        <Path.Data>
-                            <PathGeometry Figures="M316.44238,286.42532 C358.93292,280.72669 359.85295,255.63887 354.61263,222.11979"/>
-                        </Path.Data>
-                    </Path>
-                    <Path  x:Name="Path_Face_White_8" Style="{DynamicResource animationPathStyle}" Stretch="Fill" Canvas.Left="47.167" Canvas.Top="28.081">
-                        <Path.Data>
-                            <PathGeometry Figures="M292.62469,292.20816 C285.78342,280.44435 276.0982,277.34939 259.59821,282.47749"/>
-                        </Path.Data>
-                    </Path>
-
-                    <Path x:Name="Path_Face_White_9" Style="{DynamicResource animationPathStyle}" Stretch="Fill" Canvas.Left="49.02" Canvas.Top="65.966" >
-                        <Path.Data>
-                            <PathGeometry Figures="M300.84606,285.77062 C300.70446,285.77062 301.03498,285.80869 301.02291,285.80869"/>
-                        </Path.Data>
-                    </Path>
-                </Canvas>
-
-                <Canvas x:Name="Track_Face_Blue" Style="{DynamicResource canvasGroup}" Margin="0,0,0,0">
                 </Canvas>
 
             </Canvas>
 
-
-
         </Grid>
     </Border>
-
 </UserControl>

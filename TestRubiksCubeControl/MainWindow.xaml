@@ -6,16 +6,49 @@
         xmlns:local="clr-namespace:TestRubiksCubeControl"
         xmlns:ctrl="clr-namespace:RubiksCubeControlWpf;assembly=RubiksCubeControlWpf"
         mc:Ignorable="d" 
-        DataContext="{Binding ElementName=rubiksCubeControl, Mode=OneWay}"    
+
         Title="Rubik's Rings"                
-        Background="Transparent" AllowsTransparency="True"
-        Width="561" Height="578" Margin="0" Padding="0" 
-        WindowStyle="None"       
+        Background="Transparent" AllowsTransparency="True" WindowStyle="None"
+        MinWidth="546" MinHeight="540"
+        Width="646" Height="640" 
+        Margin="0" Padding="0"      
+        UseLayoutRounding="True"
         HorizontalAlignment="Center" VerticalAlignment="Center"
-        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-        WindowStartupLocation="CenterScreen"
+        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"      
+        WindowStartupLocation="Manual"
+                
         KeyDown="Window_KeyDown"
+        
+        DataContext="{Binding RelativeSource={RelativeSource Self}}" 
+       
+        x:Name="mainWindow"                 
         >
-    <ctrl:RubiksCubeControl x:Name="rubiksCubeControl" Margin="0" Padding="0">
-    </ctrl:RubiksCubeControl>
+
+
+
+    <Border Padding="0" Margin="0">
+        <Border.RenderTransform>
+            <ScaleTransform  x:Name="ContentsScaleTransform"
+                                 ScaleX="{Binding ScaleZoom}" 
+                                 ScaleY="{Binding ScaleZoom}"
+                                 CenterX="{Binding Center.X}"
+                                 CenterY="{Binding Center.Y}"                        
+                               />
+        </Border.RenderTransform>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0">
+
+
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <ctrl:RubiksCubeControl x:Name="rubiksCubeControl" Grid.Column="0"
+                                Margin="0" Padding="0"
+                                HorizontalAlignment="Center" VerticalAlignment="Center"
+                                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"                                    
+                             />
+
+        </Grid>
+    </Border>
 </Window>

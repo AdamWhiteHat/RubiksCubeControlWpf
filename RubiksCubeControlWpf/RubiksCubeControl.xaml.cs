@@ -39,132 +39,80 @@ namespace RubiksCubeControlWpf
             }
         }
 
-        public double ScaleZoom
-        {
-            get { return (double)GetValue(ScaleZoomProperty); }
-            set { SetValue(ScaleZoomProperty, value); }
-        }
-        public static readonly DependencyProperty ScaleZoomProperty = DependencyProperty.Register(nameof(ScaleZoom), typeof(double), typeof(RubiksCubeControl), new PropertyMetadata(1.0d, new PropertyChangedCallback(RubiksCubeControl.RaiseScaleZoomChanged)));
-        public static readonly RoutedEvent ScaleZoomChangedEvent = EventManager.RegisterRoutedEvent(nameof(ScaleZoomChanged), RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<double>), typeof(RubiksCubeControl));
-
-        public event RoutedPropertyChangedEventHandler<double> ScaleZoomChanged
-        {
-            add { base.AddHandler(ScaleZoomChangedEvent, value); }
-            remove { base.RemoveHandler(ScaleZoomChangedEvent, value); }
-        }
-
-        protected virtual void RaiseScaleZoomChanged(double oldValue, double newValue)
-        {
-            RoutedPropertyChangedEventArgs<double> e = new RoutedPropertyChangedEventArgs<double>(oldValue, newValue);
-            e.RoutedEvent = ScaleZoomChangedEvent;
-            base.RaiseEvent(e);
-        }
-        private static void RaiseScaleZoomChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            RubiksCubeControl element = (RubiksCubeControl)d;
-            element.RaiseScaleZoomChanged((double)e.OldValue, (double)e.NewValue);
-        }
-
-        public Point Center
-        {
-            get { return (Point)GetValue(CenterProperty); }
-            set { SetValue(CenterProperty, value); }
-        }
-        public static readonly DependencyProperty CenterProperty = DependencyProperty.Register(nameof(Center), typeof(Point), typeof(RubiksCubeControl), new PropertyMetadata(default(Point), new PropertyChangedCallback(RubiksCubeControl.RaiseCenterChanged)));
-
-        public static readonly RoutedEvent CenterChangedEvent = EventManager.RegisterRoutedEvent(nameof(CenterChanged), RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<Point>), typeof(RubiksCubeControl));
-        public event RoutedPropertyChangedEventHandler<Point> CenterChanged
-        {
-            add { base.AddHandler(CenterChangedEvent, value); }
-            remove { base.RemoveHandler(CenterChangedEvent, value); }
-        }
-
-        protected virtual void RaiseCenterChanged(Point oldValue, Point newValue)
-        {
-            RoutedPropertyChangedEventArgs<Point> e = new RoutedPropertyChangedEventArgs<Point>(oldValue, newValue);
-            e.RoutedEvent = CenterChangedEvent;
-            base.RaiseEvent(e);
-        }
-        private static void RaiseCenterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            RubiksCubeControl element = (RubiksCubeControl)d;
-            element.RaiseCenterChanged((Point)e.OldValue, (Point)e.NewValue);
-        }
-
         public List<Path> Paths_Ring_TopInner => new List<Path>()
         {
-            Path_TopInner_A1,   Path_TopInner_A2,   Path_TopInner_A3,
-            Path_TopInner_B1,   Path_TopInner_B2,   Path_TopInner_B3,
-            Path_TopInner_C1,   Path_TopInner_C2,   Path_TopInner_C3,
-            Path_TopInner_D1,   Path_TopInner_D2,   Path_TopInner_D3
+            Path_Inner_Top_A1,   Path_Inner_Top_A2,   Path_Inner_Top_A3,
+            Path_Inner_Top_B1,   Path_Inner_Top_B2,   Path_Inner_Top_B3,
+            Path_Inner_Top_C1,   Path_Inner_Top_C2,   Path_Inner_Top_C3,
+            Path_Inner_Top_D1,   Path_Inner_Top_D2,   Path_Inner_Top_D3
         };
 
         public List<Path> Paths_Ring_LeftInner => new List<Path>()
         {
-            Path_LeftInner_A1,  Path_LeftInner_A2,  Path_LeftInner_A3,
-            Path_LeftInner_B1,  Path_LeftInner_B2,  Path_LeftInner_B3,
-            Path_LeftInner_C1,  Path_LeftInner_C2,  Path_LeftInner_C3,
-            Path_LeftInner_D1,  Path_LeftInner_D2,  Path_LeftInner_D3
+            Path_Inner_Left_A1,  Path_Inner_Left_A2,  Path_Inner_Left_A3,
+            Path_Inner_Left_B1,  Path_Inner_Left_B2,  Path_Inner_Left_B3,
+            Path_Inner_Left_C1,  Path_Inner_Left_C2,  Path_Inner_Left_C3,
+            Path_Inner_Left_D1,  Path_Inner_Left_D2,  Path_Inner_Left_D3
         };
 
         public List<Path> Paths_Ring_RightInner => new List<Path>()
         {
-            Path_RightInner_A1,     Path_RightInner_A2,     Path_RightInner_A3,
-            Path_RightInner_B1,     Path_RightInner_B2,     Path_RightInner_B3,
-            Path_RightInner_C1,     Path_RightInner_C2,     Path_RightInner_C3,
-            Path_RightInner_D1,     Path_RightInner_D2,     Path_RightInner_D3
+            Path_Inner_Right_A1,     Path_Inner_Right_A2,     Path_Inner_Right_A3,
+            Path_Inner_Right_B1,     Path_Inner_Right_B2,     Path_Inner_Right_B3,
+            Path_Inner_Right_C1,     Path_Inner_Right_C2,     Path_Inner_Right_C3,
+            Path_Inner_Right_D1,     Path_Inner_Right_D2,     Path_Inner_Right_D3
         };
 
 
         public List<Path> Paths_Ring_TopMiddle => new List<Path>()
         {
-            Path_TopMiddle_A1,     Path_TopMiddle_A2,     Path_TopMiddle_A3,
-            Path_TopMiddle_B1,     Path_TopMiddle_B2,     Path_TopMiddle_B3,
-            Path_TopMiddle_C1,     Path_TopMiddle_C2,     Path_TopMiddle_C3,
-            Path_TopMiddle_D1,     Path_TopMiddle_D2,     Path_TopMiddle_D3
+            Path_Middle_Top_A1,     Path_Middle_Top_A2,     Path_Middle_Top_A3,
+            Path_Middle_Top_B1,     Path_Middle_Top_B2,     Path_Middle_Top_B3,
+            Path_Middle_Top_C1,     Path_Middle_Top_C2,     Path_Middle_Top_C3,
+            Path_Middle_Top_D1,     Path_Middle_Top_D2,     Path_Middle_Top_D3
         };
 
         public List<Path> Paths_Ring_LeftMiddle => new List<Path>()
         {
-            Path_LeftMiddle_A1,     Path_LeftMiddle_A2,     Path_LeftMiddle_A3,
-            Path_LeftMiddle_B1,     Path_LeftMiddle_B2,     Path_LeftMiddle_B3,
-            Path_LeftMiddle_C1,     Path_LeftMiddle_C2,     Path_LeftMiddle_C3,
-            Path_LeftMiddle_D1,     Path_LeftMiddle_D2,     Path_LeftMiddle_D3
+            Path_Middle_Left_A1,     Path_Middle_Left_A2,     Path_Middle_Left_A3,
+            Path_Middle_Left_B1,     Path_Middle_Left_B2,     Path_Middle_Left_B3,
+            Path_Middle_Left_C1,     Path_Middle_Left_C2,     Path_Middle_Left_C3,
+            Path_Middle_Left_D1,     Path_Middle_Left_D2,     Path_Middle_Left_D3
         };
 
         public List<Path> Paths_Ring_RightMiddle => new List<Path>()
         {
-            Path_RightMiddle_A1,     Path_RightMiddle_A2,     Path_RightMiddle_A3,
-            Path_RightMiddle_B1,     Path_RightMiddle_B2,     Path_RightMiddle_B3,
-            Path_RightMiddle_C1,     Path_RightMiddle_C2,     Path_RightMiddle_C3,
-            Path_RightMiddle_D1,     Path_RightMiddle_D2,     Path_RightMiddle_D3
+            Path_Middle_Right_A1,     Path_Middle_Right_A2,     Path_Middle_Right_A3,
+            Path_Middle_Right_B1,     Path_Middle_Right_B2,     Path_Middle_Right_B3,
+            Path_Middle_Right_C1,     Path_Middle_Right_C2,     Path_Middle_Right_C3,
+            Path_Middle_Right_D1,     Path_Middle_Right_D2,     Path_Middle_Right_D3
         };
 
 
 
         public List<Path> Paths_Ring_TopOuter => new List<Path>()
         {
-            Path_TopOuter_A1,     Path_TopOuter_A2,     Path_TopOuter_A3,
-            Path_TopOuter_B1,     Path_TopOuter_B2,     Path_TopOuter_B3,
-            Path_TopOuter_C1,     Path_TopOuter_C2,     Path_TopOuter_C3,
-            Path_TopOuter_D1,     Path_TopOuter_D2,     Path_TopOuter_D3
+            Path_Outer_Top_A1,     Path_Outer_Top_A2,     Path_Outer_Top_A3,
+            Path_Outer_Top_B1,     Path_Outer_Top_B2,     Path_Outer_Top_B3,
+            Path_Outer_Top_C1,     Path_Outer_Top_C2,     Path_Outer_Top_C3,
+            Path_Outer_Top_D1,     Path_Outer_Top_D2,     Path_Outer_Top_D3
         };
 
         public List<Path> Paths_Ring_LeftOuter => new List<Path>()
         {
 
-            Path_LeftOuter_A1,     Path_LeftOuter_A2,     Path_LeftOuter_A3,
-            Path_LeftOuter_B1,     Path_LeftOuter_B2,     Path_LeftOuter_B3,
-            Path_LeftOuter_C1,     Path_LeftOuter_C2,     Path_LeftOuter_C3,
-            Path_LeftOuter_D1,     Path_LeftOuter_D2,     Path_LeftOuter_D3
+            Path_Outer_Left_A1,     Path_Outer_Left_A2,     Path_Outer_Left_A3,
+            Path_Outer_Left_B1,     Path_Outer_Left_B2,     Path_Outer_Left_B3,
+            Path_Outer_Left_C1,     Path_Outer_Left_C2,     Path_Outer_Left_C3,
+            Path_Outer_Left_D1,     Path_Outer_Left_D2,     Path_Outer_Left_D3
         };
 
         public List<Path> Paths_Ring_RightOuter => new List<Path>()
         {
-            Path_RightOuter_A1,     Path_RightOuter_A2,     Path_RightOuter_A3,
-            Path_RightOuter_B1,     Path_RightOuter_B2,     Path_RightOuter_B3,
-            Path_RightOuter_C1,     Path_RightOuter_C2,     Path_RightOuter_C3,
-            Path_RightOuter_D1,     Path_RightOuter_D2,     Path_RightOuter_D3
+            Path_Outer_Right_A1,     Path_Outer_Right_A2,     Path_Outer_Right_A3,
+            Path_Outer_Right_B1,     Path_Outer_Right_B2,     Path_Outer_Right_B3,
+            Path_Outer_Right_C1,     Path_Outer_Right_C2,     Path_Outer_Right_C3,
+            Path_Outer_Right_D1,     Path_Outer_Right_D2,     Path_Outer_Right_D3
         };
 
         private Storyboard _storyboard { get; set; }
@@ -174,6 +122,8 @@ namespace RubiksCubeControlWpf
         public RubiksCubeControl()
         {
             InitializeComponent();
+
+            this.Loaded += RubiksCubeControl_Loaded;
 
             _moveQueue = new ConcurrentQueue<Tuple<RubiksCubeMoves, bool>>();
 
@@ -188,46 +138,20 @@ namespace RubiksCubeControlWpf
             Face<Circle> blue = new Face<Circle>(bNW, bNN, bNE, bWW, bCC, bEE, bSW, bSS, bSE);
             _gameboard = new GameBoard<Circle>(yellow, green, orange, red, white, blue);
 
-            this.Loaded += (s, e) => SetValue(CenterProperty, new Point(this.ActualWidth / 23, this.ActualHeight / 2));
-            //this.SizeChanged += RubiksCubeControl_SizeChanged;
-
 
         }
+
+        private void RubiksCubeControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            //ProcessKeyEvent(new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.X));
+            //ProcessKeyEvent(new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Y));
+            //ProcessKeyEvent(new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Z));
+        }
+
 
         private void closeButton_Click(object sender, RoutedEventArgs e)
         {
             RaiseQuitClientRequested();
-        }
-
-        private void ScaleTransform_Changed(object sender, EventArgs e)
-        {
-            var width = this.ActualWidth * ScaleZoom;
-            double height = this.ActualHeight *  ScaleZoom;
-
-            //RaiseScaleZoomChanged(ScaleZoom, ScaleZoom);
-
-            int k = 0;
-        }
-
-        private void rubiksCubeUserControl_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            if (Keyboard.Modifiers == ModifierKeys.Control)
-            {
-                double value = e.Delta / 120;
-                double scaledValue = Math.Abs(value * 0.05d);
-                int sign = Math.Sign(value);
-
-                double scaleZoom = (double)GetValue(RubiksCubeControl.ScaleZoomProperty);
-
-                if (sign == -1)
-                {
-                    SetValue(RubiksCubeControl.ScaleZoomProperty, scaleZoom - scaledValue);
-                }
-                else if (sign == 1)
-                {
-                    SetValue(RubiksCubeControl.ScaleZoomProperty, scaleZoom + scaledValue);
-                }
-            }
         }
 
         public static void UpdatePositions_Rings(RubiksCubeMoves move, bool counterRotate)
@@ -338,28 +262,18 @@ namespace RubiksCubeControlWpf
 
         private void AnimateMove(RubiksCubeMoves move, bool counterRotate)
         {
-            List<MoveAnimationGroup> moveAnimations = new List<MoveAnimationGroup>();
 
-            /* 
-            List<Tuple<List<Circle>, List<Path>>> peicesAndPathsTuple = GetFacesPeicesAndPaths(move);
-            foreach (new Tuple<List<Circle>, List<Path>> tup in peicesAndPathsTuple)
-            {
-                MoveAnimationGroup animationGroup = new MoveAnimationGroup(move, counterRotate);
-                animationGroup.Peices = tup.Item1;
-                animationGroup.Paths = tup.Item2;
-                // Actions?
-            }            */
+            List<MoveAnimationGroup> moveAnimations = new List<MoveAnimationGroup>();
 
             switch (move)
             {
-                /*** X, Y, Z ***/
+                // *** X, Y, Z *** //
 
                 case RubiksCubeMoves.X:
 
                     MoveAnimationGroup aniOuterX = new MoveAnimationGroup(RubiksCubeMoves.Left, counterRotate);
                     aniOuterX.RingPeices = _gameboard.Right.Outer.GetItems();
                     aniOuterX.RingPaths = Paths_Ring_RightOuter;
-                    aniOuterX.RingParentCanvas = Track_Right_Outer;
                     aniOuterX.AddRingFinalizerAction();
 
                     aniOuterX.FacePeices = new List<Face<Circle>>() { _gameboard.Yellow };
@@ -367,13 +281,11 @@ namespace RubiksCubeControlWpf
                     MoveAnimationGroup aniMiddleX = new MoveAnimationGroup(RubiksCubeMoves.Middle, counterRotate);
                     aniMiddleX.RingPeices = _gameboard.Right.Middle.GetItems();
                     aniMiddleX.RingPaths = Paths_Ring_RightMiddle;
-                    aniMiddleX.RingParentCanvas = Track_Right_Middle;
                     aniMiddleX.AddRingFinalizerAction();
 
                     MoveAnimationGroup aniInnerX = new MoveAnimationGroup(RubiksCubeMoves.Right, counterRotate);
                     aniInnerX.RingPeices = _gameboard.Right.Inner.GetItems();
                     aniInnerX.RingPaths = Paths_Ring_RightInner;
-                    aniInnerX.RingParentCanvas = Track_Right_Inner;
                     aniInnerX.AddRingFinalizerAction();
 
                     aniInnerX.FacePeices = new List<Face<Circle>>() { _gameboard.White };
@@ -389,7 +301,6 @@ namespace RubiksCubeControlWpf
                     MoveAnimationGroup aniOuterY = new MoveAnimationGroup(RubiksCubeMoves.Down, counterRotate);
                     aniOuterY.RingPeices = _gameboard.Top.Outer.GetItems();
                     aniOuterY.RingPaths = Paths_Ring_TopOuter;
-                    aniOuterY.RingParentCanvas = Track_Top_Outer;
                     aniOuterY.AddRingFinalizerAction();
 
                     aniOuterY.FacePeices = new List<Face<Circle>>() { _gameboard.Blue };
@@ -397,13 +308,11 @@ namespace RubiksCubeControlWpf
                     MoveAnimationGroup aniMiddleY = new MoveAnimationGroup(RubiksCubeMoves.Equator, counterRotate);
                     aniMiddleY.RingPeices = _gameboard.Top.Middle.GetItems();
                     aniMiddleY.RingPaths = Paths_Ring_TopMiddle;
-                    aniMiddleY.RingParentCanvas = Track_Top_Middle;
                     aniMiddleY.AddRingFinalizerAction();
 
                     MoveAnimationGroup aniInnerY = new MoveAnimationGroup(RubiksCubeMoves.Up, counterRotate);
                     aniInnerY.RingPeices = _gameboard.Top.Inner.GetItems();
                     aniInnerY.RingPaths = Paths_Ring_TopInner;
-                    aniInnerY.RingParentCanvas = Track_Top_Inner;
                     aniInnerY.AddRingFinalizerAction();
 
                     aniInnerY.FacePeices = new List<Face<Circle>>() { _gameboard.Green };
@@ -419,7 +328,6 @@ namespace RubiksCubeControlWpf
                     MoveAnimationGroup aniOuterZ = new MoveAnimationGroup(RubiksCubeMoves.Back, counterRotate);
                     aniOuterZ.RingPeices = _gameboard.Left.Outer.GetItems();
                     aniOuterZ.RingPaths = Paths_Ring_LeftOuter;
-                    aniOuterZ.RingParentCanvas = Track_Left_Outer;
                     aniOuterZ.AddRingFinalizerAction();
 
                     aniOuterZ.FacePeices = new List<Face<Circle>>() { _gameboard.Orange };
@@ -427,13 +335,11 @@ namespace RubiksCubeControlWpf
                     MoveAnimationGroup aniMiddleZ = new MoveAnimationGroup(RubiksCubeMoves.Slice, counterRotate);
                     aniMiddleZ.RingPeices = _gameboard.Left.Middle.GetItems();
                     aniMiddleZ.RingPaths = Paths_Ring_LeftMiddle;
-                    aniMiddleZ.RingParentCanvas = Track_Left_Middle;
                     aniMiddleZ.AddRingFinalizerAction();
 
                     MoveAnimationGroup aniInnerZ = new MoveAnimationGroup(RubiksCubeMoves.Front, counterRotate);
                     aniInnerZ.RingPeices = _gameboard.Left.Inner.GetItems();
                     aniInnerZ.RingPaths = Paths_Ring_LeftInner;
-                    aniInnerZ.RingParentCanvas = Track_Left_Inner;
                     aniInnerZ.AddRingFinalizerAction();
 
                     aniInnerZ.FacePeices = new List<Face<Circle>>() { _gameboard.Red };
@@ -444,14 +350,13 @@ namespace RubiksCubeControlWpf
 
                     break;
 
-                /*** Inner ***/
+                // *** Inner *** //
 
                 case RubiksCubeMoves.Up:
                     MoveAnimationGroup uAni = new MoveAnimationGroup(move, counterRotate);
 
                     uAni.RingPeices = _gameboard.Top.Inner.GetItems();
                     uAni.RingPaths = Paths_Ring_TopInner;
-                    uAni.RingParentCanvas = Track_Top_Inner;
                     uAni.AddRingFinalizerAction();
 
                     uAni.FacePeices = new List<Face<Circle>>() { _gameboard.Green };
@@ -464,7 +369,6 @@ namespace RubiksCubeControlWpf
 
                     fAni.RingPeices = _gameboard.Left.Inner.GetItems();
                     fAni.RingPaths = Paths_Ring_LeftInner;
-                    fAni.RingParentCanvas = Track_Left_Inner;
                     fAni.AddRingFinalizerAction();
 
                     fAni.FacePeices = new List<Face<Circle>>() { _gameboard.Red };
@@ -477,7 +381,6 @@ namespace RubiksCubeControlWpf
 
                     rAni.RingPeices = _gameboard.Right.Inner.GetItems();
                     rAni.RingPaths = Paths_Ring_RightInner;
-                    rAni.RingParentCanvas = Track_Right_Inner;
                     rAni.AddRingFinalizerAction();
 
                     rAni.FacePeices = new List<Face<Circle>>() { _gameboard.White };
@@ -486,14 +389,13 @@ namespace RubiksCubeControlWpf
 
                     break;
 
-                /*** Middle ***/
+                // *** Middle *** //
 
                 case RubiksCubeMoves.Equator:
                     MoveAnimationGroup eAni = new MoveAnimationGroup(move, counterRotate);
 
                     eAni.RingPeices = _gameboard.Top.Middle.GetItems();
                     eAni.RingPaths = Paths_Ring_TopMiddle;
-                    eAni.RingParentCanvas = Track_Top_Middle;
                     eAni.AddRingFinalizerAction();
 
                     moveAnimations.Add(eAni);
@@ -504,7 +406,6 @@ namespace RubiksCubeControlWpf
 
                     sAni.RingPeices = _gameboard.Left.Middle.GetItems();
                     sAni.RingPaths = Paths_Ring_LeftMiddle;
-                    sAni.RingParentCanvas = Track_Left_Middle;
                     sAni.AddRingFinalizerAction();
 
                     moveAnimations.Add(sAni);
@@ -515,20 +416,18 @@ namespace RubiksCubeControlWpf
 
                     mAni.RingPeices = _gameboard.Right.Middle.GetItems();
                     mAni.RingPaths = Paths_Ring_RightMiddle;
-                    mAni.RingParentCanvas = Track_Right_Middle;
                     mAni.AddRingFinalizerAction();
 
                     moveAnimations.Add(mAni);
                     break;
 
-                /*** Outer ***/
+                // *** Outer *** //
 
                 case RubiksCubeMoves.Down:
                     MoveAnimationGroup dAni = new MoveAnimationGroup(move, counterRotate);
 
                     dAni.RingPeices = _gameboard.Top.Outer.GetItems();
                     dAni.RingPaths = Paths_Ring_TopOuter;
-                    dAni.RingParentCanvas = Track_Top_Outer;
                     dAni.AddRingFinalizerAction();
 
                     dAni.FacePeices = new List<Face<Circle>>() { _gameboard.Blue };
@@ -541,7 +440,6 @@ namespace RubiksCubeControlWpf
 
                     bAni.RingPeices = _gameboard.Left.Outer.GetItems();
                     bAni.RingPaths = Paths_Ring_LeftOuter;
-                    bAni.RingParentCanvas = Track_Left_Outer;
                     bAni.AddRingFinalizerAction();
 
                     bAni.FacePeices = new List<Face<Circle>>() { _gameboard.Orange };
@@ -554,7 +452,6 @@ namespace RubiksCubeControlWpf
 
                     lAni.RingPeices = _gameboard.Right.Outer.GetItems();
                     lAni.RingPaths = Paths_Ring_RightOuter;
-                    lAni.RingParentCanvas = Track_Right_Outer;
                     lAni.AddRingFinalizerAction();
 
                     lAni.FacePeices = new List<Face<Circle>>() { _gameboard.Yellow };
@@ -580,34 +477,6 @@ namespace RubiksCubeControlWpf
                     movesToAnimate.RingPaths = directionReversedPaths.ToList();
                 }
 
-                if (movesToAnimate.RingParentCanvas != null)
-                {
-                    double top = (double)movesToAnimate.RingParentCanvas.GetValue(Canvas.TopProperty);
-                    double left = (double)movesToAnimate.RingParentCanvas.GetValue(Canvas.LeftProperty);
-
-                    movesToAnimate.Transforms = new TransformGroup();
-                    movesToAnimate.Transforms.Children.Add(new TranslateTransform(left, top));
-
-
-                    TransformGroup transformGroup = movesToAnimate.RingParentCanvas.RenderTransform as TransformGroup;
-                    if (transformGroup != null)
-                    {
-                        foreach (Transform child in transformGroup.Children)
-                        {
-                            RotateTransform rotate = child as RotateTransform;
-                            if (rotate != null)
-                            {
-                                rotate.CenterX = left;
-                                rotate.CenterY = top;
-                                movesToAnimate.Transforms.Children.Add(rotate);
-                            }
-                            else
-                            {
-                                movesToAnimate.Transforms.Children.Add(child);
-                            }
-                        }
-                    }
-                }
 
                 if (movesToAnimate.FacePeices != null && movesToAnimate.FacePeices.Any())
                 {
@@ -629,20 +498,20 @@ namespace RubiksCubeControlWpf
             {
                 foreach (var faceAnimation in faceAnimationGroups)
                 {
-                    //faceAnimation.Item1.BeginAnimation(System.Windows.Media.RotateTransform.AngleProperty, faceAnimation.Item2);
                     faceAnimation.AddToStoryboard(_storyboard);
                 }
             }
 
-            _storyboard.Completed += StoryboardCompletedHandler;
+            _storyboard.Completed += MoveCompletedHandler;
             _storyboard.Begin();
 
             peicePositionsUpdates.ForEach(action => action.Invoke());
+
         }
 
-        private void StoryboardCompletedHandler(object? source, EventArgs args)
+        private void MoveCompletedHandler(object? source, EventArgs args)
         {
-            _storyboard.Completed -= StoryboardCompletedHandler;
+            _storyboard.Completed -= MoveCompletedHandler;
             ProcessNextCommand();
         }
 
@@ -666,62 +535,15 @@ namespace RubiksCubeControlWpf
             this.OnMouseLeftButtonDown(e);
         }
 
+        private void helpButton_Click(object sender, RoutedEventArgs e)
+        {
+            HelpWindow helpWindow = new HelpWindow()
+            {
+                Owner = Window.GetWindow(this)
+            };
 
+            helpWindow.Show();
+        }
     }
 
-    public class MoveAnimationGroup
-    {
-        public bool CounterRotate { get; set; }
-        public RubiksCubeMoves Move { get; set; }
-        public List<Circle> RingPeices { get; set; }
-        public List<Path> RingPaths { get; set; }
-        public Canvas RingParentCanvas { get; set; }
-
-        public List<Face<Circle>> FacePeices { get; set; }
-
-        public TransformGroup Transforms { get; set; }
-
-        public List<Action> FinalizerActions { get; set; }
-
-        public MoveAnimationGroup(RubiksCubeMoves move, bool counterRotate)
-        {
-            RingParentCanvas = null;
-            Transforms = null;
-            FacePeices = null;
-            FinalizerActions = new List<Action>();
-
-            Move = move;
-            CounterRotate = counterRotate;
-        }
-
-        public void AddRingFinalizerAction()
-        {
-            AddRingFinalizerAction(Move, CounterRotate);
-        }
-
-        public void AddRingFinalizerAction(RubiksCubeMoves move, bool counterRotate)
-        {
-            FinalizerActions.Add(new Action(() => RubiksCubeControl.UpdatePositions_Rings(move, counterRotate)));
-        }
-
-        public void AddFaceFinalizerAction(Face<Circle> face)
-        {
-            Face<Circle> copy = face;
-
-            if (CounterRotate)
-            {
-                FinalizerActions.Add(new Action(() =>
-                {
-                    copy.CounterRotate();
-                }));
-            }
-            else
-            {
-                FinalizerActions.Add(new Action(() =>
-                {
-                    copy.Rotate();
-                }));
-            }
-        }
-    }
 }

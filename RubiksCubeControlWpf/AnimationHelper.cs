@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 using RubiksCubeControlWpf.Shapes;
-using PG = System.Windows.Media.PathGeometry;
 
 namespace RubiksCubeControlWpf
 {
@@ -37,12 +32,6 @@ namespace RubiksCubeControlWpf
 
                 PathGeometry pathGeometry = path.Data.GetFlattenedPathGeometry();
                 Point finalLocation = ExtractEndPoint(path);
-
-                if (moveAnimationGroup.Transforms != null)
-                {
-                    pathGeometry.Transform = moveAnimationGroup.Transforms;
-                    finalLocation = moveAnimationGroup.Transforms.Transform(finalLocation);
-                }
 
                 PointAnimationUsingPath animation = BuildPathAnimation(pathGeometry);
                 animation.Completed += (object? sender, EventArgs e) =>

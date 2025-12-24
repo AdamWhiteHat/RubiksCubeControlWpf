@@ -33,22 +33,6 @@ namespace RubiksCubeControlWpf
                 parallelTimeline.Children.Add(tup.Item2);
             }
         }
-
-        /*
-        public static void AddToStoryboard(this Tuple<Circle, DoubleAnimation>[] tuples, Storyboard parallelTimeline)
-        {
-            foreach (var tup in tuples)
-            {
-                Storyboard.SetTarget(tup.Item2, tup.Item1);
-                Storyboard.SetTargetName(tup.Item2, tup.Item1.Name);
-                //Storyboard.SetTargetProperty(tup.Item2, new PropertyPath(RotateTransform.AngleProperty));
-                Storyboard.SetTargetProperty(tup.Item2, new PropertyPath("(UIElement.RenderTransform).(RotateTransform.Angle)"));
-
-                parallelTimeline.Children.Add(tup.Item2);
-                //rotator.BeginAnimation(System.Windows.Media.RotateTransform.AngleProperty, spin);
-            }
-        }
-        */
     }
 
     public static class PathExtensionMethods
