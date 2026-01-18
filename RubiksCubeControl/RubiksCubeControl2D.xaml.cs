@@ -21,16 +21,15 @@ using static RubiksCubeControl.AnimationHelper;
 namespace RubiksCubeControl
 {
     /// <summary>
-    /// Interaction logic for RubiksCubeControl.xaml
+    /// Interaction logic for RubiksCubeControl2D.xaml
     /// </summary>
-    public partial class RubiksCubeCtrl : UserControl
+    public partial class RubiksCubeControl2D : UserControl
     {
+        public event RoutedEventHandler AnimationCompleted;
 
-        public event RoutedEventHandler QuitClientRequested;
-
-        protected virtual void RaiseQuitClientRequested()
+        protected virtual void RaiseAnimationCompleted()
         {
-            RoutedEventHandler routed = QuitClientRequested;
+            RoutedEventHandler routed = AnimationCompleted;
             if (routed != null)
             {
                 RoutedEventArgs e = new RoutedEventArgs();
@@ -115,16 +114,13 @@ namespace RubiksCubeControl
         };
 
         private Storyboard _storyboard { get; set; }
-        private static GameBoard<Circle> _gameboard { get; set; }
-        private ConcurrentQueue<Tuple<RubiksCubeMoves, bool>> _moveQueue { get; set; }
+        private static GamePuzzle_Stickers<Circle> _game { get; set; }
 
-        public RubiksCubeCtrl()
+        public RubiksCubeControl2D()
         {
             InitializeComponent();
 
             this.Loaded += RubiksCubeControl_Loaded;
-
-            _moveQueue = new ConcurrentQueue<Tuple<RubiksCubeMoves, bool>>();
 
             _storyboard = new Storyboard();
             _storyboard.FillBehavior = FillBehavior.Stop;
@@ -135,8 +131,7 @@ namespace RubiksCubeControl
             Face<Circle> red = new Face<Circle>(rNW, rNN, rNE, rWW, rCC, rEE, rSW, rSS, rSE);
             Face<Circle> white = new Face<Circle>(wNW, wNN, wNE, wWW, wCC, wEE, wSW, wSS, wSE);
             Face<Circle> blue = new Face<Circle>(bNW, bNN, bNE, bWW, bCC, bEE, bSW, bSS, bSE);
-            _gameboard = new GameBoard<Circle>(yellow, green, orange, red, white, blue);
-
+            _game = new GamePuzzle_Stickers<Circle>(yellow, green, orange, red, white, blue);
 
         }
 
@@ -147,121 +142,65 @@ namespace RubiksCubeControl
             //ProcessKeyEvent(new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Z));
         }
 
-
-        private void closeButton_Click(object sender, RoutedEventArgs e)
+        private void CubeNet_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            RaiseQuitClientRequested();
+            this.OnMouseLeftButtonDown(e);
         }
 
         public static void UpdatePositions_Rings(RubiksCubeMoves move, bool counterRotate)
         {
-            Action<Ring<Circle>> rotateFunc = GameBoardExtensionMethods.Rotate<Circle>;
+            Action<Ring<Circle>> rotateFunc = GamePuzzleExtensionMethods.Rotate<Circle>;
             if (counterRotate)
             {
-                rotateFunc = GameBoardExtensionMethods.CounterRotate<Circle>;
+                rotateFunc = GamePuzzleExtensionMethods.CounterRotate<Circle>;
             }
 
             switch (move)
             {
-                case RubiksCubeMoves.Middle: rotateFunc.Invoke(_gameboard.Right.Middle); break;
-                case RubiksCubeMoves.Slice: rotateFunc.Invoke(_gameboard.Left.Middle); break;
-                case RubiksCubeMoves.Equator: rotateFunc.Invoke(_gameboard.Top.Middle); break;
+                case RubiksCubeMoves.Middle: rotateFunc.Invoke(_game.Right.Middle); break;
+                case RubiksCubeMoves.Slice: rotateFunc.Invoke(_game.Left.Middle); break;
+                case RubiksCubeMoves.Equator: rotateFunc.Invoke(_game.Top.Middle); break;
 
                 case RubiksCubeMoves.Left:
-                    rotateFunc.Invoke(_gameboard.Right.Outer);
+                    rotateFunc.Invoke(_game.Right.Outer);
                     break;
                 case RubiksCubeMoves.Right:
-                    rotateFunc.Invoke(_gameboard.Right.Inner);
+                    rotateFunc.Invoke(_game.Right.Inner);
                     break;
                 case RubiksCubeMoves.Up:
-                    rotateFunc.Invoke(_gameboard.Top.Inner);
+                    rotateFunc.Invoke(_game.Top.Inner);
                     break;
                 case RubiksCubeMoves.Down:
-                    rotateFunc.Invoke(_gameboard.Top.Outer);
+                    rotateFunc.Invoke(_game.Top.Outer);
                     break;
                 case RubiksCubeMoves.Front:
-                    rotateFunc.Invoke(_gameboard.Left.Inner);
+                    rotateFunc.Invoke(_game.Left.Inner);
                     break;
                 case RubiksCubeMoves.Back:
-                    rotateFunc.Invoke(_gameboard.Left.Outer);
+                    rotateFunc.Invoke(_game.Left.Outer);
                     break;
 
                 case RubiksCubeMoves.X:
-                    rotateFunc.Invoke(_gameboard.Right.Inner);
-                    rotateFunc.Invoke(_gameboard.Right.Middle);
-                    rotateFunc.Invoke(_gameboard.Right.Outer);
+                    rotateFunc.Invoke(_game.Right.Inner);
+                    rotateFunc.Invoke(_game.Right.Middle);
+                    rotateFunc.Invoke(_game.Right.Outer);
                     break;
                 case RubiksCubeMoves.Y:
-                    rotateFunc.Invoke(_gameboard.Top.Inner);
-                    rotateFunc.Invoke(_gameboard.Top.Middle);
-                    rotateFunc.Invoke(_gameboard.Top.Outer);
+                    rotateFunc.Invoke(_game.Top.Inner);
+                    rotateFunc.Invoke(_game.Top.Middle);
+                    rotateFunc.Invoke(_game.Top.Outer);
                     break;
                 case RubiksCubeMoves.Z:
-                    rotateFunc.Invoke(_gameboard.Left.Inner);
-                    rotateFunc.Invoke(_gameboard.Left.Middle);
-                    rotateFunc.Invoke(_gameboard.Left.Outer);
+                    rotateFunc.Invoke(_game.Left.Inner);
+                    rotateFunc.Invoke(_game.Left.Middle);
+                    rotateFunc.Invoke(_game.Left.Outer);
                     break;
             }
         }
 
-        public void RegisterForInputEvents(UIElement proxyParentControl)
+
+        public void AnimateMove(RubiksCubeMoves move, bool counterRotate)
         {
-            proxyParentControl.KeyUp += UserControl_KeyUp;
-        }
-
-        private void UserControl_KeyUp(object sender, KeyEventArgs e)
-        {
-            ProcessKeyEvent(e);
-        }
-
-        private void ProcessKeyEvent(KeyEventArgs e)
-        {
-            RubiksCubeMoves move;
-
-            switch (e.Key)
-            {
-                case Key.U: move = RubiksCubeMoves.Up; break;
-                case Key.D: move = RubiksCubeMoves.Down; break;
-                case Key.L: move = RubiksCubeMoves.Left; break;
-                case Key.R: move = RubiksCubeMoves.Right; break;
-                case Key.F: move = RubiksCubeMoves.Front; break;
-                case Key.B: move = RubiksCubeMoves.Back; break;
-                case Key.M: move = RubiksCubeMoves.Middle; break;
-                case Key.S: move = RubiksCubeMoves.Slice; break;
-                case Key.E: move = RubiksCubeMoves.Equator; break;
-                case Key.X: move = RubiksCubeMoves.X; break;
-                case Key.Y: move = RubiksCubeMoves.Y; break;
-                case Key.Z: move = RubiksCubeMoves.Z; break;
-                default: return;
-            }
-
-            bool counterRotate = (e.KeyboardDevice.Modifiers == ModifierKeys.Shift || e.KeyboardDevice.Modifiers == ModifierKeys.Control);
-
-            _moveQueue.Enqueue(new Tuple<RubiksCubeMoves, bool>(move, counterRotate));
-
-            if (!ExclusiveAccess.TryObtainLock())
-            {
-                return;
-            }
-
-            ProcessNextCommand();
-        }
-
-        private void ProcessNextCommand()
-        {
-            if (_moveQueue.TryDequeue(out Tuple<RubiksCubeMoves, bool> parameters))
-            {
-                AnimateMove(parameters.Item1, parameters.Item2);
-            }
-            else
-            {
-                ExclusiveAccess.ReleaseLock();
-            }
-        }
-
-        private void AnimateMove(RubiksCubeMoves move, bool counterRotate)
-        {
-
             List<MoveAnimationGroup> moveAnimations = new List<MoveAnimationGroup>();
 
             switch (move)
@@ -271,23 +210,23 @@ namespace RubiksCubeControl
                 case RubiksCubeMoves.X:
 
                     MoveAnimationGroup aniOuterX = new MoveAnimationGroup(RubiksCubeMoves.Left, counterRotate);
-                    aniOuterX.RingPeices = _gameboard.Right.Outer.GetItems();
+                    aniOuterX.RingPeices = _game.Right.Outer.GetItems();
                     aniOuterX.RingPaths = Paths_Ring_RightOuter;
                     aniOuterX.AddRingFinalizerAction();
 
-                    aniOuterX.FacePeices = new List<Face<Circle>>() { _gameboard.Yellow };
+                    aniOuterX.FacePeices = new List<Face<Circle>>() { _game.Yellow };
 
                     MoveAnimationGroup aniMiddleX = new MoveAnimationGroup(RubiksCubeMoves.Middle, counterRotate);
-                    aniMiddleX.RingPeices = _gameboard.Right.Middle.GetItems();
+                    aniMiddleX.RingPeices = _game.Right.Middle.GetItems();
                     aniMiddleX.RingPaths = Paths_Ring_RightMiddle;
                     aniMiddleX.AddRingFinalizerAction();
 
                     MoveAnimationGroup aniInnerX = new MoveAnimationGroup(RubiksCubeMoves.Right, counterRotate);
-                    aniInnerX.RingPeices = _gameboard.Right.Inner.GetItems();
+                    aniInnerX.RingPeices = _game.Right.Inner.GetItems();
                     aniInnerX.RingPaths = Paths_Ring_RightInner;
                     aniInnerX.AddRingFinalizerAction();
 
-                    aniInnerX.FacePeices = new List<Face<Circle>>() { _gameboard.White };
+                    aniInnerX.FacePeices = new List<Face<Circle>>() { _game.White };
 
                     moveAnimations.Add(aniOuterX);
                     moveAnimations.Add(aniMiddleX);
@@ -298,23 +237,23 @@ namespace RubiksCubeControl
                 case RubiksCubeMoves.Y:
 
                     MoveAnimationGroup aniOuterY = new MoveAnimationGroup(RubiksCubeMoves.Down, counterRotate);
-                    aniOuterY.RingPeices = _gameboard.Top.Outer.GetItems();
+                    aniOuterY.RingPeices = _game.Top.Outer.GetItems();
                     aniOuterY.RingPaths = Paths_Ring_TopOuter;
                     aniOuterY.AddRingFinalizerAction();
 
-                    aniOuterY.FacePeices = new List<Face<Circle>>() { _gameboard.Blue };
+                    aniOuterY.FacePeices = new List<Face<Circle>>() { _game.Blue };
 
                     MoveAnimationGroup aniMiddleY = new MoveAnimationGroup(RubiksCubeMoves.Equator, counterRotate);
-                    aniMiddleY.RingPeices = _gameboard.Top.Middle.GetItems();
+                    aniMiddleY.RingPeices = _game.Top.Middle.GetItems();
                     aniMiddleY.RingPaths = Paths_Ring_TopMiddle;
                     aniMiddleY.AddRingFinalizerAction();
 
                     MoveAnimationGroup aniInnerY = new MoveAnimationGroup(RubiksCubeMoves.Up, counterRotate);
-                    aniInnerY.RingPeices = _gameboard.Top.Inner.GetItems();
+                    aniInnerY.RingPeices = _game.Top.Inner.GetItems();
                     aniInnerY.RingPaths = Paths_Ring_TopInner;
                     aniInnerY.AddRingFinalizerAction();
 
-                    aniInnerY.FacePeices = new List<Face<Circle>>() { _gameboard.Green };
+                    aniInnerY.FacePeices = new List<Face<Circle>>() { _game.Green };
 
                     moveAnimations.Add(aniOuterY);
                     moveAnimations.Add(aniMiddleY);
@@ -325,23 +264,23 @@ namespace RubiksCubeControl
                 case RubiksCubeMoves.Z:
 
                     MoveAnimationGroup aniOuterZ = new MoveAnimationGroup(RubiksCubeMoves.Back, counterRotate);
-                    aniOuterZ.RingPeices = _gameboard.Left.Outer.GetItems();
+                    aniOuterZ.RingPeices = _game.Left.Outer.GetItems();
                     aniOuterZ.RingPaths = Paths_Ring_LeftOuter;
                     aniOuterZ.AddRingFinalizerAction();
 
-                    aniOuterZ.FacePeices = new List<Face<Circle>>() { _gameboard.Orange };
+                    aniOuterZ.FacePeices = new List<Face<Circle>>() { _game.Orange };
 
                     MoveAnimationGroup aniMiddleZ = new MoveAnimationGroup(RubiksCubeMoves.Slice, counterRotate);
-                    aniMiddleZ.RingPeices = _gameboard.Left.Middle.GetItems();
+                    aniMiddleZ.RingPeices = _game.Left.Middle.GetItems();
                     aniMiddleZ.RingPaths = Paths_Ring_LeftMiddle;
                     aniMiddleZ.AddRingFinalizerAction();
 
                     MoveAnimationGroup aniInnerZ = new MoveAnimationGroup(RubiksCubeMoves.Front, counterRotate);
-                    aniInnerZ.RingPeices = _gameboard.Left.Inner.GetItems();
+                    aniInnerZ.RingPeices = _game.Left.Inner.GetItems();
                     aniInnerZ.RingPaths = Paths_Ring_LeftInner;
                     aniInnerZ.AddRingFinalizerAction();
 
-                    aniInnerZ.FacePeices = new List<Face<Circle>>() { _gameboard.Red };
+                    aniInnerZ.FacePeices = new List<Face<Circle>>() { _game.Red };
 
                     moveAnimations.Add(aniOuterZ);
                     moveAnimations.Add(aniMiddleZ);
@@ -354,11 +293,11 @@ namespace RubiksCubeControl
                 case RubiksCubeMoves.Up:
                     MoveAnimationGroup uAni = new MoveAnimationGroup(move, counterRotate);
 
-                    uAni.RingPeices = _gameboard.Top.Inner.GetItems();
+                    uAni.RingPeices = _game.Top.Inner.GetItems();
                     uAni.RingPaths = Paths_Ring_TopInner;
                     uAni.AddRingFinalizerAction();
 
-                    uAni.FacePeices = new List<Face<Circle>>() { _gameboard.Green };
+                    uAni.FacePeices = new List<Face<Circle>>() { _game.Green };
 
                     moveAnimations.Add(uAni);
                     break;
@@ -366,11 +305,11 @@ namespace RubiksCubeControl
                 case RubiksCubeMoves.Front:
                     MoveAnimationGroup fAni = new MoveAnimationGroup(move, counterRotate);
 
-                    fAni.RingPeices = _gameboard.Left.Inner.GetItems();
+                    fAni.RingPeices = _game.Left.Inner.GetItems();
                     fAni.RingPaths = Paths_Ring_LeftInner;
                     fAni.AddRingFinalizerAction();
 
-                    fAni.FacePeices = new List<Face<Circle>>() { _gameboard.Red };
+                    fAni.FacePeices = new List<Face<Circle>>() { _game.Red };
 
                     moveAnimations.Add(fAni);
                     break;
@@ -378,11 +317,11 @@ namespace RubiksCubeControl
                 case RubiksCubeMoves.Right:
                     MoveAnimationGroup rAni = new MoveAnimationGroup(move, counterRotate);
 
-                    rAni.RingPeices = _gameboard.Right.Inner.GetItems();
+                    rAni.RingPeices = _game.Right.Inner.GetItems();
                     rAni.RingPaths = Paths_Ring_RightInner;
                     rAni.AddRingFinalizerAction();
 
-                    rAni.FacePeices = new List<Face<Circle>>() { _gameboard.White };
+                    rAni.FacePeices = new List<Face<Circle>>() { _game.White };
 
                     moveAnimations.Add(rAni);
 
@@ -393,7 +332,7 @@ namespace RubiksCubeControl
                 case RubiksCubeMoves.Equator:
                     MoveAnimationGroup eAni = new MoveAnimationGroup(move, counterRotate);
 
-                    eAni.RingPeices = _gameboard.Top.Middle.GetItems();
+                    eAni.RingPeices = _game.Top.Middle.GetItems();
                     eAni.RingPaths = Paths_Ring_TopMiddle;
                     eAni.AddRingFinalizerAction();
 
@@ -403,7 +342,7 @@ namespace RubiksCubeControl
                 case RubiksCubeMoves.Slice:
                     MoveAnimationGroup sAni = new MoveAnimationGroup(move, counterRotate);
 
-                    sAni.RingPeices = _gameboard.Left.Middle.GetItems();
+                    sAni.RingPeices = _game.Left.Middle.GetItems();
                     sAni.RingPaths = Paths_Ring_LeftMiddle;
                     sAni.AddRingFinalizerAction();
 
@@ -413,7 +352,7 @@ namespace RubiksCubeControl
                 case RubiksCubeMoves.Middle:
                     MoveAnimationGroup mAni = new MoveAnimationGroup(move, counterRotate);
 
-                    mAni.RingPeices = _gameboard.Right.Middle.GetItems();
+                    mAni.RingPeices = _game.Right.Middle.GetItems();
                     mAni.RingPaths = Paths_Ring_RightMiddle;
                     mAni.AddRingFinalizerAction();
 
@@ -425,11 +364,11 @@ namespace RubiksCubeControl
                 case RubiksCubeMoves.Down:
                     MoveAnimationGroup dAni = new MoveAnimationGroup(move, counterRotate);
 
-                    dAni.RingPeices = _gameboard.Top.Outer.GetItems();
+                    dAni.RingPeices = _game.Top.Outer.GetItems();
                     dAni.RingPaths = Paths_Ring_TopOuter;
                     dAni.AddRingFinalizerAction();
 
-                    dAni.FacePeices = new List<Face<Circle>>() { _gameboard.Blue };
+                    dAni.FacePeices = new List<Face<Circle>>() { _game.Blue };
 
                     moveAnimations.Add(dAni);
                     break;
@@ -437,11 +376,11 @@ namespace RubiksCubeControl
                 case RubiksCubeMoves.Back:
                     MoveAnimationGroup bAni = new MoveAnimationGroup(move, counterRotate);
 
-                    bAni.RingPeices = _gameboard.Left.Outer.GetItems();
+                    bAni.RingPeices = _game.Left.Outer.GetItems();
                     bAni.RingPaths = Paths_Ring_LeftOuter;
                     bAni.AddRingFinalizerAction();
 
-                    bAni.FacePeices = new List<Face<Circle>>() { _gameboard.Orange };
+                    bAni.FacePeices = new List<Face<Circle>>() { _game.Orange };
 
                     moveAnimations.Add(bAni);
                     break;
@@ -449,11 +388,11 @@ namespace RubiksCubeControl
                 case RubiksCubeMoves.Left:
                     MoveAnimationGroup lAni = new MoveAnimationGroup(move, counterRotate);
 
-                    lAni.RingPeices = _gameboard.Right.Outer.GetItems();
+                    lAni.RingPeices = _game.Right.Outer.GetItems();
                     lAni.RingPaths = Paths_Ring_RightOuter;
                     lAni.AddRingFinalizerAction();
 
-                    lAni.FacePeices = new List<Face<Circle>>() { _gameboard.Yellow };
+                    lAni.FacePeices = new List<Face<Circle>>() { _game.Yellow };
 
                     moveAnimations.Add(lAni);
                     break;
@@ -501,48 +440,16 @@ namespace RubiksCubeControl
                 }
             }
 
-            _storyboard.Completed += MoveCompletedHandler;
+            EventHandler finalUpdateAction = null;
+            finalUpdateAction = new EventHandler((s, e) =>
+            {
+                _storyboard.Completed -= finalUpdateAction;
+                peicePositionsUpdates.ForEach(action => action());
+                RaiseAnimationCompleted();
+            });
+
+            _storyboard.Completed += finalUpdateAction;
             _storyboard.Begin();
-
-            peicePositionsUpdates.ForEach(action => action.Invoke());
-
-        }
-
-        private void MoveCompletedHandler(object? source, EventArgs args)
-        {
-            _storyboard.Completed -= MoveCompletedHandler;
-            ProcessNextCommand();
-        }
-
-        private static class ExclusiveAccess
-        {
-            private static UInt64 _lockObject = 0;
-
-            public static bool TryObtainLock()
-            {
-                return (0 == Interlocked.CompareExchange(ref _lockObject, 1, 0));
-            }
-
-            public static void ReleaseLock()
-            {
-                Interlocked.Exchange(ref _lockObject, 0);
-            }
-        }
-
-        private void CubeNet_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            this.OnMouseLeftButtonDown(e);
-        }
-
-        private void helpButton_Click(object sender, RoutedEventArgs e)
-        {
-            HelpWindow helpWindow = new HelpWindow()
-            {
-                Owner = Window.GetWindow(this)
-            };
-
-            helpWindow.Show();
         }
     }
-
 }

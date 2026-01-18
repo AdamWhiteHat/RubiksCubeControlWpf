@@ -20,4 +20,31 @@
 		<PackageVersion>$(AssemblyVersion)</PackageVersion>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <None Update="RubiksCubeSlice.stl">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Models\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Material003.bmp" />
+	  <None Remove="Material_All.bmp" />
+	  <None Remove="Material_BYO.bmp" />
+	  <None Remove="Material_GRW.bmp" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Material_All.bmp" />
+	</ItemGroup>
+
 </Project>

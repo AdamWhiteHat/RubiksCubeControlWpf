@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Concurrent;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,6 +20,14 @@ namespace RubiksCubeApplication
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static class ExclusiveAccess
+        {
+            private static UInt64 _lockObject = 0;
+            public static bool TryObtainLock() => (0 == Interlocked.CompareExchange(ref _lockObject, 1, 0));
+            public static void ReleaseLock() => Interlocked.Exchange(ref _lockObject, 0);
+        }
+
+        #region ScaleZoom
 
         public double ScaleZoom
         {
@@ -75,17 +84,26 @@ namespace RubiksCubeApplication
             element.RaiseCenterChanged((Point)e.OldValue, (Point)e.NewValue);
         }
 
+        #endregion
+
         public MainWindow()
         {
             InitializeComponent();
             this.Loaded += MainWindow_Loaded;
 
-            rubiksCubeControl.RegisterForInputEvents(this);
-            rubiksCubeControl.MouseLeftButtonDown += RubiksCubeControl_MouseLeftButtonDown;
-            rubiksCubeControl.QuitClientRequested += RubiksCubeControl_ClientCloseRequested;
+            _moveQueue = new ConcurrentQueue<Tuple<RubiksCubeMoves, bool>>();
+            _countdown = new InterlockedCountdown(2);
+            _countdown.CountdownComplete += OnCountdownComplete;
+
+            this.KeyUp += Window_KeyUp;
+
+            rubiksCubeControl2D.AnimationCompleted += RubiksCubeControl2D_AnimationCompleted;
+            rubiksCubeControl3D.AnimationCompleted += RubiksCubeControl3D_AnimationCompleted;
 
             this.PreviewMouseWheel += MainWindow_PreviewMouseWheel;
         }
+
+        private ConcurrentQueue<Tuple<RubiksCubeMoves, bool>> _moveQueue { get; set; }
 
         private static double BaseWidth = -1;
         private static double BaseHeight = -1;
@@ -98,6 +116,26 @@ namespace RubiksCubeApplication
             BaseHeight = this.ActualHeight;
 
             CalculateUpdatedCenter();
+        }
+
+        private void QuitClientRequested()
+        {
+            this.Close();
+        }
+
+        private void closeButton_Click(object sender, RoutedEventArgs e)
+        {
+            QuitClientRequested();
+        }
+
+        private void helpButton_Click(object sender, RoutedEventArgs e)
+        {
+            HelpWindow helpWindow = new HelpWindow()
+            {
+                Owner = Window.GetWindow(this)
+            };
+
+            helpWindow.Show();
         }
 
         private void MainWindow_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -191,7 +229,7 @@ namespace RubiksCubeApplication
             SetValue(CenterProperty, new Point(this.ActualWidth / 2, this.ActualHeight / 2));
         }
 
-        private void RubiksCubeControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ButtonState == MouseButtonState.Pressed)
             {
@@ -208,14 +246,80 @@ namespace RubiksCubeApplication
             }
         }
 
-        private void RubiksCubeControl_ClientCloseRequested(object sender, RoutedEventArgs e)
+        private void Window_KeyUp(object sender, KeyEventArgs e)
         {
-            QuitClientRequested();
+            ProcessKeyEvent(e);
         }
 
-        private void QuitClientRequested()
+        private void ProcessKeyEvent(KeyEventArgs e)
         {
-            this.Close();
+            bool counterRotate = (e.KeyboardDevice.Modifiers == ModifierKeys.Shift || e.KeyboardDevice.Modifiers == ModifierKeys.Control);
+
+            RubiksCubeMoves move;
+            switch (e.Key)
+            {
+                case Key.U: move = RubiksCubeMoves.Up; break;
+                case Key.E: move = RubiksCubeMoves.Equator; counterRotate = !counterRotate; break;
+                case Key.D: move = RubiksCubeMoves.Down; counterRotate = !counterRotate; break;
+
+                case Key.L: move = RubiksCubeMoves.Left; counterRotate = !counterRotate; break;
+                case Key.M: move = RubiksCubeMoves.Middle; counterRotate = !counterRotate; break;
+                case Key.R: move = RubiksCubeMoves.Right; break;
+
+                case Key.F: move = RubiksCubeMoves.Front; break;
+                case Key.S: move = RubiksCubeMoves.Slice; break;
+                case Key.B: move = RubiksCubeMoves.Back; counterRotate = !counterRotate; break;
+
+                case Key.X: move = RubiksCubeMoves.X; break;
+                case Key.Y: move = RubiksCubeMoves.Y; break;
+                case Key.Z: move = RubiksCubeMoves.Z; break;
+                default: return;
+            }
+
+            _moveQueue.Enqueue(new Tuple<RubiksCubeMoves, bool>(move, counterRotate));
+
+            if (!ExclusiveAccess.TryObtainLock())
+            {
+                return;
+            }
+
+            if (!_countdown.IsCompleted())
+            {
+                return;
+            }
+
+            ProcessNextCommand();
+        }
+
+        private void ProcessNextCommand()
+        {
+            if (_moveQueue.TryDequeue(out Tuple<RubiksCubeMoves, bool> parameters))
+            {
+                _countdown.Reset();
+                rubiksCubeControl2D.AnimateMove(parameters.Item1, parameters.Item2);
+                rubiksCubeControl3D.AnimateMove(parameters.Item1, parameters.Item2);
+            }
+            else
+            {
+                ExclusiveAccess.ReleaseLock();
+            }
+        }
+
+        InterlockedCountdown _countdown;
+
+        private void RubiksCubeControl2D_AnimationCompleted(object sender, RoutedEventArgs e)
+        {
+            _countdown.Signal();
+        }
+
+        private void RubiksCubeControl3D_AnimationCompleted(object sender, RoutedEventArgs e)
+        {
+            _countdown.Signal();
+        }
+
+        private void OnCountdownComplete(object? sender, EventArgs e)
+        {
+            ProcessNextCommand();
         }
     }
 }

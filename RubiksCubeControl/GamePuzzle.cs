@@ -1,13 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Animation;
 using System.Xml.Linq;
 using RubiksCubeControl.Shapes;
 
 namespace RubiksCubeControl
 {
+    /// <summary>
+    /// Slots are containers. They contain an Item.     
+    /// A collection of containers are created as a logical grouping of game pieces, e.g. the front face, the middle slice, etc.
+    /// These containers are created once per lifetime of the application, and they do not change their logical groupings.
+    /// The items they contain, however, do shuffle around. The item change with every move or rotation. The items in this case are the colored face stickers of the Rubik's cube.
+    /// The logical groupings, the front face, for example, never moves. The front face always stays the front face.
+    /// Whether the front face contains a blue sticker or a red sticker depends on the particular permutation of the cube at the time, and changes any time you, say, rotate some right-face pieces to be in the front-face position.
+    /// The game pieces are distinct. There are only 9 red stickers that exists on a Rubik's cube, for example, and each of them have a unique identity. There is only 1 NW corner (as seen from the unscrambled starting state) red sticker. 
+    /// Multiple containers may have Item members that point to the same game piece instance. 
+    /// This is a very useful abstraction, because it lets us address game pieces by these logical groupings: We can gather the items of the front-face containers, and rotate them. If the rotation method update the containers' items appropriately, next time you grab the items from the front-face group, they will reflect the result of that prior rotation.
+    /// </summary>
     public class Slot<T> where T : class
     {
         public T Item;
@@ -39,9 +52,15 @@ namespace RubiksCubeControl
         private Slot<T>[] _elements;
 
         private Slice() { }
-        public Slice(params Slot<T>[] elements)
+        public Slice(params Slot<T>[] slots)
         {
-            _elements = elements;
+            _elements = slots;
+        }
+
+        public static Slice<T> Factory(params T[] items)
+        {
+            var slots = items.Select(itm => new Slot<T>(itm)).ToArray();
+            return new Slice<T>(slots);
         }
 
         public List<T> GetItems()
@@ -263,7 +282,7 @@ namespace RubiksCubeControl
         }
     }
 
-    public class GameBoard<T> where T : class
+    public class GamePuzzle_Stickers<T> where T : class
     {
         public Face<T> Yellow;
         public Face<T> Green;
@@ -278,7 +297,7 @@ namespace RubiksCubeControl
         public Section<T> Left;
         public Section<T> Right;
 
-        public GameBoard(Face<T> yellow, Face<T> green, Face<T> orange, Face<T> red, Face<T> white, Face<T> blue)
+        public GamePuzzle_Stickers(Face<T> yellow, Face<T> green, Face<T> orange, Face<T> red, Face<T> white, Face<T> blue)
         {
             Yellow = yellow;
             Green = green;
@@ -302,6 +321,236 @@ namespace RubiksCubeControl
             Top = new Section<T>(innerTop, middleTop, outerTop);
             Left = new Section<T>(innerLeft, middleLeft, outerLeft);
             Right = new Section<T>(innerRight, middleRight, outerRight);
+        }
+    }
+
+    public class GamePuzzle_Cubies<T> where T : class
+    {
+
+        public Slice<T> Front;
+        public Slice<T> Middle;
+        public Slice<T> Back;
+
+        public Slice<T> Left;
+        public Slice<T> Center;
+        public Slice<T> Right;
+
+        public Slice<T> Top;
+        public Slice<T> Equator;
+        public Slice<T> Bottom;
+
+        public Slice<T> All;
+
+        private Slot<T> Back_NW;
+        private Slot<T> Back_N;
+        private Slot<T> Back_NE;
+        private Slot<T> Back_W;
+        private Slot<T> Back_C;
+        private Slot<T> Back_E;
+        private Slot<T> Back_SW;
+        private Slot<T> Back_S;
+        private Slot<T> Back_SE;
+        private Slot<T> Middle_NW;
+        private Slot<T> Middle_N;
+        private Slot<T> Middle_NE;
+        private Slot<T> Middle_W;
+        private Slot<T> Middle_C;
+        private Slot<T> Middle_E;
+        private Slot<T> Middle_SW;
+        private Slot<T> Middle_S;
+        private Slot<T> Middle_SE;
+        private Slot<T> Front_NW;
+        private Slot<T> Front_N;
+        private Slot<T> Front_NE;
+        private Slot<T> Front_W;
+        private Slot<T> Front_C;
+        private Slot<T> Front_E;
+        private Slot<T> Front_SW;
+        private Slot<T> Front_S;
+        private Slot<T> Front_SE;
+
+        public GamePuzzle_Cubies(T back_NW, T back_N, T back_NE, T back_W, T back_C, T back_E, T back_SW, T back_S, T back_SE, T middle_NW, T middle_N, T middle_NE, T middle_W, T middle_C, T middle_E, T middle_SW, T middle_S, T middle_SE, T front_NW, T front_N, T front_NE, T front_W, T front_C, T front_E, T front_SW, T front_S, T front_SE)
+        {
+            Back_NW = new Slot<T>(back_NW);
+            Back_N = new Slot<T>(back_N);
+            Back_NE = new Slot<T>(back_NE);
+            Back_W = new Slot<T>(back_W);
+            Back_C = new Slot<T>(back_C);
+            Back_E = new Slot<T>(back_E);
+            Back_SW = new Slot<T>(back_SW);
+            Back_S = new Slot<T>(back_S);
+            Back_SE = new Slot<T>(back_SE);
+            Middle_NW = new Slot<T>(middle_NW);
+            Middle_N = new Slot<T>(middle_N);
+            Middle_NE = new Slot<T>(middle_NE);
+            Middle_W = new Slot<T>(middle_W);
+            Middle_C = new Slot<T>(middle_C);
+            Middle_E = new Slot<T>(middle_E);
+            Middle_SW = new Slot<T>(middle_SW);
+            Middle_S = new Slot<T>(middle_S);
+            Middle_SE = new Slot<T>(middle_SE);
+            Front_NW = new Slot<T>(front_NW);
+            Front_N = new Slot<T>(front_N);
+            Front_NE = new Slot<T>(front_NE);
+            Front_W = new Slot<T>(front_W);
+            Front_C = new Slot<T>(front_C);
+            Front_E = new Slot<T>(front_E);
+            Front_SW = new Slot<T>(front_SW);
+            Front_S = new Slot<T>(front_S);
+            Front_SE = new Slot<T>(front_SE);
+
+
+         Front = new Slice<T>(
+                Front_NW,
+                Front_N,
+                Front_NE,
+                Front_W,
+                Front_C,
+                Front_E,
+                Front_SW,
+                Front_S,
+                Front_SE
+            );
+
+          Middle = new Slice<T>(
+                Middle_NW,
+                Middle_N,
+                Middle_NE,
+                Middle_W,
+                Middle_C,
+                Middle_E,
+                Middle_SW,
+                Middle_S,
+                Middle_SE
+            );
+
+            Back = new Slice<T>(
+                Back_NW,
+                Back_N,
+                Back_NE,
+                Back_W,
+                Back_C,
+                Back_E,
+                Back_SW,
+                Back_S,
+                Back_SE
+            );
+
+            /*
+    Right = new Slice<T>(
+        Back_NE,
+        Back_E,
+        Back_SE,
+        Middle_NE,
+        Middle_E,
+        Middle_SE,
+        Front_NE,
+        Front_E,
+        Front_SE
+    );
+    */
+
+            Right = new Slice<T>(
+                Front_NE,
+                Middle_NE,
+                Back_NE,
+                Front_E,
+                Middle_E,
+                Back_E,
+                Front_SE,
+                Middle_SE,
+                Back_SE
+           );
+
+            Center = new Slice<T>(
+                Front_N,
+                Middle_N,
+                Back_N,
+                Front_C,
+                Middle_C,
+                Back_C,
+                Front_S,
+                Middle_S,
+                Back_S
+            );
+
+            Left = new Slice<T>(
+                Front_NW,
+                Middle_NW,
+                Back_NW,
+                Front_W,
+                Middle_W,
+                Back_W,
+                Front_SW,
+                Middle_SW,
+                Back_SW
+            );
+
+            Top = new Slice<T>(
+                Front_NW,
+                Middle_NW,
+                Back_NW,
+                Front_N,
+                Middle_N,
+                Back_N,
+                Front_NE,
+                Middle_NE,
+                Back_NE
+            );
+
+            Equator = new Slice<T>(
+                Front_W,
+                Middle_W,
+                Back_W,
+                Front_C,
+                Middle_C,
+                Back_C,
+                Front_E,
+                Middle_E,
+                Back_E
+            );
+
+            Bottom = new Slice<T>(
+                Front_SW,
+                Middle_SW,
+                Back_SW,
+                Front_S,
+                Middle_S,
+                Back_S,
+                Front_SE,
+                Middle_SE,
+                Back_SE
+            );
+
+            All = new Slice<T>(
+                Back_NW,
+                Back_N,
+                Back_NE,
+                Back_W,
+                Back_C,
+                Back_E,
+                Back_SW,
+                Back_S,
+                Back_SE,
+                Middle_NW,
+                Middle_N,
+                Middle_NE,
+                Middle_W,
+                Middle_C,
+                Middle_E,
+                Middle_SW,
+                Middle_S,
+                Middle_SE,
+                Front_NW,
+                Front_N,
+                Front_NE,
+                Front_W,
+                Front_C,
+                Front_E,
+                Front_SW,
+                Front_S,
+                Front_SE
+            );
         }
     }
 }

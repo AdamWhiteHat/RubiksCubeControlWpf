@@ -6,6 +6,9 @@ namespace RubiksCubeControl
 {
     public static class RotationHelper
     {
+        /// <summary>
+        /// Pops three items off the end of a collection, and pushes them onto the start. 
+        /// </summary>        
         public static void Rotate<T>(List<T> collection) where T : class
         {
             int index = collection.Count - 1;
@@ -21,6 +24,9 @@ namespace RubiksCubeControl
             collection.Insert(0, tmp1);
         }
 
+        /// <summary>
+        /// Pops the first three items off the beginning of a collection, and pushes them onto the end. 
+        /// </summary>        
         public static void CounterRotate<T>(List<T> collection) where T : class
         {
             int index = 0;

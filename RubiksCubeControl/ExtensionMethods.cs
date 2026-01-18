@@ -6,6 +6,8 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 using RubiksCubeControl.Shapes;
+using System.Windows.Media.Media3D;
+using System.Windows.Controls;
 
 namespace RubiksCubeControl
 {
@@ -80,13 +82,50 @@ namespace RubiksCubeControl
         private static string ReversePathExceptionMessage = "Can only reverse simple paths of the form Mx0,y0Cx1,y1,x2,y2,x3,y3";
     }
 
-    public static class GameBoardExtensionMethods
+    public static class Model3DGroupExtensionMethods
+    {
+        public static void PopulateFromSlice(this Model3DGroup source, Slice<Cube> slice)
+        {
+            source.Children = new Model3DCollection(slice.GetItems().Select(c => c.Model));
+        }
+
+        public static void AddSlice(this Model3DGroup source, Slice<GeometryModel3D> slice)
+        {
+            var items = slice.GetItems();
+            foreach (var item in items)
+            {
+                source.Children.Add(item);
+            }
+        }
+
+        public static void RemoveSlice(this Model3DGroup source, Slice<GeometryModel3D> slice)
+        {
+            var items = slice.GetItems();
+
+            int index = 0;
+            int max = items.Count;
+
+            while (index < max)
+            {
+                GeometryModel3D item = items[index];
+
+                source.Children.Remove(item);
+
+                index++;
+            }
+        }
+    }
+
+    public static class GamePuzzleExtensionMethods
     {
         public static List<T> GetItems<T>(this Ring<T> source) where T : class
         {
             return source.All.GetItems();
         }
 
+        /// <summary>
+        /// Clockwise ring rotation
+        /// </summary>
         public static void Rotate<T>(this Ring<T> source) where T : class
         {
             List<T> slots = source.All.GetItems();
@@ -96,6 +135,9 @@ namespace RubiksCubeControl
             source.All.SetItems(slots);
         }
 
+        /// <summary>
+        /// Counter-clockwise ring rotation
+        /// </summary>
         public static void CounterRotate<T>(this Ring<T> source) where T : class
         {
             List<T> slots = source.All.GetItems();
@@ -105,6 +147,9 @@ namespace RubiksCubeControl
             source.All.SetItems(slots);
         }
 
+        /// <summary>
+        /// Clockwise face rotation
+        /// </summary>
         public static void Rotate<T>(this Face<T> source) where T : class
         {
             T temp = source.SW.Item;
@@ -120,6 +165,9 @@ namespace RubiksCubeControl
             source.W.Item = temp2;
         }
 
+        /// <summary>
+        /// Counter-clockwise face rotation
+        /// </summary>
         public static void CounterRotate<T>(this Face<T> source) where T : class
         {
             T temp = source.SE.Item;
@@ -133,6 +181,69 @@ namespace RubiksCubeControl
             source.S.Item = source.W.Item;
             source.W.Item = source.N.Item;
             source.N.Item = temp2;
+        }
+
+        public static void Rotate<T>(this Slice<T> source) where T : Cube
+        {
+            T[] items = source.GetItems().ToArray();
+
+            List<string> start_names = items.Select(i => i.Name).ToList();
+
+            T NW = items[0];
+            T N  = items[1];
+            T NE = items[2];
+            T W  = items[3];
+            T C  = items[4];
+            T E  = items[5];
+            T SW = items[6];
+            T S  = items[7];
+            T SE = items[8];
+
+            List<T> result = new List<T>()
+            {
+                SW,   // NW
+                W,    // N
+                NW,   // NE
+                S,    // W
+                C,    // C
+                N,    // E
+                SE,   // SW
+                E,    // S
+                NE    // SE
+            };
+
+            List<string> result_names = result.Select(i => i.Name).ToList();
+
+            source.SetItems(result);
+        }
+
+        public static void CounterRotate<T>(this Slice<T> source) where T : Cube
+        {
+            T[] items = source.GetItems().ToArray();
+            T NW = items[0];
+            T N  = items[1];
+            T NE = items[2];
+            T W  = items[3];
+            T C  = items[4];
+            T E  = items[5];
+            T SW = items[6];
+            T S  = items[7];
+            T SE = items[8];
+
+            List<T> result = new List<T>()
+            {
+                NE,  // NW
+                E,   // N
+                SE,  // NE
+                N,   // W
+                C,   // C
+                S,   // E
+                NW,  // SW
+                W,   // S
+                SW   // SE
+            };
+
+            source.SetItems(result);
         }
     }
 }

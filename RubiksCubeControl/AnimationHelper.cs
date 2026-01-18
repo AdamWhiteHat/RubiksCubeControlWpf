@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 using RubiksCubeControl.Shapes;
@@ -128,5 +129,18 @@ namespace RubiksCubeControl
             animatePointUsingPath.FillBehavior = FillBehavior.Stop;
             return animatePointUsingPath;
         }
+
+        public static Rotation3DAnimation BuildRotation3DAnimation()
+        {
+            Rotation3DAnimation animation = new Rotation3DAnimation();
+            animation.Duration = new Duration(System.TimeSpan.FromSeconds(AnimationHelper.AnimationDuration));
+            animation.AutoReverse = false;
+            animation.RepeatBehavior = new RepeatBehavior(1);
+            animation.AccelerationRatio = AnimationHelper.AnimationAccelerationRatio;
+            animation.DecelerationRatio = AnimationHelper.AnimationDecelerationRatio;
+            animation.FillBehavior = FillBehavior.HoldEnd;
+            return animation;
+        }
+
     }
 }

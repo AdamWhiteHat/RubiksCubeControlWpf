@@ -6,27 +6,25 @@
         xmlns:local="clr-namespace:RubiksCubeApplication"
         xmlns:ctrl="clr-namespace:RubiksCubeControl;assembly=RubiksCubeControl"
         mc:Ignorable="d" 
-
-        Title="Rubik's Rings"                
-        Background="Transparent" AllowsTransparency="True" WindowStyle="None"
-        MinWidth="546" MinHeight="540"
-        Width="646" Height="640" 
-        Margin="0" Padding="0"      
-        UseLayoutRounding="True"
-        HorizontalAlignment="Center" VerticalAlignment="Center"
-        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"      
-        WindowStartupLocation="Manual"
-                
-        KeyDown="Window_KeyDown"
-        
+        Title="Rubik's Rings"    
+        x:Name="mainWindow"      
         DataContext="{Binding RelativeSource={RelativeSource Self}}" 
-       
-        x:Name="mainWindow"                 
+        Width="915" Height="555" 
+        MinWidth="915" MinHeight="555"
+        Margin="0" Padding="0" 
+        Background="Transparent" AllowsTransparency="True" WindowStyle="None" UseLayoutRounding="True" WindowStartupLocation="Manual" 
+        HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+        KeyDown="Window_KeyDown"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
         >
+    <Window.Resources>
+        <SolidColorBrush x:Key="ControlDarkColorBrush" Color="{x:Static SystemColors.ControlDarkColor}" />
+        <SolidColorBrush x:Key="ControlColorBrush" Color="{x:Static SystemColors.ControlColor}" />
+    </Window.Resources>
 
 
-
-    <Border Padding="0" Margin="0">
+    <Border Grid.Row="1" Padding="0" Margin="0,0,0,0" CornerRadius="35"
+                Background="{DynamicResource ControlDarkColorBrush}">
         <Border.RenderTransform>
             <ScaleTransform  x:Name="ContentsScaleTransform"
                                  ScaleX="{Binding ScaleZoom}" 
@@ -35,20 +33,54 @@
                                  CenterY="{Binding Center.Y}"                        
                                />
         </Border.RenderTransform>
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0">
+
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
 
+            <Border Grid.Row="0" CornerRadius="30,30,0,0" Margin="7,7,7,0"
+                    HorizontalAlignment="Stretch"
+                    Width="Auto"
+                    Background="DarkBlue">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+                <WrapPanel HorizontalAlignment="Right" Margin="0,7,20,0">
 
-            <ctrl:RubiksCubeCtrl x:Name="rubiksCubeControl" Grid.Column="0"
-                                Margin="0" Padding="0"
-                                HorizontalAlignment="Center" VerticalAlignment="Center"
-                                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"                                    
-                             />
+                    <!--WrapPanel Grid.Row="0" HorizontalAlignment="Right" Margin="0,10,25,0" -->
+
+                    <Button x:Name="helpButton" Click="helpButton_Click" 
+                        Content="s" FontFamily="Marlett" FontSize="20"
+                        Background="{DynamicResource ControlColorBrush}" 
+                        Foreground="Black" BorderThickness="1.75" Margin="0,0,1,0"
+                        Width="27" Height="27"                        
+                        Focusable="True"  />
+
+                    <Button x:Name="closeButton" Click="closeButton_Click" 
+                        Content="r" FontFamily="Marlett" FontSize="20" FontWeight="Bold"
+                        Background="{DynamicResource ControlColorBrush}" 
+                        Foreground="Black" BorderThickness="1.75" Margin="1,0,0,0"
+                        Width="27" Height="27"                        
+                        Focusable="True"  />
+
+                </WrapPanel>
+            </Border>
+
+
+            <Grid Grid.Row="1" Margin="30">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <ctrl:RubiksCubeControl2D x:Name="rubiksCubeControl2D" Grid.Column="0" Margin="0" />
+                <WrapPanel Grid.Column="1" />
+                <ctrl:RubiksCubeControl3D x:Name="rubiksCubeControl3D" Grid.Column="2" Height="300" Margin="0,0,30,0" Padding="0" />
+            </Grid>
 
         </Grid>
     </Border>
+
 </Window>
