@@ -33,10 +33,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Material003.bmp" />
 	  <None Remove="Material_All.bmp" />
-	  <None Remove="Material_BYO.bmp" />
-	  <None Remove="Material_GRW.bmp" />
 	</ItemGroup>
 
 	<ItemGroup>
