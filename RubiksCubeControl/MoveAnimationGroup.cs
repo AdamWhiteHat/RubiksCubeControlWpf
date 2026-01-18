@@ -33,11 +33,11 @@ namespace RubiksCubeControl
             FinalizerActions.Add(new Action(() => RubiksCubeControl2D.UpdatePositions_Rings(move, counterRotate)));
         }
 
-        public void AddFaceFinalizerAction(Face<Circle> face)
+        public void AddFaceFinalizerAction(Face<Circle> face, bool counterRotate)
         {
             Face<Circle> copy = face;
 
-            if (CounterRotate)
+            if (counterRotate)
             {
                 FinalizerActions.Add(new Action(() =>
                 {

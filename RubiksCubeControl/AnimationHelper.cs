@@ -71,7 +71,14 @@ namespace RubiksCubeControl
                     return new Tuple<Circle, PointAnimation>(circle, animation);
                 });
 
-                if (moveAnimationGroup.CounterRotate)
+
+                bool counterRotate = moveAnimationGroup.CounterRotate;
+                if (moveAnimationGroup.Move == RubiksCubeMoves.Down || moveAnimationGroup.Move == RubiksCubeMoves.Back || moveAnimationGroup.Move == RubiksCubeMoves.Left)
+                {
+                    counterRotate = !counterRotate;
+                }
+
+                if (counterRotate)
                 {
                     animationGroup.Add(buildAnimation(face.NW.Item, face.SW.Item.Location));
                     animationGroup.Add(buildAnimation(face.NE.Item, face.NW.Item.Location));
@@ -96,7 +103,7 @@ namespace RubiksCubeControl
                     animationGroup.Add(buildAnimation(face.E.Item, face.S.Item.Location));
                 }
 
-                moveAnimationGroup.AddFaceFinalizerAction(face);
+                moveAnimationGroup.AddFaceFinalizerAction(face, counterRotate);
 
                 results.Add(animationGroup.ToArray());
             }
