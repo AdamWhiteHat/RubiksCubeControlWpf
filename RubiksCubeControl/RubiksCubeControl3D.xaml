@@ -742,10 +742,10 @@
                                             <Model3DGroup>
                                                 <Model3DGroup.Children>
 
-                                                    <Model3DGroup x:Name="top_slice">
+                                                    <Model3DGroup x:Name="up_slice">
 
                                                         <Model3DGroup.Transform>
-                                                            <RotateTransform3D x:Name="top_slice_rotation" CenterX="0.31" CenterY="-0.31" CenterZ="0.31" >
+                                                            <RotateTransform3D x:Name="up_slice_rotation" CenterX="0.31" CenterY="-0.31" CenterZ="0.31" >
                                                                 <RotateTransform3D.Rotation>
                                                                     <AxisAngleRotation3D Axis="0,0,-1" Angle="0" />
                                                                 </RotateTransform3D.Rotation>
@@ -766,10 +766,10 @@
 
                                                     </Model3DGroup>
 
-                                                    <Model3DGroup x:Name="bottom_slice">
+                                                    <Model3DGroup x:Name="down_slice">
 
                                                         <Model3DGroup.Transform>
-                                                            <RotateTransform3D x:Name="bottom_slice_rotation" CenterX="0.31" CenterY="-0.31" CenterZ="0.31" >
+                                                            <RotateTransform3D x:Name="down_slice_rotation" CenterX="0.31" CenterY="-0.31" CenterZ="0.31" >
                                                                 <RotateTransform3D.Rotation>
                                                                     <AxisAngleRotation3D Axis="0,0,-1" Angle="0" />
                                                                 </RotateTransform3D.Rotation>
@@ -790,21 +790,12 @@
                             </ContainerUIElement3D>
 
                             <!-- Lights -->
+                            
                             <ModelVisual3D>
-
                                 <ModelVisual3D.Content>
-                                    <!--AmbientLight x:Name="ambientLight" Color="White"  /-->
-                                    <!--PointLight x:Name="pointLight" Color="White" Position="15, 0, 5" /-->
                                     <DirectionalLight x:Name="directionalLight" Color="white" Direction="7,-1,-7" />
-                                    <!--SpotLight Color="White" Position="0,0,3" Direction="0,0,-2" Range="5000" /-->
                                 </ModelVisual3D.Content>
                             </ModelVisual3D>
-
-                            <!--ModelVisual3D>
-                            <ModelVisual3D.Content>
-                                <PointLight x:Name="pointLight1" Color="White" Position="7, 7, -7" Range="5000" />
-                            </ModelVisual3D.Content>
-                        </ModelVisual3D-->
 
                             <ModelVisual3D>
                                 <ModelVisual3D.Content>
@@ -812,67 +803,17 @@
                                 </ModelVisual3D.Content>
                             </ModelVisual3D>
 
-
-
-                            <!--ModelVisual3D>
-                            <ModelVisual3D.Content>
-                                <PointLight x:Name="pointLightNW" Color="White" Position="8, -8, -5" Range="5000" />
-                            </ModelVisual3D.Content>
-                        </ModelVisual3D-->
-
                             <ModelVisual3D>
                                 <ModelVisual3D.Content>
                                     <PointLight x:Name="pointLightNE" Color="White" Position="8, 8, -5" Range="5000" />
                                 </ModelVisual3D.Content>
                             </ModelVisual3D>
 
-                            <!--ModelVisual3D>
-                            <ModelVisual3D.Content>
-                                <PointLight x:Name="pointLightSE" Color="White" Position="18, 8, -5" Range="5000" />
-                            </ModelVisual3D.Content>
-                        </ModelVisual3D-->
-
                             <ModelVisual3D>
                                 <ModelVisual3D.Content>
                                     <PointLight x:Name="pointLightSW" Color="White" Position="-8, -8, -5" Range="5000" />
                                 </ModelVisual3D.Content>
                             </ModelVisual3D>
-
-
-
-
-
-
-
-                            <!--ModelVisual3D>
-                            <ModelVisual3D.Content>
-                                <PointLight x:Name="pointLightN" Color="White" Position="8, 0, -5" Range="5000" />
-                            </ModelVisual3D.Content>
-                        </ModelVisual3D-->
-
-                            <!--ModelVisual3D>
-                            <ModelVisual3D.Content>
-                                <PointLight x:Name="pointLightE" Color="White" Position="0, 8, -5" Range="5000"  />
-                            </ModelVisual3D.Content>
-                        </ModelVisual3D-->
-
-                            <!--ModelVisual3D>
-                            <ModelVisual3D.Content>
-                                <PointLight x:Name="pointLightS" Color="White" Position="-0.85,-1.6, -1.4" Range="500.0" />
-                            </ModelVisual3D.Content>
-                        </ModelVisual3D-->
-
-                            <!--ModelVisual3D>
-                            <ModelVisual3D.Content>
-                                <PointLight x:Name="pointLightW" Color="White" Position="0, -2, -2" Range="4.5" />
-                            </ModelVisual3D.Content>
-                        </ModelVisual3D-->
-
-                            <!--ModelVisual3D>
-                            <ModelVisual3D.Content>
-                                <AmbientLight Color="#123" />
-                            </ModelVisual3D.Content>
-                        </ModelVisual3D-->
 
                         </Viewport3D.Children>
 

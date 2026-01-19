@@ -185,6 +185,23 @@ namespace RubiksCubeControl
 
         public static void Rotate<T>(this Slice<T> source) where T : Cube
         {
+            if (source.Count == 9)
+            {
+                Rotate_9(source);
+            }
+            else // Count == 27
+            {
+                List<Slot<T>> slots = source.GetSlots();
+                Slice<T>[] threeSlices = slots.Chunk(9).Select(chunk => new Slice<T>(chunk)).ToArray();
+                Rotate_9<T>(threeSlices[0]);
+                Rotate_9<T>(threeSlices[1]);
+                Rotate_9<T>(threeSlices[2]);
+            }
+        }
+
+
+        private static void Rotate_9<T>(this Slice<T> source) where T : Cube
+        {
             T[] items = source.GetItems().ToArray();
 
             List<string> start_names = items.Select(i => i.Name).ToList();
@@ -218,6 +235,22 @@ namespace RubiksCubeControl
         }
 
         public static void CounterRotate<T>(this Slice<T> source) where T : Cube
+        {
+            if (source.Count == 9)
+            {
+                CounterRotate_9(source);
+            }
+            else // Count == 27
+            {
+                List<Slot<T>> slots = source.GetSlots();
+                Slice<T>[] threeSlices = slots.Chunk(9).Select(chunk => new Slice<T>(chunk)).ToArray();
+                CounterRotate_9<T>(threeSlices[0]);
+                CounterRotate_9<T>(threeSlices[1]);
+                CounterRotate_9<T>(threeSlices[2]);
+            }
+        }
+
+        private static void CounterRotate_9<T>(this Slice<T> source) where T : Cube
         {
             T[] items = source.GetItems().ToArray();
             T NW = items[0];

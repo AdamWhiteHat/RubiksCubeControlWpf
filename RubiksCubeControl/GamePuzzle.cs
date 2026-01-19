@@ -35,6 +35,11 @@ namespace RubiksCubeControl
 
     public class Slice<T> where T : class
     {
+        public int Count
+        {
+            get { return _elements.Length; }
+        }
+
         public Slot<T> this[int index]
         {
             get
@@ -66,6 +71,11 @@ namespace RubiksCubeControl
         public List<T> GetItems()
         {
             return _elements.Select(sl => sl.Item).ToList();
+        }
+
+        public List<Slot<T>> GetSlots()
+        {
+            return _elements.ToList();
         }
 
         public Slice<T> Reverse()
@@ -335,11 +345,13 @@ namespace RubiksCubeControl
         public Slice<T> Center;
         public Slice<T> Right;
 
-        public Slice<T> Top;
+        public Slice<T> Up;
         public Slice<T> Equator;
-        public Slice<T> Bottom;
+        public Slice<T> Down;
 
-        public Slice<T> All;
+        public Slice<T> X;
+        public Slice<T> Y;
+        public Slice<T> Z;
 
         private Slot<T> Back_NW;
         private Slot<T> Back_N;
@@ -400,29 +412,29 @@ namespace RubiksCubeControl
             Front_SE = new Slot<T>(front_SE);
 
 
-         Front = new Slice<T>(
-                Front_NW,
-                Front_N,
-                Front_NE,
-                Front_W,
-                Front_C,
-                Front_E,
-                Front_SW,
-                Front_S,
-                Front_SE
-            );
+            Front = new Slice<T>(
+                   Front_NW,
+                   Front_N,
+                   Front_NE,
+                   Front_W,
+                   Front_C,
+                   Front_E,
+                   Front_SW,
+                   Front_S,
+                   Front_SE
+               );
 
-          Middle = new Slice<T>(
-                Middle_NW,
-                Middle_N,
-                Middle_NE,
-                Middle_W,
-                Middle_C,
-                Middle_E,
-                Middle_SW,
-                Middle_S,
-                Middle_SE
-            );
+            Middle = new Slice<T>(
+                  Middle_NW,
+                  Middle_N,
+                  Middle_NE,
+                  Middle_W,
+                  Middle_C,
+                  Middle_E,
+                  Middle_SW,
+                  Middle_S,
+                  Middle_SE
+              );
 
             Back = new Slice<T>(
                 Back_NW,
@@ -435,20 +447,6 @@ namespace RubiksCubeControl
                 Back_S,
                 Back_SE
             );
-
-            /*
-    Right = new Slice<T>(
-        Back_NE,
-        Back_E,
-        Back_SE,
-        Middle_NE,
-        Middle_E,
-        Middle_SE,
-        Front_NE,
-        Front_E,
-        Front_SE
-    );
-    */
 
             Right = new Slice<T>(
                 Front_NE,
@@ -486,7 +484,7 @@ namespace RubiksCubeControl
                 Back_SW
             );
 
-            Top = new Slice<T>(
+            Up = new Slice<T>(
                 Front_NW,
                 Middle_NW,
                 Back_NW,
@@ -510,7 +508,7 @@ namespace RubiksCubeControl
                 Back_E
             );
 
-            Bottom = new Slice<T>(
+            Down = new Slice<T>(
                 Front_SW,
                 Middle_SW,
                 Back_SW,
@@ -522,16 +520,76 @@ namespace RubiksCubeControl
                 Back_SE
             );
 
-            All = new Slice<T>(
-                Back_NW,
-                Back_N,
+            X = new Slice<T>(
+                Front_NE,
+                Middle_NE,
                 Back_NE,
-                Back_W,
-                Back_C,
+                Front_E,
+                Middle_E,
                 Back_E,
-                Back_SW,
-                Back_S,
+                Front_SE,
+                Middle_SE,
                 Back_SE,
+                Front_N,
+                Middle_N,
+                Back_N,
+                Front_C,
+                Middle_C,
+                Back_C,
+                Front_S,
+                Middle_S,
+                Back_S,
+                Front_NW,
+                Middle_NW,
+                Back_NW,
+                Front_W,
+                Middle_W,
+                Back_W,
+                Front_SW,
+                Middle_SW,
+                Back_SW
+            );
+
+            Y = new Slice<T>(
+                Front_NW,
+                Middle_NW,
+                Back_NW,
+                Front_N,
+                Middle_N,
+                Back_N,
+                Front_NE,
+                Middle_NE,
+                Back_NE,
+                Front_W,
+                Middle_W,
+                Back_W,
+                Front_C,
+                Middle_C,
+                Back_C,
+                Front_E,
+                Middle_E,
+                Back_E,
+                Front_SW,
+                Middle_SW,
+                Back_SW,
+                Front_S,
+                Middle_S,
+                Back_S,
+                Front_SE,
+                Middle_SE,
+                Back_SE
+            );
+
+            Z = new Slice<T>(
+                Front_NW,
+                Front_N,
+                Front_NE,
+                Front_W,
+                Front_C,
+                Front_E,
+                Front_SW,
+                Front_S,
+                Front_SE,
                 Middle_NW,
                 Middle_N,
                 Middle_NE,
@@ -541,15 +599,15 @@ namespace RubiksCubeControl
                 Middle_SW,
                 Middle_S,
                 Middle_SE,
-                Front_NW,
-                Front_N,
-                Front_NE,
-                Front_W,
-                Front_C,
-                Front_E,
-                Front_SW,
-                Front_S,
-                Front_SE
+                Back_NW,
+                Back_N,
+                Back_NE,
+                Back_W,
+                Back_C,
+                Back_E,
+                Back_SW,
+                Back_S,
+                Back_SE
             );
         }
     }

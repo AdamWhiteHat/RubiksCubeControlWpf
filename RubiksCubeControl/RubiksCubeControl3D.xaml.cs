@@ -123,9 +123,9 @@ namespace RubiksCubeControl
 
             this.Loaded += RubiksCubeControl3D_Loaded;
 
-            all_slice_rotation_X = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), 0), new Point3D(0.31, -0.31, 0.31));
-            all_slice_rotation_Y = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), 0), new Point3D(0.31, -0.31, 0.31));
-            all_slice_rotation_Z = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), 0), new Point3D(0.31, -0.31, 0.31));
+            all_slice_rotation_X = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), 0), new Point3D(-0.31, -0.31, 0.31));
+            all_slice_rotation_Y = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, -1), 0), new Point3D(0.31, -0.31, 0.31));
+            all_slice_rotation_Z = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, -1, 0), 0), new Point3D(0.31, -0.31, 0.31));
 
             _storyboard = new Storyboard();
             _storyboard.FillBehavior = FillBehavior.HoldEnd;
@@ -200,7 +200,7 @@ namespace RubiksCubeControl
             );
 
             displayGroup.Children.Clear();
-            displayGroup.PopulateFromSlice(_game.All);
+            displayGroup.PopulateFromSlice(_game.Z);
         }
 
         #endregion 
@@ -258,23 +258,23 @@ namespace RubiksCubeControl
                     break;
 
                 case RubiksCubeMoves.Up:
-                    AnimateSliceRotation(_game.Top, counterRotate, top_slice_rotation);
+                    AnimateSliceRotation(_game.Up, counterRotate, up_slice_rotation);
                     break;
                 case RubiksCubeMoves.Equator:
                     AnimateSliceRotation(_game.Equator, counterRotate, equator_slice_rotation);
                     break;
                 case RubiksCubeMoves.Down:
-                    AnimateSliceRotation(_game.Bottom, counterRotate, bottom_slice_rotation);
+                    AnimateSliceRotation(_game.Down, counterRotate, down_slice_rotation);
                     break;
 
                 case RubiksCubeMoves.X:
-                    //AnimateSliceRotation(_game.All, counterRotate, all_slice_rotation_X);
+                    AnimateSliceRotation(_game.X, counterRotate, all_slice_rotation_X);
                     break;
                 case RubiksCubeMoves.Y:
-                    //AnimateSliceRotation(_game.All, !counterRotate, all_slice_rotation_Z);
+                    AnimateSliceRotation(_game.Y, counterRotate, all_slice_rotation_Y);
                     break;
                 case RubiksCubeMoves.Z:
-                    //AnimateSliceRotation(_game.All, !counterRotate, all_slice_rotation_Y);
+                    AnimateSliceRotation(_game.Z, counterRotate, all_slice_rotation_Z);
                     break;
             }
         }

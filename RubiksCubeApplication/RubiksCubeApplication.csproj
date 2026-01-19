@@ -15,7 +15,7 @@
 
 	<PropertyGroup>
 		<MajorVersion Condition=" '$(MajorVersion)' == '' ">2</MajorVersion>
-		<MinorVersion Condition=" '$(MinorVersion)' == '' ">0</MinorVersion>
+		<MinorVersion Condition=" '$(MinorVersion)' == '' ">2</MinorVersion>
 		<PatchVersion Condition=" '$(PatchVersion)' == '' ">0</PatchVersion>
 
 		<BuildTimestamp>$([System.DateTime]::Now.DayOfYear.ToString().PadLeft(3,'0'))</BuildTimestamp>

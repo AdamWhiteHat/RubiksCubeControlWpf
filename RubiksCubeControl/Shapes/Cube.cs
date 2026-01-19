@@ -99,11 +99,6 @@ namespace RubiksCubeControl.Shapes
 
             Matrix3D transformMatrix = Model.Transform.Value;
 
-            //if(!transformMatrix.Equals(rotateMatrix))
-            //{
-            //    //throw new Exception("!transformMatrix.Equals(rotateMatrix)");
-            //}
-
             GeometryModel3D model = Model;
             MeshGeometry3D geometry = (MeshGeometry3D)model.Geometry;
             List<Point3D> positions = geometry.Positions.ToList();
@@ -116,8 +111,6 @@ namespace RubiksCubeControl.Shapes
 
             geometry.Positions = new Point3DCollection(newPositions);
             Model.Transform = Transform3D.Identity;
-
-
         }
     }
 }
