@@ -25,7 +25,7 @@ One advantage of this 2D visualization is that all of the faces of the cube are 
 
 54 colored dots replace the 54 colored stickers of the cube, and are clustered into six 3x3 'faces'. 
 
-There is a 1-to-1 correspondence between the faces of the 3D Rubik's cube and 2D clusters. [This graphic here should make clear how these two visualizations relate](https://github.com/AdamWhiteHat/RubiksCubeControlWpf/edit/master/README.md#2d-to-3d-face-correspondence-explained-visually).
+There is a 1-to-1 correspondence between the faces of the 3D Rubik's cube and 2D clusters. [This graphic here should make clear how these two visualizations relate](https://github.com/AdamWhiteHat/RubiksCubeControlWpf#2d-to-3d-face-correspondence-explained-visually).
 
 Black circular lines show how the faces and their stickers are connected and can move. Smooth animation of the dots along the black circular lines shows the transition between states.
 
