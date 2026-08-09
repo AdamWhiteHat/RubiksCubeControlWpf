@@ -8,7 +8,7 @@ using System.Windows.Media.Animation;
 using System.Xml.Linq;
 using RubiksCubeControl.Shapes;
 
-namespace RubiksCubeControl
+namespace RubiksCubeControl.GameState
 {
     /// <summary>
     /// Slots are containers. They contain an Item.     

@@ -1,4 +1,4 @@
-﻿namespace RubiksCubeControl
+﻿namespace RubiksCubeControl.GameState
 {
     public enum RubiksCubeMoves
     {

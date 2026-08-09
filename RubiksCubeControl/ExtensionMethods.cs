@@ -8,6 +8,7 @@ using System.Windows.Media.Animation;
 using RubiksCubeControl.Shapes;
 using System.Windows.Media.Media3D;
 using System.Windows.Controls;
+using RubiksCubeControl.GameState;
 
 namespace RubiksCubeControl
 {
@@ -84,7 +85,7 @@ namespace RubiksCubeControl
 
     public static class Model3DGroupExtensionMethods
     {
-        public static void PopulateFromSlice(this Model3DGroup source, Slice<Cube> slice)
+        public static void PopulateFromSlice(this Model3DGroup source, Slice<Cubie> slice)
         {
             source.Children = new Model3DCollection(slice.GetItems().Select(c => c.Model));
         }
@@ -183,7 +184,7 @@ namespace RubiksCubeControl
             source.N.Item = temp2;
         }
 
-        public static void Rotate<T>(this Slice<T> source) where T : Cube
+        public static void Rotate<T>(this Slice<T> source) where T : Cubie
         {
             if (source.Count == 9)
             {
@@ -200,7 +201,7 @@ namespace RubiksCubeControl
         }
 
 
-        private static void Rotate_9<T>(this Slice<T> source) where T : Cube
+        private static void Rotate_9<T>(this Slice<T> source) where T : Cubie
         {
             T[] items = source.GetItems().ToArray();
 
@@ -234,7 +235,7 @@ namespace RubiksCubeControl
             source.SetItems(result);
         }
 
-        public static void CounterRotate<T>(this Slice<T> source) where T : Cube
+        public static void CounterRotate<T>(this Slice<T> source) where T : Cubie
         {
             if (source.Count == 9)
             {
@@ -250,7 +251,7 @@ namespace RubiksCubeControl
             }
         }
 
-        private static void CounterRotate_9<T>(this Slice<T> source) where T : Cube
+        private static void CounterRotate_9<T>(this Slice<T> source) where T : Cubie
         {
             T[] items = source.GetItems().ToArray();
             T NW = items[0];

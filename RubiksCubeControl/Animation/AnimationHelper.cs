@@ -4,9 +4,10 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
+using RubiksCubeControl.GameState;
 using RubiksCubeControl.Shapes;
 
-namespace RubiksCubeControl
+namespace RubiksCubeControl.Animation
 {
     public static class AnimationHelper
     {
@@ -15,7 +16,7 @@ namespace RubiksCubeControl
         public static double AnimationAccelerationRatio = 0.333;
         public static double AnimationDecelerationRatio = 0.667;
 
-        public static Tuple<Circle, PointAnimationUsingPath>[] BuildRingAnimation(MoveAnimationGroup moveAnimationGroup)
+        public static Tuple<Circle, PointAnimationUsingPath>[] BuildRingAnimation(AnimationGroup2D moveAnimationGroup)
         {
             int index = 0;
             int max = moveAnimationGroup.RingPeices.Count;
@@ -48,7 +49,7 @@ namespace RubiksCubeControl
             return results.ToArray();
         }
 
-        public static List<Tuple<Circle, PointAnimation>[]> BuildFaceAnimation(MoveAnimationGroup moveAnimationGroup)
+        public static List<Tuple<Circle, PointAnimation>[]> BuildFaceAnimation(AnimationGroup2D moveAnimationGroup)
         {
             List<Tuple<Circle, PointAnimation>[]> results = new List<Tuple<Circle, PointAnimation>[]>();
 

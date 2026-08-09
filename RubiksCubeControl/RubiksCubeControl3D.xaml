@@ -25,7 +25,7 @@
 
         <DiffuseMaterial x:Key="uvMapMaterial_All">
             <DiffuseMaterial.Brush>
-                <ImageBrush  ViewportUnits="Absolute" ImageSource="/RubiksCubeControl;component/Material_All.bmp">
+                <ImageBrush  ViewportUnits="Absolute" ImageSource="/RubiksCubeControl;component/Resources/Material_All.bmp">
                     <ImageBrush.Transform>
                         <TransformGroup>
                             <ScaleTransform ScaleX="1" ScaleY="-1"/>

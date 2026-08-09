@@ -9,10 +9,6 @@
 		<RootNamespace>RubiksCubeApplication</RootNamespace>
 	</PropertyGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\RubiksCubeControl\RubiksCubeControl.csproj" />
-	</ItemGroup>
-
 	<PropertyGroup>
 		<MajorVersion Condition=" '$(MajorVersion)' == '' ">2</MajorVersion>
 		<MinorVersion Condition=" '$(MinorVersion)' == '' ">2</MinorVersion>
@@ -24,5 +20,9 @@
 		<AssemblyVersion>$(Version).$(BuildTimestamp)</AssemblyVersion>
 		<PackageVersion>$(AssemblyVersion)</PackageVersion>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\RubiksCubeControl\RubiksCubeControl.csproj" />
+	</ItemGroup>
 
 </Project>

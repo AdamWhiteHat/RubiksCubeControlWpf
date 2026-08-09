@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Media3D;
 
-namespace RubiksCubeControl
+namespace RubiksCubeControl.Behaviors
 {
     public static class ProjectionCameraExtensions
     {

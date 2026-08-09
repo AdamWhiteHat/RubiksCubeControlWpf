@@ -14,9 +14,10 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using RubiksCubeControl;
+using RubiksCubeControl.Animation;
+using RubiksCubeControl.GameState;
 using RubiksCubeControl.Shapes;
-using static RubiksCubeControl.AnimationHelper;
+using static RubiksCubeControl.Animation.AnimationHelper;
 
 namespace RubiksCubeControl
 {
@@ -125,6 +126,11 @@ namespace RubiksCubeControl
             _storyboard = new Storyboard();
             _storyboard.FillBehavior = FillBehavior.Stop;
 
+            Reset();
+        }
+
+        public void Reset()
+        {
             Face<Circle> yellow = new Face<Circle>(yNW, yNN, yNE, yWW, yCC, yEE, ySW, ySS, ySE);
             Face<Circle> green = new Face<Circle>(gNW, gNN, gNE, gWW, gCC, gEE, gSW, gSS, gSE);
             Face<Circle> orange = new Face<Circle>(oNW, oNN, oNE, oWW, oCC, oEE, oSW, oSS, oSE);
@@ -132,7 +138,6 @@ namespace RubiksCubeControl
             Face<Circle> white = new Face<Circle>(wNW, wNN, wNE, wWW, wCC, wEE, wSW, wSS, wSE);
             Face<Circle> blue = new Face<Circle>(bNW, bNN, bNE, bWW, bCC, bEE, bSW, bSS, bSE);
             _game = new GamePuzzle_Stickers<Circle>(yellow, green, orange, red, white, blue);
-
         }
 
         private void RubiksCubeControl_Loaded(object sender, RoutedEventArgs e)
@@ -201,7 +206,7 @@ namespace RubiksCubeControl
 
         public void AnimateMove(RubiksCubeMoves move, bool counterRotate)
         {
-            List<MoveAnimationGroup> moveAnimations = new List<MoveAnimationGroup>();
+            List<AnimationGroup2D> moveAnimations = new List<AnimationGroup2D>();
 
             switch (move)
             {
@@ -209,19 +214,19 @@ namespace RubiksCubeControl
 
                 case RubiksCubeMoves.X:
 
-                    MoveAnimationGroup aniOuterX = new MoveAnimationGroup(RubiksCubeMoves.Left, counterRotate);
+                    AnimationGroup2D aniOuterX = new AnimationGroup2D(RubiksCubeMoves.Left, counterRotate);
                     aniOuterX.RingPeices = _game.Right.Outer.GetItems();
                     aniOuterX.RingPaths = Paths_Ring_RightOuter;
                     aniOuterX.AddRingFinalizerAction();
 
                     aniOuterX.FacePeices = new List<Face<Circle>>() { _game.Yellow };
 
-                    MoveAnimationGroup aniMiddleX = new MoveAnimationGroup(RubiksCubeMoves.Middle, counterRotate);
+                    AnimationGroup2D aniMiddleX = new AnimationGroup2D(RubiksCubeMoves.Middle, counterRotate);
                     aniMiddleX.RingPeices = _game.Right.Middle.GetItems();
                     aniMiddleX.RingPaths = Paths_Ring_RightMiddle;
                     aniMiddleX.AddRingFinalizerAction();
 
-                    MoveAnimationGroup aniInnerX = new MoveAnimationGroup(RubiksCubeMoves.Right, counterRotate);
+                    AnimationGroup2D aniInnerX = new AnimationGroup2D(RubiksCubeMoves.Right, counterRotate);
                     aniInnerX.RingPeices = _game.Right.Inner.GetItems();
                     aniInnerX.RingPaths = Paths_Ring_RightInner;
                     aniInnerX.AddRingFinalizerAction();
@@ -236,19 +241,19 @@ namespace RubiksCubeControl
 
                 case RubiksCubeMoves.Y:
 
-                    MoveAnimationGroup aniOuterY = new MoveAnimationGroup(RubiksCubeMoves.Down, counterRotate);
+                    AnimationGroup2D aniOuterY = new AnimationGroup2D(RubiksCubeMoves.Down, counterRotate);
                     aniOuterY.RingPeices = _game.Top.Outer.GetItems();
                     aniOuterY.RingPaths = Paths_Ring_TopOuter;
                     aniOuterY.AddRingFinalizerAction();
 
                     aniOuterY.FacePeices = new List<Face<Circle>>() { _game.Blue };
 
-                    MoveAnimationGroup aniMiddleY = new MoveAnimationGroup(RubiksCubeMoves.Equator, counterRotate);
+                    AnimationGroup2D aniMiddleY = new AnimationGroup2D(RubiksCubeMoves.Equator, counterRotate);
                     aniMiddleY.RingPeices = _game.Top.Middle.GetItems();
                     aniMiddleY.RingPaths = Paths_Ring_TopMiddle;
                     aniMiddleY.AddRingFinalizerAction();
 
-                    MoveAnimationGroup aniInnerY = new MoveAnimationGroup(RubiksCubeMoves.Up, counterRotate);
+                    AnimationGroup2D aniInnerY = new AnimationGroup2D(RubiksCubeMoves.Up, counterRotate);
                     aniInnerY.RingPeices = _game.Top.Inner.GetItems();
                     aniInnerY.RingPaths = Paths_Ring_TopInner;
                     aniInnerY.AddRingFinalizerAction();
@@ -263,19 +268,19 @@ namespace RubiksCubeControl
 
                 case RubiksCubeMoves.Z:
 
-                    MoveAnimationGroup aniOuterZ = new MoveAnimationGroup(RubiksCubeMoves.Back, counterRotate);
+                    AnimationGroup2D aniOuterZ = new AnimationGroup2D(RubiksCubeMoves.Back, counterRotate);
                     aniOuterZ.RingPeices = _game.Left.Outer.GetItems();
                     aniOuterZ.RingPaths = Paths_Ring_LeftOuter;
                     aniOuterZ.AddRingFinalizerAction();
 
                     aniOuterZ.FacePeices = new List<Face<Circle>>() { _game.Orange };
 
-                    MoveAnimationGroup aniMiddleZ = new MoveAnimationGroup(RubiksCubeMoves.Slice, counterRotate);
+                    AnimationGroup2D aniMiddleZ = new AnimationGroup2D(RubiksCubeMoves.Slice, counterRotate);
                     aniMiddleZ.RingPeices = _game.Left.Middle.GetItems();
                     aniMiddleZ.RingPaths = Paths_Ring_LeftMiddle;
                     aniMiddleZ.AddRingFinalizerAction();
 
-                    MoveAnimationGroup aniInnerZ = new MoveAnimationGroup(RubiksCubeMoves.Front, counterRotate);
+                    AnimationGroup2D aniInnerZ = new AnimationGroup2D(RubiksCubeMoves.Front, counterRotate);
                     aniInnerZ.RingPeices = _game.Left.Inner.GetItems();
                     aniInnerZ.RingPaths = Paths_Ring_LeftInner;
                     aniInnerZ.AddRingFinalizerAction();
@@ -291,7 +296,7 @@ namespace RubiksCubeControl
                 // *** Inner *** //
 
                 case RubiksCubeMoves.Up:
-                    MoveAnimationGroup uAni = new MoveAnimationGroup(move, counterRotate);
+                    AnimationGroup2D uAni = new AnimationGroup2D(move, counterRotate);
 
                     uAni.RingPeices = _game.Top.Inner.GetItems();
                     uAni.RingPaths = Paths_Ring_TopInner;
@@ -303,7 +308,7 @@ namespace RubiksCubeControl
                     break;
 
                 case RubiksCubeMoves.Front:
-                    MoveAnimationGroup fAni = new MoveAnimationGroup(move, counterRotate);
+                    AnimationGroup2D fAni = new AnimationGroup2D(move, counterRotate);
 
                     fAni.RingPeices = _game.Left.Inner.GetItems();
                     fAni.RingPaths = Paths_Ring_LeftInner;
@@ -315,7 +320,7 @@ namespace RubiksCubeControl
                     break;
 
                 case RubiksCubeMoves.Right:
-                    MoveAnimationGroup rAni = new MoveAnimationGroup(move, counterRotate);
+                    AnimationGroup2D rAni = new AnimationGroup2D(move, counterRotate);
 
                     rAni.RingPeices = _game.Right.Inner.GetItems();
                     rAni.RingPaths = Paths_Ring_RightInner;
@@ -330,7 +335,7 @@ namespace RubiksCubeControl
                 // *** Middle *** //
 
                 case RubiksCubeMoves.Equator:
-                    MoveAnimationGroup eAni = new MoveAnimationGroup(move, counterRotate);
+                    AnimationGroup2D eAni = new AnimationGroup2D(move, counterRotate);
 
                     eAni.RingPeices = _game.Top.Middle.GetItems();
                     eAni.RingPaths = Paths_Ring_TopMiddle;
@@ -340,7 +345,7 @@ namespace RubiksCubeControl
                     break;
 
                 case RubiksCubeMoves.Slice:
-                    MoveAnimationGroup sAni = new MoveAnimationGroup(move, counterRotate);
+                    AnimationGroup2D sAni = new AnimationGroup2D(move, counterRotate);
 
                     sAni.RingPeices = _game.Left.Middle.GetItems();
                     sAni.RingPaths = Paths_Ring_LeftMiddle;
@@ -350,7 +355,7 @@ namespace RubiksCubeControl
                     break;
 
                 case RubiksCubeMoves.Middle:
-                    MoveAnimationGroup mAni = new MoveAnimationGroup(move, counterRotate);
+                    AnimationGroup2D mAni = new AnimationGroup2D(move, counterRotate);
 
                     mAni.RingPeices = _game.Right.Middle.GetItems();
                     mAni.RingPaths = Paths_Ring_RightMiddle;
@@ -362,7 +367,7 @@ namespace RubiksCubeControl
                 // *** Outer *** //
 
                 case RubiksCubeMoves.Down:
-                    MoveAnimationGroup dAni = new MoveAnimationGroup(move, counterRotate);
+                    AnimationGroup2D dAni = new AnimationGroup2D(move, counterRotate);
 
                     dAni.RingPeices = _game.Top.Outer.GetItems();
                     dAni.RingPaths = Paths_Ring_TopOuter;
@@ -374,7 +379,7 @@ namespace RubiksCubeControl
                     break;
 
                 case RubiksCubeMoves.Back:
-                    MoveAnimationGroup bAni = new MoveAnimationGroup(move, counterRotate);
+                    AnimationGroup2D bAni = new AnimationGroup2D(move, counterRotate);
 
                     bAni.RingPeices = _game.Left.Outer.GetItems();
                     bAni.RingPaths = Paths_Ring_LeftOuter;
@@ -386,7 +391,7 @@ namespace RubiksCubeControl
                     break;
 
                 case RubiksCubeMoves.Left:
-                    MoveAnimationGroup lAni = new MoveAnimationGroup(move, counterRotate);
+                    AnimationGroup2D lAni = new AnimationGroup2D(move, counterRotate);
 
                     lAni.RingPeices = _game.Right.Outer.GetItems();
                     lAni.RingPaths = Paths_Ring_RightOuter;
@@ -406,7 +411,7 @@ namespace RubiksCubeControl
             List<Tuple<Circle, PointAnimationUsingPath>[]> ringAnimationGroups = new List<Tuple<Circle, PointAnimationUsingPath>[]>();
             List<List<Tuple<Circle, PointAnimation>[]>> faceAnimations = new List<List<Tuple<Circle, PointAnimation>[]>>();
 
-            foreach (MoveAnimationGroup movesToAnimate in moveAnimations)
+            foreach (AnimationGroup2D movesToAnimate in moveAnimations)
             {
                 if (counterRotate)
                 {

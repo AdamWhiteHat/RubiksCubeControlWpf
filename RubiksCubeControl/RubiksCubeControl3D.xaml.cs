@@ -15,7 +15,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using RubiksCubeControl.Animation;
+using RubiksCubeControl.GameState;
 using RubiksCubeControl.Shapes;
+using RubiksCubeControl.Synchronization;
 
 namespace RubiksCubeControl
 {
@@ -109,7 +112,7 @@ namespace RubiksCubeControl
 
         private Point _viewportCenter = new Point(0, 0);
         private Storyboard _storyboard { get; set; }
-        private GamePuzzle_Cubies<Cube> _game;
+        private GamePuzzle_Cubies<Cubie> _game;
         private InterlockedCountdown _visualUpdateCountdown;
         private InterlockedCountdown _logicalUpdateCountdown;
 
@@ -130,7 +133,7 @@ namespace RubiksCubeControl
             _storyboard = new Storyboard();
             _storyboard.FillBehavior = FillBehavior.HoldEnd;
 
-            _logicalUpdateCountdown = new InterlockedCountdown(2);
+            _logicalUpdateCountdown = new InterlockedCountdown("RubiksCubeControl3D.LogicalUpdateCountdown", 2);
             _logicalUpdateCountdown.CountdownComplete += logicalUpdateCountdown_CountdownComplete;
 
             viewport.DataContext = this;
@@ -141,35 +144,35 @@ namespace RubiksCubeControl
         {
             CenterViewport();
 
-            Cube back_NW = new Cube((GeometryModel3D)this.Resources["back_NW"], "back_NW");
-            Cube back_N = new Cube((GeometryModel3D)this.Resources["back_N"], "back_N");
-            Cube back_NE = new Cube((GeometryModel3D)this.Resources["back_NE"], "back_NE");
-            Cube back_W = new Cube((GeometryModel3D)this.Resources["back_W"], "back_W");
-            Cube back_C = new Cube((GeometryModel3D)this.Resources["back_C"], "back_C");
-            Cube back_E = new Cube((GeometryModel3D)this.Resources["back_E"], "back_E");
-            Cube back_SW = new Cube((GeometryModel3D)this.Resources["back_SW"], "back_SW");
-            Cube back_S = new Cube((GeometryModel3D)this.Resources["back_S"], "back_S");
-            Cube back_SE = new Cube((GeometryModel3D)this.Resources["back_SE"], "back_SE");
-            Cube middle_NW = new Cube((GeometryModel3D)this.Resources["middle_NW"], "middle_NW");
-            Cube middle_N = new Cube((GeometryModel3D)this.Resources["middle_N"], "middle_N");
-            Cube middle_NE = new Cube((GeometryModel3D)this.Resources["middle_NE"], "middle_NE");
-            Cube middle_W = new Cube((GeometryModel3D)this.Resources["middle_W"], "middle_W");
-            Cube middle_C = new Cube((GeometryModel3D)this.Resources["middle_C"], "middle_C");
-            Cube middle_E = new Cube((GeometryModel3D)this.Resources["middle_E"], "middle_E");
-            Cube middle_SW = new Cube((GeometryModel3D)this.Resources["middle_SW"], "middle_SW");
-            Cube middle_S = new Cube((GeometryModel3D)this.Resources["middle_S"], "middle_S");
-            Cube middle_SE = new Cube((GeometryModel3D)this.Resources["middle_SE"], "middle_SE");
-            Cube front_NW = new Cube((GeometryModel3D)this.Resources["front_NW"], "front_NW");
-            Cube front_N = new Cube((GeometryModel3D)this.Resources["front_N"], "front_N");
-            Cube front_NE = new Cube((GeometryModel3D)this.Resources["front_NE"], "front_NE");
-            Cube front_W = new Cube((GeometryModel3D)this.Resources["front_W"], "front_W");
-            Cube front_C = new Cube((GeometryModel3D)this.Resources["front_C"], "front_C");
-            Cube front_E = new Cube((GeometryModel3D)this.Resources["front_E"], "front_E");
-            Cube front_SW = new Cube((GeometryModel3D)this.Resources["front_SW"], "front_SW");
-            Cube front_S = new Cube((GeometryModel3D)this.Resources["front_S"], "front_S");
-            Cube front_SE = new Cube((GeometryModel3D)this.Resources["front_SE"], "front_SE");
+            Cubie back_NW = new Cubie((GeometryModel3D)this.Resources["back_NW"], "back_NW");
+            Cubie back_N = new Cubie((GeometryModel3D)this.Resources["back_N"], "back_N");
+            Cubie back_NE = new Cubie((GeometryModel3D)this.Resources["back_NE"], "back_NE");
+            Cubie back_W = new Cubie((GeometryModel3D)this.Resources["back_W"], "back_W");
+            Cubie back_C = new Cubie((GeometryModel3D)this.Resources["back_C"], "back_C");
+            Cubie back_E = new Cubie((GeometryModel3D)this.Resources["back_E"], "back_E");
+            Cubie back_SW = new Cubie((GeometryModel3D)this.Resources["back_SW"], "back_SW");
+            Cubie back_S = new Cubie((GeometryModel3D)this.Resources["back_S"], "back_S");
+            Cubie back_SE = new Cubie((GeometryModel3D)this.Resources["back_SE"], "back_SE");
+            Cubie middle_NW = new Cubie((GeometryModel3D)this.Resources["middle_NW"], "middle_NW");
+            Cubie middle_N = new Cubie((GeometryModel3D)this.Resources["middle_N"], "middle_N");
+            Cubie middle_NE = new Cubie((GeometryModel3D)this.Resources["middle_NE"], "middle_NE");
+            Cubie middle_W = new Cubie((GeometryModel3D)this.Resources["middle_W"], "middle_W");
+            Cubie middle_C = new Cubie((GeometryModel3D)this.Resources["middle_C"], "middle_C");
+            Cubie middle_E = new Cubie((GeometryModel3D)this.Resources["middle_E"], "middle_E");
+            Cubie middle_SW = new Cubie((GeometryModel3D)this.Resources["middle_SW"], "middle_SW");
+            Cubie middle_S = new Cubie((GeometryModel3D)this.Resources["middle_S"], "middle_S");
+            Cubie middle_SE = new Cubie((GeometryModel3D)this.Resources["middle_SE"], "middle_SE");
+            Cubie front_NW = new Cubie((GeometryModel3D)this.Resources["front_NW"], "front_NW");
+            Cubie front_N = new Cubie((GeometryModel3D)this.Resources["front_N"], "front_N");
+            Cubie front_NE = new Cubie((GeometryModel3D)this.Resources["front_NE"], "front_NE");
+            Cubie front_W = new Cubie((GeometryModel3D)this.Resources["front_W"], "front_W");
+            Cubie front_C = new Cubie((GeometryModel3D)this.Resources["front_C"], "front_C");
+            Cubie front_E = new Cubie((GeometryModel3D)this.Resources["front_E"], "front_E");
+            Cubie front_SW = new Cubie((GeometryModel3D)this.Resources["front_SW"], "front_SW");
+            Cubie front_S = new Cubie((GeometryModel3D)this.Resources["front_S"], "front_S");
+            Cubie front_SE = new Cubie((GeometryModel3D)this.Resources["front_SE"], "front_SE");
 
-            _game = new GamePuzzle_Cubies<Cube>(
+            _game = new GamePuzzle_Cubies<Cubie>(
                 back_NW,
                 back_N,
                 back_NE,
@@ -279,7 +282,7 @@ namespace RubiksCubeControl
             }
         }
 
-        private void AnimateSliceRotation(Slice<Cube> slice, bool counterRotate, RotateTransform3D rotate3D, [CallerArgumentExpression("rotate3D")] string rotateTransformName = null)
+        private void AnimateSliceRotation(Slice<Cubie> slice, bool counterRotate, RotateTransform3D rotate3D, [CallerArgumentExpression("rotate3D")] string rotateTransformName = null)
         {
             if (!_logicalUpdateCountdown.IsCompleted())
             {
@@ -297,7 +300,7 @@ namespace RubiksCubeControl
             }
 
             _storyboard.Children.Clear();
-            List<Cube> cubes = slice.GetItems();
+            List<Cubie> cubes = slice.GetItems();
 
             _logicalUpdateCountdown.Reset();
 
@@ -308,7 +311,7 @@ namespace RubiksCubeControl
                 _logicalUpdateCountdown.Signal();
             });
 
-            _visualUpdateCountdown = new InterlockedCountdown(cubes.Count());
+            _visualUpdateCountdown = new InterlockedCountdown("RubiksCubeControl3D.VisualUpdateCountdown", cubes.Count());
             _visualUpdateCountdown.CountdownComplete += visualUpdateCountdown_CountdownCompleteAction;
             _visualUpdateCountdown.Reset();
 
@@ -341,12 +344,12 @@ namespace RubiksCubeControl
 
                 Storyboard.SetTarget(animation, cube);
                 Storyboard.SetTargetName(animation, cube.Name);
-                Storyboard.SetTargetProperty(animation, new PropertyPath(Cube.RotationProperty));
+                Storyboard.SetTargetProperty(animation, new PropertyPath(Cubie.RotationProperty));
 
                 _storyboard.Children.Add(animation);
             }
 
-            Slice<Cube> copy = slice;
+            Slice<Cubie> copy = slice;
 
             EventHandler updateCubesLocationAction = null;
             if (counterRotate)

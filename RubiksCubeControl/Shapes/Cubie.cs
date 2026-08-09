@@ -11,7 +11,7 @@ using System.Windows.Media.Media3D;
 
 namespace RubiksCubeControl.Shapes
 {
-    public class Cube : FrameworkElement
+    public class Cubie : FrameworkElement
     {
         public GeometryModel3D Model { get; set; }
 
@@ -27,8 +27,8 @@ namespace RubiksCubeControl.Shapes
             set { SetValue(RotationProperty, value); }
         }
 
-        public static readonly DependencyProperty RotationProperty = DependencyProperty.Register(nameof(Rotation),typeof(Rotation3D),typeof(Cube),new FrameworkPropertyMetadata(default(Rotation3D),FrameworkPropertyMetadataOptions.AffectsRender,new PropertyChangedCallback(Cube.RaiseRotationChanged)));
-        public static readonly RoutedEvent RotationChangedEvent = EventManager.RegisterRoutedEvent(nameof(RotationChanged), RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<Rotation3D>), typeof(Cube));
+        public static readonly DependencyProperty RotationProperty = DependencyProperty.Register(nameof(Rotation),typeof(Rotation3D),typeof(Cubie),new FrameworkPropertyMetadata(default(Rotation3D),FrameworkPropertyMetadataOptions.AffectsRender,new PropertyChangedCallback(Cubie.RaiseRotationChanged)));
+        public static readonly RoutedEvent RotationChangedEvent = EventManager.RegisterRoutedEvent(nameof(RotationChanged), RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<Rotation3D>), typeof(Cubie));
 
         public event RoutedPropertyChangedEventHandler<Rotation3D> RotationChanged
         {
@@ -45,12 +45,12 @@ namespace RubiksCubeControl.Shapes
 
         private static void RaiseRotationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            Cube element = (Cube)d;
+            Cubie element = (Cubie)d;
             element.RaiseRotationChanged((Rotation3D)e.OldValue, (Rotation3D)e.NewValue);
         }
 
-        public static readonly DependencyProperty CenterProperty = DependencyProperty.Register(nameof(Center),typeof(Point3D),typeof(Cube),new PropertyMetadata(default(Point3D),new PropertyChangedCallback(Cube.RaiseCenterChanged)));
-        public static readonly RoutedEvent CenterChangedEvent = EventManager.RegisterRoutedEvent(nameof(CenterChanged), RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<Point3D>), typeof(Cube));
+        public static readonly DependencyProperty CenterProperty = DependencyProperty.Register(nameof(Center),typeof(Point3D),typeof(Cubie),new PropertyMetadata(default(Point3D),new PropertyChangedCallback(Cubie.RaiseCenterChanged)));
+        public static readonly RoutedEvent CenterChangedEvent = EventManager.RegisterRoutedEvent(nameof(CenterChanged), RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<Point3D>), typeof(Cubie));
 
         public event RoutedPropertyChangedEventHandler<Point3D> CenterChanged
         {
@@ -67,15 +67,15 @@ namespace RubiksCubeControl.Shapes
 
         private static void RaiseCenterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            Cube element = (Cube)d;
+            Cubie element = (Cubie)d;
             element.RaiseCenterChanged((Point3D)e.OldValue, (Point3D)e.NewValue);
         }
 
-        public Cube()
+        public Cubie()
         {
         }
 
-        public Cube(GeometryModel3D model, string name)
+        public Cubie(GeometryModel3D model, string name)
             : this()
         {
             Model = model;

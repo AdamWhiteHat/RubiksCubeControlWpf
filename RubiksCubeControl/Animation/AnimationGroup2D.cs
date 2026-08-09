@@ -1,11 +1,12 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using RubiksCubeControl.GameState;
 using RubiksCubeControl.Shapes;
 
-namespace RubiksCubeControl
+namespace RubiksCubeControl.Animation
 {
-    public class MoveAnimationGroup
+    public class AnimationGroup2D
     {
         public bool CounterRotate { get; set; }
         public RubiksCubeMoves Move { get; set; }
@@ -14,7 +15,7 @@ namespace RubiksCubeControl
         public List<Face<Circle>> FacePeices { get; set; }
         public List<Action> FinalizerActions { get; set; }
 
-        public MoveAnimationGroup(RubiksCubeMoves move, bool counterRotate)
+        public AnimationGroup2D(RubiksCubeMoves move, bool counterRotate)
         {
             FacePeices = null;
             FinalizerActions = new List<Action>();

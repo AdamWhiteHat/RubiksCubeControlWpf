@@ -12,6 +12,8 @@ using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using RubiksCubeControl;
+using RubiksCubeControl.GameState;
+using RubiksCubeControl.Synchronization;
 
 namespace RubiksCubeApplication
 {
@@ -20,13 +22,6 @@ namespace RubiksCubeApplication
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static class ExclusiveAccess
-        {
-            private static UInt64 _lockObject = 0;
-            public static bool TryObtainLock() => (0 == Interlocked.CompareExchange(ref _lockObject, 1, 0));
-            public static void ReleaseLock() => Interlocked.Exchange(ref _lockObject, 0);
-        }
-
         #region ScaleZoom
 
         public double ScaleZoom
@@ -92,7 +87,7 @@ namespace RubiksCubeApplication
             this.Loaded += MainWindow_Loaded;
 
             _moveQueue = new ConcurrentQueue<Tuple<RubiksCubeMoves, bool>>();
-            _countdown = new InterlockedCountdown(2);
+            _countdown = new InterlockedCountdown("MainWindow.Countdown", 2);
             _countdown.CountdownComplete += OnCountdownComplete;
 
             this.KeyUp += Window_KeyUp;
