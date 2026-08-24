@@ -9,8 +9,8 @@
         Title="Rubik's Rings"    
         x:Name="mainWindow"      
         DataContext="{Binding RelativeSource={RelativeSource Self}}" 
-        Width="915" Height="555" 
-        MinWidth="915" MinHeight="555"
+        Width="915" Height="605" 
+        MinWidth="915" MinHeight="605"
         Margin="0" Padding="0" 
         Background="Transparent" AllowsTransparency="True" WindowStyle="None" UseLayoutRounding="True" WindowStartupLocation="Manual" 
         HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
@@ -20,10 +20,19 @@
     <Window.Resources>
         <SolidColorBrush x:Key="ControlDarkColorBrush" Color="{x:Static SystemColors.ControlDarkColor}" />
         <SolidColorBrush x:Key="ControlColorBrush" Color="{x:Static SystemColors.ControlColor}" />
+
+        <Style x:Key="DefaultButtonStyle" TargetType="Button">
+            <Setter Property="FontFamily" Value="Cascadia Mono" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="BorderThickness" Value="1.75" />
+            <Setter Property="Padding" Value="20,5" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
     </Window.Resources>
 
 
-    <Border Grid.Row="1" Padding="0" Margin="0,0,0,0" CornerRadius="35"
+    <Border Padding="0" Margin="0,0,0,0" CornerRadius="35"
                 Background="{DynamicResource ControlDarkColorBrush}">
         <Border.RenderTransform>
             <ScaleTransform  x:Name="ContentsScaleTransform"
@@ -34,10 +43,11 @@
                                />
         </Border.RenderTransform>
 
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="10*" />
             </Grid.RowDefinitions>
 
 
@@ -68,7 +78,22 @@
             </Border>
 
 
-            <Grid Grid.Row="1" Margin="30">
+            <Grid Grid.Row="1">
+                <WrapPanel HorizontalAlignment="Right" Margin="0">
+                    <Button x:Name="resetButton" 
+                            Style="{StaticResource DefaultButtonStyle}" Visibility="Collapsed"
+                            Content="Reset" Click="resetButton_Click" />
+                    <Button x:Name="scrambleButton" 
+                            Style="{StaticResource DefaultButtonStyle}"
+                            Content="Scramble" Click="scrambleButton_Click" />
+                    <Button x:Name="enterMoves"
+                            Style="{StaticResource DefaultButtonStyle}"
+                            Content="Enter Move Notation..." Click="enterMoves_Click" />
+
+                </WrapPanel>
+            </Grid>
+
+            <Grid Grid.Row="2" Margin="30">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="50" />

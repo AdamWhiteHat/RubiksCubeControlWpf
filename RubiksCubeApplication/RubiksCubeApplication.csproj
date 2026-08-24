@@ -25,4 +25,10 @@
 	  <ProjectReference Include="..\RubiksCubeControl\RubiksCubeControl.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="HelpWindow.xaml.cs">
+	    <SubType>Code</SubType>
+	  </Compile>
+	</ItemGroup>
+
 </Project>

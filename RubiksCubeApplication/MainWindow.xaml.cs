@@ -1,19 +1,13 @@
-﻿using System.Collections.Concurrent;
+﻿using RubiksCubeControl;
+using RubiksCubeControl.GameState;
+using RubiksCubeControl.Synchronization;
+using System.Collections.Concurrent;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using RubiksCubeControl;
-using RubiksCubeControl.GameState;
-using RubiksCubeControl.Synchronization;
+using RubiksCubeControl.Animation;
 
 namespace RubiksCubeApplication
 {
@@ -86,22 +80,21 @@ namespace RubiksCubeApplication
             InitializeComponent();
             this.Loaded += MainWindow_Loaded;
 
-            _moveQueue = new ConcurrentQueue<Tuple<RubiksCubeMoves, bool>>();
-            _countdown = new InterlockedCountdown("MainWindow.Countdown", 2);
-            _countdown.CountdownComplete += OnCountdownComplete;
-
-            this.KeyUp += Window_KeyUp;
-
-            rubiksCubeControl2D.AnimationCompleted += RubiksCubeControl2D_AnimationCompleted;
-            rubiksCubeControl3D.AnimationCompleted += RubiksCubeControl3D_AnimationCompleted;
-
-            this.PreviewMouseWheel += MainWindow_PreviewMouseWheel;
+            if (_random == null)
+            {
+                _random = new Random();
+                int count = 12;
+                while (count-- > 0)
+                {
+                    _random.Next();
+                }
+            }
         }
 
-        private ConcurrentQueue<Tuple<RubiksCubeMoves, bool>> _moveQueue { get; set; }
-
+        private MoveAnimationDispatcher _animationDispatcher;
         private static double BaseWidth = -1;
         private static double BaseHeight = -1;
+        private Random _random = null;
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -109,8 +102,11 @@ namespace RubiksCubeApplication
 
             BaseWidth = this.ActualWidth;
             BaseHeight = this.ActualHeight;
-
             CalculateUpdatedCenter();
+            this.PreviewMouseWheel += MainWindow_PreviewMouseWheel;
+
+            _animationDispatcher = new MoveAnimationDispatcher(rubiksCubeControl2D, rubiksCubeControl3D);
+            this.KeyUp += Window_KeyUp;
         }
 
         private void QuitClientRequested()
@@ -271,50 +267,50 @@ namespace RubiksCubeApplication
                 default: return;
             }
 
-            _moveQueue.Enqueue(new Tuple<RubiksCubeMoves, bool>(move, counterRotate));
+            _animationDispatcher.PerformMove(move, counterRotate, AnimationSpeedParameters.Default);
+        }
 
-            if (!ExclusiveAccess.TryObtainLock())
+        private void Scramble()
+        {
+            int scrambleLength = 26;
+            RubiksCubeMoves[] moves = ((RubiksCubeMoves[])Enum.GetValues(typeof(RubiksCubeMoves))).Take(9).ToArray();
+            for (int i = 0; i < scrambleLength; i++)
+            {
+                RubiksCubeMoves move = moves[_random.Next(moves.Length)];
+                bool counterRotate = false;//_random.Next(2) == 0;
+                _animationDispatcher.PerformMove(move, counterRotate, AnimationSpeedParameters.Immediate);
+            }
+        }
+
+        private void scrambleButton_Click(object sender, RoutedEventArgs e)
+        {
+            Scramble();
+        }
+
+        private void resetButton_Click(object sender, RoutedEventArgs e)
+        {
+            rubiksCubeControl2D.Reset();
+            rubiksCubeControl3D.Reset();
+        }
+
+        private void enterMoves_Click(object sender, RoutedEventArgs e)
+        {
+            NotationInputWindow notationInput = new NotationInputWindow();
+
+            bool? result = notationInput.ShowDialog();
+            if (!result.HasValue || !result.Value)
             {
                 return;
             }
 
-            if (!_countdown.IsCompleted())
+            string moveNotation = notationInput.InputText;
+
+            List<(RubiksCubeMoves move, bool isPrime)> moveCommands = CubeMoveNotation.ParseCubeMoveNotation(moveNotation);
+
+            foreach (var moveCommand in moveCommands)
             {
-                return;
+                _animationDispatcher.PerformMove(moveCommand.move, moveCommand.isPrime, AnimationSpeedParameters.Quick);
             }
-
-            ProcessNextCommand();
-        }
-
-        private void ProcessNextCommand()
-        {
-            if (_moveQueue.TryDequeue(out Tuple<RubiksCubeMoves, bool> parameters))
-            {
-                _countdown.Reset();
-                rubiksCubeControl2D.AnimateMove(parameters.Item1, parameters.Item2);
-                rubiksCubeControl3D.AnimateMove(parameters.Item1, parameters.Item2);
-            }
-            else
-            {
-                ExclusiveAccess.ReleaseLock();
-            }
-        }
-
-        InterlockedCountdown _countdown;
-
-        private void RubiksCubeControl2D_AnimationCompleted(object sender, RoutedEventArgs e)
-        {
-            _countdown.Signal();
-        }
-
-        private void RubiksCubeControl3D_AnimationCompleted(object sender, RoutedEventArgs e)
-        {
-            _countdown.Signal();
-        }
-
-        private void OnCountdownComplete(object? sender, EventArgs e)
-        {
-            ProcessNextCommand();
         }
     }
 }

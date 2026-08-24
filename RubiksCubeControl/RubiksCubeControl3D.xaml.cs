@@ -143,7 +143,11 @@ namespace RubiksCubeControl
         private void RubiksCubeControl3D_Loaded(object sender, RoutedEventArgs e)
         {
             CenterViewport();
+            Reset();
+        }
 
+        public void Reset()
+        {
             Cubie back_NW = new Cubie((GeometryModel3D)this.Resources["back_NW"], "back_NW");
             Cubie back_N = new Cubie((GeometryModel3D)this.Resources["back_N"], "back_N");
             Cubie back_NE = new Cubie((GeometryModel3D)this.Resources["back_NE"], "back_NE");
@@ -206,7 +210,7 @@ namespace RubiksCubeControl
             displayGroup.PopulateFromSlice(_game.Z);
         }
 
-        #endregion 
+        #endregion
 
         private void Viewport_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -236,53 +240,53 @@ namespace RubiksCubeControl
 
         #endregion
 
-        public void AnimateMove(RubiksCubeMoves move, bool counterRotate)
+        public void AnimateMove(RubiksCubeMoves move, bool counterRotate, AnimationSpeedParameters animationSpeed)
         {
             switch (move)
             {
                 case RubiksCubeMoves.Front:
-                    AnimateSliceRotation(_game.Front, counterRotate, front_slice_rotation);
+                    AnimateSliceRotation(_game.Front, counterRotate, front_slice_rotation, animationSpeed);
                     break;
                 case RubiksCubeMoves.Slice:
-                    AnimateSliceRotation(_game.Middle, counterRotate, middle_slice_rotation);
+                    AnimateSliceRotation(_game.Middle, counterRotate, middle_slice_rotation, animationSpeed);
                     break;
                 case RubiksCubeMoves.Back:
-                    AnimateSliceRotation(_game.Back, counterRotate, back_slice_rotation);
+                    AnimateSliceRotation(_game.Back, counterRotate, back_slice_rotation, animationSpeed);
                     break;
 
                 case RubiksCubeMoves.Left:
-                    AnimateSliceRotation(_game.Left, counterRotate, left_slice_rotation);
+                    AnimateSliceRotation(_game.Left, counterRotate, left_slice_rotation, animationSpeed);
                     break;
                 case RubiksCubeMoves.Middle:
-                    AnimateSliceRotation(_game.Center, counterRotate, center_slice_rotation);
+                    AnimateSliceRotation(_game.Center, counterRotate, center_slice_rotation, animationSpeed);
                     break;
                 case RubiksCubeMoves.Right:
-                    AnimateSliceRotation(_game.Right, counterRotate, right_slice_rotation);
+                    AnimateSliceRotation(_game.Right, counterRotate, right_slice_rotation, animationSpeed);
                     break;
 
                 case RubiksCubeMoves.Up:
-                    AnimateSliceRotation(_game.Up, counterRotate, up_slice_rotation);
+                    AnimateSliceRotation(_game.Up, counterRotate, up_slice_rotation, animationSpeed);
                     break;
                 case RubiksCubeMoves.Equator:
-                    AnimateSliceRotation(_game.Equator, counterRotate, equator_slice_rotation);
+                    AnimateSliceRotation(_game.Equator, counterRotate, equator_slice_rotation, animationSpeed);
                     break;
                 case RubiksCubeMoves.Down:
-                    AnimateSliceRotation(_game.Down, counterRotate, down_slice_rotation);
+                    AnimateSliceRotation(_game.Down, counterRotate, down_slice_rotation, animationSpeed);
                     break;
 
                 case RubiksCubeMoves.X:
-                    AnimateSliceRotation(_game.X, counterRotate, all_slice_rotation_X);
+                    AnimateSliceRotation(_game.X, counterRotate, all_slice_rotation_X, animationSpeed);
                     break;
                 case RubiksCubeMoves.Y:
-                    AnimateSliceRotation(_game.Y, counterRotate, all_slice_rotation_Y);
+                    AnimateSliceRotation(_game.Y, counterRotate, all_slice_rotation_Y, animationSpeed);
                     break;
                 case RubiksCubeMoves.Z:
-                    AnimateSliceRotation(_game.Z, counterRotate, all_slice_rotation_Z);
+                    AnimateSliceRotation(_game.Z, counterRotate, all_slice_rotation_Z, animationSpeed);
                     break;
             }
         }
 
-        private void AnimateSliceRotation(Slice<Cubie> slice, bool counterRotate, RotateTransform3D rotate3D, [CallerArgumentExpression("rotate3D")] string rotateTransformName = null)
+        private void AnimateSliceRotation(Slice<Cubie> slice, bool counterRotate, RotateTransform3D rotate3D, AnimationSpeedParameters animationSpeed)
         {
             if (!_logicalUpdateCountdown.IsCompleted())
             {
@@ -328,7 +332,7 @@ namespace RubiksCubeControl
                 cube.Center = center;
                 cube.Rotation = fromRotation;
 
-                Rotation3DAnimation animation = AnimationHelper.BuildRotation3DAnimation();
+                Rotation3DAnimation animation = AnimationHelper.BuildRotation3DAnimation(animationSpeed);
                 animation.From = fromRotation;
                 animation.To = toRotation;
 

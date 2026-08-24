@@ -11,11 +11,6 @@ namespace RubiksCubeControl.Animation
 {
     public static class AnimationHelper
     {
-
-        public static double AnimationDuration = 0.75;
-        public static double AnimationAccelerationRatio = 0.333;
-        public static double AnimationDecelerationRatio = 0.667;
-
         public static Tuple<Circle, PointAnimationUsingPath>[] BuildRingAnimation(AnimationGroup2D moveAnimationGroup)
         {
             int index = 0;
@@ -35,7 +30,7 @@ namespace RubiksCubeControl.Animation
                 PathGeometry pathGeometry = path.Data.GetFlattenedPathGeometry();
                 Point finalLocation = ExtractEndPoint(path);
 
-                PointAnimationUsingPath animation = BuildPathAnimation(pathGeometry);
+                PointAnimationUsingPath animation = BuildPathAnimation(pathGeometry, moveAnimationGroup.AnimationSpeed);
                 animation.Completed += (object? sender, EventArgs e) =>
                 {
                     circle.SetValue(Circle.LocationProperty, finalLocation);
@@ -58,12 +53,12 @@ namespace RubiksCubeControl.Animation
                 List<Tuple<Circle, PointAnimation>> animationGroup = new List<Tuple<Circle, PointAnimation>>();
                 Func<Circle, Point, Tuple<Circle, PointAnimation>> buildAnimation = new Func<Circle, Point, Tuple<Circle, PointAnimation>>((circle, toLocation) =>
                 {
-                    PointAnimation animation = new PointAnimation(circle.Location, toLocation, new Duration(System.TimeSpan.FromSeconds(AnimationHelper.AnimationDuration)), FillBehavior.Stop)
+                    PointAnimation animation = new PointAnimation(circle.Location, toLocation, new Duration(System.TimeSpan.FromSeconds(moveAnimationGroup.AnimationSpeed.Duration)), FillBehavior.Stop)
                     {
                         RepeatBehavior = new RepeatBehavior(1),
                         AutoReverse = false,
-                        AccelerationRatio = AnimationHelper.AnimationAccelerationRatio,
-                        DecelerationRatio = AnimationHelper.AnimationDecelerationRatio
+                        AccelerationRatio = moveAnimationGroup.AnimationSpeed.AccelerationRatio,
+                        DecelerationRatio = moveAnimationGroup.AnimationSpeed.DecelerationRatio
                     };
                     animation.Completed += (object? sender, EventArgs e) =>
                     {
@@ -124,28 +119,28 @@ namespace RubiksCubeControl.Animation
             return new Point(x, y);
         }
 
-        public static PointAnimationUsingPath BuildPathAnimation(PathGeometry path)
+        public static PointAnimationUsingPath BuildPathAnimation(PathGeometry path, AnimationSpeedParameters animationSpeed)
         {
             // Animate the Button's Width.
             PointAnimationUsingPath animatePointUsingPath = new PointAnimationUsingPath();
             animatePointUsingPath.PathGeometry = path;
-            animatePointUsingPath.Duration = new Duration(TimeSpan.FromSeconds(AnimationDuration));
+            animatePointUsingPath.Duration = new Duration(TimeSpan.FromSeconds(animationSpeed.Duration));
             animatePointUsingPath.AutoReverse = false;
             animatePointUsingPath.RepeatBehavior = new RepeatBehavior(1);
-            animatePointUsingPath.AccelerationRatio = AnimationAccelerationRatio;
-            animatePointUsingPath.DecelerationRatio = AnimationDecelerationRatio;
+            animatePointUsingPath.AccelerationRatio = animationSpeed.AccelerationRatio;
+            animatePointUsingPath.DecelerationRatio = animationSpeed.DecelerationRatio;
             animatePointUsingPath.FillBehavior = FillBehavior.Stop;
             return animatePointUsingPath;
         }
 
-        public static Rotation3DAnimation BuildRotation3DAnimation()
+        public static Rotation3DAnimation BuildRotation3DAnimation(AnimationSpeedParameters animationSpeed)
         {
             Rotation3DAnimation animation = new Rotation3DAnimation();
-            animation.Duration = new Duration(System.TimeSpan.FromSeconds(AnimationHelper.AnimationDuration));
+            animation.Duration = new Duration(System.TimeSpan.FromSeconds(animationSpeed.Duration));
             animation.AutoReverse = false;
             animation.RepeatBehavior = new RepeatBehavior(1);
-            animation.AccelerationRatio = AnimationHelper.AnimationAccelerationRatio;
-            animation.DecelerationRatio = AnimationHelper.AnimationDecelerationRatio;
+            animation.AccelerationRatio = animationSpeed.AccelerationRatio;
+            animation.DecelerationRatio = animationSpeed.DecelerationRatio;
             animation.FillBehavior = FillBehavior.HoldEnd;
             return animation;
         }

@@ -8,17 +8,19 @@ namespace RubiksCubeControl.Animation
 {
     public class AnimationGroup2D
     {
-        public bool CounterRotate { get; set; }
         public RubiksCubeMoves Move { get; set; }
+        public bool CounterRotate { get; set; }
         public List<Circle> RingPeices { get; set; }
         public List<Path> RingPaths { get; set; }
         public List<Face<Circle>> FacePeices { get; set; }
         public List<Action> FinalizerActions { get; set; }
+        public AnimationSpeedParameters AnimationSpeed { get; set; }
 
-        public AnimationGroup2D(RubiksCubeMoves move, bool counterRotate)
+        public AnimationGroup2D(RubiksCubeMoves move, bool counterRotate, AnimationSpeedParameters animationSpeed)
         {
             FacePeices = null;
             FinalizerActions = new List<Action>();
+            AnimationSpeed = animationSpeed;
 
             Move = move;
             CounterRotate = counterRotate;
